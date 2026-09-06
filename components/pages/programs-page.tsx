@@ -31,7 +31,7 @@ export default function ProgramsPage() {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-[#0f766e] to-[#115e59] relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0] relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-white" />
         </div>
@@ -57,8 +57,8 @@ export default function ProgramsPage() {
                 onClick={() => setActive(cat)}
                 className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                   active === cat
-                    ? "bg-[#0f766e] text-white shadow-md"
-                    : "bg-gray-100 text-gray-600 hover:bg-teal-50 hover:text-[#0f766e]"
+                    ? "bg-[#2D8FCE] text-white shadow-md"
+                    : "bg-gray-100 text-gray-600 hover:bg-[#D4E6F4] hover:text-[#1F6BA0]"
                 }`}
               >
                 {cat}
@@ -92,14 +92,14 @@ export default function ProgramsPage() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-3 left-3 flex gap-2">
-                      <span className="px-2.5 py-1 bg-[#0f766e] text-white text-xs font-semibold rounded-full">
+                      <span className="px-2.5 py-1 bg-[#2D8FCE] text-white text-xs font-semibold rounded-full">
                         {prog.category}
                       </span>
                       <span
                         className={`px-2.5 py-1 text-xs font-semibold rounded-full ${
                           prog.status === "Active"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-amber-100 text-amber-700"
+                            ? "bg-[#D4E6F4] text-[#1F6BA0]"
+                            : "bg-[#D4E6F4] text-[#1F6BA0]"
                         }`}
                       >
                         {prog.status}
@@ -116,11 +116,11 @@ export default function ProgramsPage() {
                     <div className="mb-4">
                       <div className="flex justify-between text-xs text-gray-400 mb-1.5">
                         <span>Program Completion</span>
-                        <span className="font-semibold text-[#0f766e]">{prog.progress}%</span>
+                        <span className="font-semibold text-[#2D8FCE]">{prog.progress}%</span>
                       </div>
                       <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-[#0f766e] to-[#16a34a] rounded-full transition-all"
+                          className="h-full bg-gradient-to-r from-[#2D8FCE] to-[#2D8FCE] rounded-full transition-all"
                           style={{ width: `${prog.progress}%` }}
                         />
                       </div>
@@ -138,7 +138,7 @@ export default function ProgramsPage() {
 
                     <Link
                       href="/contact"
-                      className="flex items-center justify-center gap-2 py-2.5 bg-[#0f766e] hover:bg-[#0d9488] text-white text-sm font-semibold rounded-xl transition-colors"
+                      className="flex items-center justify-center gap-2 py-2.5 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-sm font-semibold rounded-xl transition-colors"
                     >
                       Learn More <ChevronRight size={14} />
                     </Link>
@@ -151,7 +151,7 @@ export default function ProgramsPage() {
       </section>
 
       {/* Apply CTA */}
-      <section className="py-16 bg-[#0f766e]">
+      <section className="py-16 bg-[#2D8FCE]">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to Join a Programme?</h2>
           <p className="text-white/80 mb-8">
@@ -160,7 +160,7 @@ export default function ProgramsPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
-              className="px-7 py-3 bg-[#f59e0b] text-white font-semibold rounded-xl hover:bg-amber-500 transition-colors"
+              className="px-7 py-3 bg-[#2D8FCE] text-white font-semibold rounded-xl hover:bg-[#1F6BA0] transition-colors"
             >
               Apply Now <ArrowRight className="inline ml-1" size={16} />
             </Link>

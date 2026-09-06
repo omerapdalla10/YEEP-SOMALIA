@@ -86,7 +86,7 @@ export default function GoogleSignInPrompt() {
           <X size={18} />
         </button>
 
-        <div className="w-12 h-12 mx-auto mb-4 rounded-2xl bg-[#0f766e] flex items-center justify-center">
+        <div className="w-12 h-12 mx-auto mb-4 rounded-2xl bg-[#2D8FCE] flex items-center justify-center">
           <span className="text-white font-black text-xl">Y</span>
         </div>
 

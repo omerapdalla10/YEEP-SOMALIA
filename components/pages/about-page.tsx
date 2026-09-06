@@ -51,7 +51,7 @@ export default function AboutPage() {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="relative py-24 bg-[#0f766e] overflow-hidden">
+      <section className="relative py-24 bg-[#2D8FCE] overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-white translate-x-1/3 -translate-y-1/3" />
           <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-white -translate-x-1/3 translate-y-1/3" />
@@ -75,7 +75,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             <div>
-              <span className="text-[#0f766e] text-sm font-semibold uppercase tracking-wider">
+              <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
                 Who We Are
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-5">
@@ -103,7 +103,7 @@ export default function AboutPage() {
                   { label: "Partners", value: "10+" },
                 ].map((s) => (
                   <div key={s.label} className="bg-[#f8fafc] rounded-xl p-4">
-                    <div className="text-2xl font-bold text-[#0f766e]">{s.value}</div>
+                    <div className="text-2xl font-bold text-[#2D8FCE]">{s.value}</div>
                     <div className="text-xs text-gray-400 mt-0.5">{s.label}</div>
                   </div>
                 ))}
@@ -125,7 +125,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-              <div className="w-12 h-12 rounded-xl bg-[#0f766e] flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-xl bg-[#2D8FCE] flex items-center justify-center mb-4">
                 <Eye size={22} className="text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Our Vision</h3>
@@ -134,7 +134,7 @@ export default function AboutPage() {
                 are not the leaders of tomorrow — we are the leaders of today."
               </p>
             </div>
-            <div className="bg-[#0f766e] rounded-2xl p-8 shadow-sm">
+            <div className="bg-[#2D8FCE] rounded-2xl p-8 shadow-sm">
               <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-4">
                 <Target size={22} className="text-white" />
               </div>
@@ -161,7 +161,7 @@ export default function AboutPage() {
                 "Strengthen partnerships across government and civil society",
               ].map((obj) => (
                 <div key={obj} className="flex items-start gap-3 bg-white rounded-xl p-4 shadow-sm">
-                  <CheckCircle size={18} className="text-[#16a34a] shrink-0 mt-0.5" />
+                  <CheckCircle size={18} className="text-[#2D8FCE] shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-600">{obj}</span>
                 </div>
               ))}
@@ -174,7 +174,7 @@ export default function AboutPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#0f766e] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
               What Drives Us
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">Core Values</h2>
@@ -183,12 +183,12 @@ export default function AboutPage() {
             {values.map((v) => (
               <div
                 key={v.title}
-                className="group text-center p-7 rounded-2xl hover:bg-[#0f766e] transition-all duration-300 border border-gray-100 hover:border-[#0f766e] hover:shadow-xl"
+                className="group text-center p-7 rounded-2xl hover:bg-[#2D8FCE] transition-all duration-300 border border-gray-100 hover:border-[#2D8FCE] hover:shadow-xl"
               >
-                <div className="w-14 h-14 rounded-2xl bg-teal-50 group-hover:bg-white/20 flex items-center justify-center mx-auto mb-4 transition-colors">
+                <div className="w-14 h-14 rounded-2xl bg-[#D4E6F4] group-hover:bg-white/20 flex items-center justify-center mx-auto mb-4 transition-colors">
                   <v.icon
                     size={24}
-                    className="text-[#0f766e] group-hover:text-white transition-colors"
+                    className="text-[#2D8FCE] group-hover:text-white transition-colors"
                   />
                 </div>
                 <h4 className="font-bold text-gray-900 group-hover:text-white mb-2 transition-colors">
@@ -207,7 +207,7 @@ export default function AboutPage() {
       <section className="py-20 bg-[#f8fafc]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#0f766e] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
               Our Journey
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">Timeline of Achievements</h2>
@@ -228,11 +228,11 @@ export default function AboutPage() {
                   >
                     <div className={`flex-1 ${i % 2 === 0 ? "text-right" : "text-left"}`}>
                       <div className="bg-white rounded-xl p-5 shadow-sm inline-block max-w-xs">
-                        <div className="text-[#0f766e] font-bold mb-1">{item.year}</div>
+                        <div className="text-[#2D8FCE] font-bold mb-1">{item.year}</div>
                         <p className="text-sm text-gray-600">{item.event}</p>
                       </div>
                     </div>
-                    <div className="relative z-10 w-4 h-4 rounded-full bg-[#0f766e] border-4 border-white shadow-md shrink-0" />
+                    <div className="relative z-10 w-4 h-4 rounded-full bg-[#2D8FCE] border-4 border-white shadow-md shrink-0" />
                     <div className="flex-1" />
                   </div>
                 ))}
@@ -246,7 +246,7 @@ export default function AboutPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#0f766e] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
               The People
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">Meet the Leadership Team</h2>
@@ -260,7 +260,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
               {team.data.map((member) => (
                 <div key={member._id} className="group text-center">
-                  <div className="relative w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden bg-gray-100 ring-2 ring-white ring-offset-2 group-hover:ring-[#0f766e] transition-all shadow-md">
+                  <div className="relative w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden bg-gray-100 ring-2 ring-white ring-offset-2 group-hover:ring-[#2D8FCE] transition-all shadow-md">
                     <img
                       src={img(member.image, "w=200&h=200&fit=crop&auto=format")}
                       alt={member.name}
@@ -277,7 +277,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-[#0f766e]">
+      <section className="py-16 bg-[#2D8FCE]">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Join Our Mission</h2>
           <p className="text-white/80 mb-8">
@@ -286,7 +286,7 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/volunteer"
-              className="px-7 py-3 bg-white text-[#0f766e] font-semibold rounded-xl hover:bg-gray-50 transition-colors shadow-lg"
+              className="px-7 py-3 bg-white text-[#2D8FCE] font-semibold rounded-xl hover:bg-gray-50 transition-colors shadow-lg"
             >
               Volunteer Now
             </Link>

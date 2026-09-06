@@ -25,7 +25,7 @@ export default function GalleryPage() {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-[#0f766e] to-[#115e59]">
+      <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
             Gallery
@@ -48,8 +48,8 @@ export default function GalleryPage() {
                 onClick={() => setActiveCategory(c)}
                 className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                   activeCategory === c
-                    ? "bg-[#0f766e] text-white shadow-md"
-                    : "bg-gray-100 text-gray-600 hover:bg-teal-50 hover:text-[#0f766e]"
+                    ? "bg-[#2D8FCE] text-white shadow-md"
+                    : "bg-gray-100 text-gray-600 hover:bg-[#D4E6F4] hover:text-[#1F6BA0]"
                 }`}
               >
                 {c}

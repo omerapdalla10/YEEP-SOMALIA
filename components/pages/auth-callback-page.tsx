@@ -57,7 +57,7 @@ export default function AuthCallbackPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#f8fafc] px-6 text-center">
-      <Loader2 size={28} className="animate-spin text-[#0f766e]" />
+      <Loader2 size={28} className="animate-spin text-[#2D8FCE]" />
       <p className="text-sm text-gray-500">{message}</p>
     </div>
   );

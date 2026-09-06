@@ -38,7 +38,7 @@ export default function ContactPage() {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-[#0f766e] to-[#115e59]">
+      <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
             Contact
@@ -69,8 +69,8 @@ export default function ContactPage() {
                   key={item.title}
                   className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex gap-4"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center shrink-0">
-                    <item.icon size={18} className="text-[#0f766e]" />
+                  <div className="w-10 h-10 rounded-xl bg-[#D4E6F4] flex items-center justify-center shrink-0">
+                    <item.icon size={18} className="text-[#2D8FCE]" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 text-sm mb-1">{item.title}</h4>
@@ -107,7 +107,7 @@ export default function ContactPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={label}
-                      className="w-9 h-9 rounded-xl bg-gray-50 hover:bg-[#0f766e] flex items-center justify-center transition-colors group"
+                      className="w-9 h-9 rounded-xl bg-gray-50 hover:bg-[#2D8FCE] flex items-center justify-center transition-colors group"
                     >
                       <Icon
                         size={16}
@@ -123,8 +123,8 @@ export default function ContactPage() {
             <div className="lg:col-span-2">
               {sent ? (
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-12 text-center">
-                  <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle size={36} className="text-[#16a34a]" />
+                  <div className="w-20 h-20 rounded-full bg-[#D4E6F4] flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle size={36} className="text-[#2D8FCE]" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">Message Sent!</h3>
                   <p className="text-gray-500">
@@ -147,7 +147,7 @@ export default function ContactPage() {
                         required
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0f766e]"
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE]"
                         placeholder="Your name"
                       />
                     </div>
@@ -161,7 +161,7 @@ export default function ContactPage() {
                         required
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0f766e]"
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE]"
                         placeholder="you@email.com"
                       />
                     </div>
@@ -174,7 +174,7 @@ export default function ContactPage() {
                       required
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0f766e] bg-white"
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] bg-white"
                     >
                       <option value="">Select a subject</option>
                       <option>General Inquiry</option>
@@ -193,7 +193,7 @@ export default function ContactPage() {
                       rows={5}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0f766e] resize-none"
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] resize-none"
                       placeholder="Tell us how we can help..."
                     />
                   </div>
@@ -201,7 +201,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={sending}
-                    className="w-full py-3 bg-[#0f766e] hover:bg-[#0d9488] text-white font-semibold rounded-xl transition-colors shadow-md hover:shadow-lg disabled:opacity-70 flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-colors shadow-md hover:shadow-lg disabled:opacity-70 flex items-center justify-center gap-2"
                   >
                     {sending && <Loader2 size={16} className="animate-spin" />}
                     Send Message
@@ -211,15 +211,15 @@ export default function ContactPage() {
 
               {/* Map placeholder */}
               <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden h-64 relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-teal-50 to-green-50 flex flex-col items-center justify-center">
-                  <MapPin size={36} className="text-[#0f766e] mb-2" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#D4E6F4] to-[#D4E6F4] flex flex-col items-center justify-center">
+                  <MapPin size={36} className="text-[#2D8FCE] mb-2" />
                   <p className="font-semibold text-gray-700">Mogadishu, Somalia</p>
                   <p className="text-sm text-gray-400">YEEP Somalia</p>
                   <a
                     href="https://www.google.com/maps/search/Mogadishu,+Somalia"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-3 px-4 py-2 bg-[#0f766e] text-white text-xs font-semibold rounded-xl hover:bg-[#0d9488] transition-colors"
+                    className="mt-3 px-4 py-2 bg-[#2D8FCE] text-white text-xs font-semibold rounded-xl hover:bg-[#1F6BA0] transition-colors"
                   >
                     Open in Google Maps
                   </a>

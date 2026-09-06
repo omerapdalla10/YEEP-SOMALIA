@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/components/auth-context";
@@ -55,11 +56,17 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl bg-[#0f766e] flex items-center justify-center shadow-md group-hover:bg-[#0d9488] transition-colors">
-              <span className="text-white font-bold text-lg">Y</span>
-            </div>
+            <Image
+              src="/logo.svg"
+              alt="YEEP Somalia"
+              width={40}
+              height={40}
+              priority
+              unoptimized
+              className="w-10 h-10 object-contain"
+            />
             <div>
-              <div className="font-bold text-xl text-[#0f766e] leading-none">YEEP Somalia</div>
+              <div className="font-bold text-xl text-[#2D8FCE] leading-none">YEEP SOMALIA</div>
               <div className="text-[10px] text-gray-500 leading-none tracking-wide">
                 Engage · Empower · Transform
               </div>
@@ -76,7 +83,7 @@ export default function Navbar() {
                   onMouseEnter={() => setDropdown(link.label)}
                   onMouseLeave={() => setDropdown(null)}
                 >
-                  <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#0f766e] transition-colors rounded-lg hover:bg-teal-50">
+                  <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#1F6BA0] transition-colors rounded-lg hover:bg-[#D4E6F4]">
                     {link.label}
                     <ChevronDown
                       size={14}
@@ -89,7 +96,7 @@ export default function Navbar() {
                         <Link
                           key={child.href}
                           href={child.href}
-                          className="block px-4 py-2.5 text-sm text-gray-700 hover:text-[#0f766e] hover:bg-teal-50 transition-colors"
+                          className="block px-4 py-2.5 text-sm text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4] transition-colors"
                         >
                           {child.label}
                         </Link>
@@ -103,8 +110,8 @@ export default function Navbar() {
                   href={link.href!}
                   className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                     pathname === link.href
-                      ? "text-[#0f766e] bg-teal-50"
-                      : "text-gray-700 hover:text-[#0f766e] hover:bg-teal-50"
+                      ? "text-[#1F6BA0] bg-[#D4E6F4]"
+                      : "text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4]"
                   }`}
                 >
                   {link.label}
@@ -118,7 +125,7 @@ export default function Navbar() {
             {user ? (
               <Link
                 href={dashboardHref}
-                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-[#0f766e] hover:bg-[#0d9488] rounded-xl transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-[#2D8FCE] hover:bg-[#1F6BA0] rounded-xl transition-colors"
               >
                 <LayoutDashboard size={15} />
                 Dashboard
@@ -126,7 +133,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/login"
-                className="text-sm font-medium text-gray-600 hover:text-[#0f766e] transition-colors"
+                className="text-sm font-medium text-gray-600 hover:text-[#2D8FCE] transition-colors"
               >
                 Sign In
               </Link>
@@ -135,7 +142,7 @@ export default function Navbar() {
 
           {/* Mobile toggle */}
           <button
-            className="lg:hidden p-2 rounded-lg text-gray-600 hover:text-[#0f766e] hover:bg-teal-50 transition-colors"
+            className="lg:hidden p-2 rounded-lg text-gray-600 hover:text-[#1F6BA0] hover:bg-[#D4E6F4] transition-colors"
             onClick={() => setOpen(!open)}
           >
             {open ? <X size={22} /> : <Menu size={22} />}
@@ -156,7 +163,7 @@ export default function Navbar() {
                   <Link
                     key={child.href}
                     href={child.href}
-                    className="block px-3 py-2 text-sm text-gray-700 hover:text-[#0f766e] hover:bg-teal-50 rounded-lg transition-colors ml-2"
+                    className="block px-3 py-2 text-sm text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4] rounded-lg transition-colors ml-2"
                   >
                     {child.label}
                   </Link>
@@ -168,8 +175,8 @@ export default function Navbar() {
                 href={link.href!}
                 className={`block px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
                   pathname === link.href
-                    ? "text-[#0f766e] bg-teal-50"
-                    : "text-gray-700 hover:text-[#0f766e] hover:bg-teal-50"
+                    ? "text-[#1F6BA0] bg-[#D4E6F4]"
+                    : "text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4]"
                 }`}
               >
                 {link.label}
@@ -180,14 +187,14 @@ export default function Navbar() {
             {user ? (
               <Link
                 href={dashboardHref}
-                className="block text-center py-2 text-sm font-semibold text-white bg-[#0f766e] rounded-xl hover:bg-[#0d9488] transition-colors"
+                className="block text-center py-2 text-sm font-semibold text-white bg-[#2D8FCE] rounded-xl hover:bg-[#1F6BA0] transition-colors"
               >
                 Go to Dashboard
               </Link>
             ) : (
               <Link
                 href="/login"
-                className="block text-center py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-xl hover:border-[#0f766e] hover:text-[#0f766e] transition-colors"
+                className="block text-center py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-xl hover:border-[#2D8FCE] hover:text-[#2D8FCE] transition-colors"
               >
                 Sign In
               </Link>

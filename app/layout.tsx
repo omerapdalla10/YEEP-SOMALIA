@@ -1,0 +1,34 @@
+import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
+import "@/styles/globals.css";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-poppins-src",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.APP_URL ?? "http://localhost:3000"),
+  title: {
+    default: "YEEP Somalia — Youth Engagement and Empowerment Programme",
+    template: "%s | YEEP Somalia",
+  },
+  description:
+    "YEEP Somalia is a youth-led NGO in Mogadishu advancing Youth, Peace and Security (YPS), youth leadership, civic engagement, and community resilience across Somalia.",
+  openGraph: {
+    title: "YEEP Somalia",
+    description:
+      "A youth-led NGO advancing Youth, Peace and Security, leadership, and community resilience across Somalia.",
+    type: "website",
+  },
+};
+
+export default function RootLayout({ children }: LayoutProps<"/">) {
+  return (
+    <html lang="en" className={poppins.variable}>
+      <body className="min-h-screen bg-white text-[#1f2937]">{children}</body>
+    </html>
+  );
+}

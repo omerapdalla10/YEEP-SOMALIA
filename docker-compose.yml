@@ -1,0 +1,32 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: yeep-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - yeep_mongo_data:/data/db
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yeep-app
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      APP_URL: ${APP_URL:-http://localhost:3000}
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/yeep_ngo}
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in your .env}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_CALLBACK_URL: ${GOOGLE_CALLBACK_URL:-http://localhost:3000/api/auth/google/callback}
+
+volumes:
+  yeep_mongo_data:

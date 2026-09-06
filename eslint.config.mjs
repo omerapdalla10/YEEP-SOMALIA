@@ -7,6 +7,15 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   prettier,
+  {
+    rules: {
+      // Content images are remote (Unsplash) or inline data URLs with dynamic
+      // refs; plain <img> is intentional here — next/image adds no real benefit.
+      "@next/next/no-img-element": "off",
+      // Marketing copy contains apostrophes and ampersands in prose.
+      "react/no-unescaped-entities": "off",
+    },
+  },
   globalIgnores([
     ".next/**",
     "out/**",

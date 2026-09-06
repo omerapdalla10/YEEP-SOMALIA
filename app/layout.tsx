@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "@/styles/globals.css";
+import { AuthProvider } from "@/components/auth-context";
+import GoogleSignInPrompt from "@/components/google-sign-in-prompt";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,7 +30,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={poppins.variable}>
-      <body className="min-h-screen bg-white text-[#1f2937]">{children}</body>
+      {/* suppressHydrationWarning: browser extensions (ColorZilla, Grammarly, …)
+          inject attributes on <body> before hydration; this silences the diff
+          on this element only, not its children. */}
+      <body className="min-h-screen bg-white text-[#1f2937]" suppressHydrationWarning>
+        <AuthProvider>
+          <GoogleSignInPrompt />
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }

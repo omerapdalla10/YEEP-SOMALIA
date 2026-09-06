@@ -28,9 +28,7 @@ export async function dbConnect(): Promise<typeof mongoose> {
   if (cache.conn) return cache.conn;
 
   if (!MONGODB_URI) {
-    throw new Error(
-      "MONGODB_URI is not set. Copy .env.example to .env.local and set it.",
-    );
+    throw new Error("MONGODB_URI is not set. Copy .env.example to .env.local and set it.");
   }
 
   if (!cache.promise) {

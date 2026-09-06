@@ -41,25 +41,25 @@ export default function HomePage() {
       value: stats ? formatCountPlus(stats.youthEmpowered) : "—",
       label: "Youth Empowered",
       icon: Users,
-      color: "bg-teal-50 text-[#0f766e]",
+      color: "bg-[#D4E6F4] text-[#1F6BA0]",
     },
     {
       value: stats ? String(stats.activePrograms) : "—",
       label: "Active Programs",
       icon: BookOpen,
-      color: "bg-green-50 text-[#16a34a]",
+      color: "bg-[#D4E6F4] text-[#1F6BA0]",
     },
     {
       value: stats ? String(stats.communitiesReached) : "—",
       label: "Communities Reached",
       icon: Globe,
-      color: "bg-amber-50 text-[#f59e0b]",
+      color: "bg-[#D4E6F4] text-[#1F6BA0]",
     },
     {
       value: stats ? formatMoneyCompact(stats.fundsRaised) : "—",
       label: "Funds Raised",
       icon: TrendingUp,
-      color: "bg-teal-50 text-[#0f766e]",
+      color: "bg-[#D4E6F4] text-[#1F6BA0]",
     },
   ];
 
@@ -84,8 +84,8 @@ export default function HomePage() {
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600&h=900&fit=crop&auto=format"
-            alt="Youth in community program"
+            src="/hero.jpg"
+            alt="YEEP SOMALIA youth gathering"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0d1f1e]/90 via-[#0d1f1e]/70 to-transparent" />
@@ -93,13 +93,13 @@ export default function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#f59e0b]/20 text-[#f59e0b] text-xs font-semibold rounded-full mb-6 border border-[#f59e0b]/30">
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#2D8FCE]/20 text-[#2D8FCE] text-xs font-semibold rounded-full mb-6 border border-[#2D8FCE]/30">
               <Star size={12} />
               Youth, Peace &amp; Security — led by young Somalis
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
               Engage. Empower.
-              <span className="block text-[#34d399]">Transform.</span>
+              <span className="block text-[#D4E6F4]">Transform.</span>
             </h1>
             <p className="text-lg text-gray-200 leading-relaxed mb-8 max-w-xl">
               YEEP Somalia is a youth-led NGO advancing Youth, Peace and Security (YPS), youth
@@ -108,7 +108,7 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/volunteer"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#f59e0b] hover:bg-amber-500 text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
               >
                 <Heart size={18} />
                 Get Involved
@@ -147,7 +147,7 @@ export default function HomePage() {
                 >
                   <stat.icon size={22} />
                 </div>
-                <div className="text-3xl font-bold text-[#0f766e] mb-1">{stat.value}</div>
+                <div className="text-3xl font-bold text-[#2D8FCE] mb-1">{stat.value}</div>
                 <div className="text-sm text-gray-500 font-medium">{stat.label}</div>
               </div>
             ))}
@@ -156,13 +156,13 @@ export default function HomePage() {
       </section>
 
       {/* Mission Strip */}
-      <section className="py-16 bg-[#0f766e]">
+      <section className="py-16 bg-[#2D8FCE]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-xl lg:text-2xl text-white/90 font-medium leading-relaxed max-w-3xl mx-auto">
             "YEEP Somalia is a national initiative designed to strengthen youth leadership in
             peacebuilding and prevent violent extremism."
           </p>
-          <div className="mt-4 text-[#34d399] text-sm font-semibold">— YEEP Somalia</div>
+          <div className="mt-4 text-[#D4E6F4] text-sm font-semibold">— YEEP Somalia</div>
         </div>
       </section>
 
@@ -171,7 +171,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
             <div>
-              <span className="text-[#0f766e] text-sm font-semibold uppercase tracking-wider">
+              <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
                 What We Do
               </span>
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
@@ -180,7 +180,7 @@ export default function HomePage() {
             </div>
             <Link
               href="/programs"
-              className="flex items-center gap-1.5 text-[#0f766e] font-semibold text-sm hover:gap-2.5 transition-all mt-4 sm:mt-0"
+              className="flex items-center gap-1.5 text-[#2D8FCE] font-semibold text-sm hover:gap-2.5 transition-all mt-4 sm:mt-0"
             >
               View All Programs <ArrowRight size={16} />
             </Link>
@@ -198,7 +198,7 @@ export default function HomePage() {
                     alt={prog.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <span className="absolute top-3 left-3 px-2.5 py-1 bg-[#0f766e] text-white text-xs font-semibold rounded-full">
+                  <span className="absolute top-3 left-3 px-2.5 py-1 bg-[#2D8FCE] text-white text-xs font-semibold rounded-full">
                     {prog.category}
                   </span>
                 </div>
@@ -214,7 +214,7 @@ export default function HomePage() {
                     </span>
                     <Link
                       href="/programs"
-                      className="text-sm font-semibold text-[#0f766e] hover:text-[#0d9488] flex items-center gap-1 transition-colors"
+                      className="text-sm font-semibold text-[#2D8FCE] hover:text-[#1F6BA0] flex items-center gap-1 transition-colors"
                     >
                       Learn More <ChevronRight size={14} />
                     </Link>
@@ -231,7 +231,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             <div>
-              <span className="text-[#0f766e] text-sm font-semibold uppercase tracking-wider">
+              <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
                 Our Impact
               </span>
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2 mb-5">
@@ -252,14 +252,14 @@ export default function HomePage() {
                   "10+ partner organisations across government and civil society",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <CheckCircle size={18} className="text-[#16a34a] shrink-0 mt-0.5" />
+                    <CheckCircle size={18} className="text-[#2D8FCE] shrink-0 mt-0.5" />
                     <span className="text-sm text-gray-600">{item}</span>
                   </li>
                 ))}
               </ul>
               <Link
                 href="/about"
-                className="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-[#0f766e] hover:bg-[#0d9488] text-white font-semibold rounded-xl transition-all shadow-md hover:shadow-lg"
+                className="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-all shadow-md hover:shadow-lg"
               >
                 Learn About Us <ArrowRight size={16} />
               </Link>
@@ -274,7 +274,7 @@ export default function HomePage() {
               </div>
               {/* Floating stat card */}
               <div className="absolute -bottom-5 -left-5 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#0f766e] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-[#2D8FCE] flex items-center justify-center">
                   <TrendingUp size={18} className="text-white" />
                 </div>
                 <div>
@@ -292,14 +292,14 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
             <div>
-              <span className="text-[#0f766e] text-sm font-semibold uppercase tracking-wider">
+              <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
                 Calendar
               </span>
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">Upcoming Events</h2>
             </div>
             <Link
               href="/events"
-              className="flex items-center gap-1.5 text-[#0f766e] font-semibold text-sm hover:gap-2.5 transition-all mt-4 sm:mt-0"
+              className="flex items-center gap-1.5 text-[#2D8FCE] font-semibold text-sm hover:gap-2.5 transition-all mt-4 sm:mt-0"
             >
               All Events <ArrowRight size={16} />
             </Link>
@@ -311,23 +311,23 @@ export default function HomePage() {
                 key={ev._id}
                 className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
               >
-                <span className="text-xs font-semibold text-[#f59e0b] bg-amber-50 px-2.5 py-1 rounded-full">
+                <span className="text-xs font-semibold text-[#1F6BA0] bg-[#D4E6F4] px-2.5 py-1 rounded-full">
                   {ev.type}
                 </span>
                 <h3 className="font-bold text-gray-900 mt-3 mb-2">{ev.title}</h3>
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <Calendar size={13} className="text-[#0f766e]" />
+                    <Calendar size={13} className="text-[#2D8FCE]" />
                     {ev.dateLabel}
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <MapPin size={13} className="text-[#0f766e]" />
+                    <MapPin size={13} className="text-[#2D8FCE]" />
                     {ev.location}
                   </div>
                 </div>
                 <Link
                   href="/events"
-                  className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 border border-[#0f766e] text-[#0f766e] text-sm font-semibold rounded-xl hover:bg-teal-50 transition-colors"
+                  className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 border border-[#2D8FCE] text-[#2D8FCE] text-sm font-semibold rounded-xl hover:bg-[#D4E6F4] transition-colors"
                 >
                   Register Now
                 </Link>
@@ -341,7 +341,7 @@ export default function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#0f766e] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
               Testimonials
             </span>
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">Success Stories</h2>
@@ -352,7 +352,7 @@ export default function HomePage() {
                 key={story._id}
                 className="bg-[#f8fafc] rounded-2xl p-6 hover:shadow-md transition-shadow"
               >
-                <Quote size={28} className="text-[#0f766e]/20 mb-3" />
+                <Quote size={28} className="text-[#2D8FCE]/20 mb-3" />
                 <p className="text-sm text-gray-600 leading-relaxed mb-5 italic">"{story.text}"</p>
                 <div className="flex items-center gap-3">
                   <img
@@ -366,7 +366,7 @@ export default function HomePage() {
                   </div>
                   <div className="ml-auto flex gap-0.5">
                     {Array.from({ length: story.rating }).map((_, i) => (
-                      <Star key={i} size={12} className="fill-[#f59e0b] text-[#f59e0b]" />
+                      <Star key={i} size={12} className="fill-[#2D8FCE] text-[#2D8FCE]" />
                     ))}
                   </div>
                 </div>
@@ -386,7 +386,7 @@ export default function HomePage() {
             {partners.map((p) => (
               <div
                 key={p._id}
-                className="px-6 py-3 bg-white rounded-xl shadow-sm text-gray-400 font-bold text-sm hover:text-[#0f766e] hover:shadow-md transition-all"
+                className="px-6 py-3 bg-white rounded-xl shadow-sm text-gray-400 font-bold text-sm hover:text-[#2D8FCE] hover:shadow-md transition-all"
               >
                 {p.name}
               </div>
@@ -396,7 +396,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA / Newsletter */}
-      <section className="py-20 bg-gradient-to-br from-[#0f766e] to-[#0d9488]">
+      <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
             Stay Connected with YEEP Somalia
@@ -427,7 +427,7 @@ export default function HomePage() {
               <button
                 type="submit"
                 disabled={subscribing}
-                className="px-6 py-3 bg-[#f59e0b] hover:bg-amber-500 text-white font-semibold rounded-xl transition-colors whitespace-nowrap disabled:opacity-70 flex items-center justify-center gap-2"
+                className="px-6 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-colors whitespace-nowrap disabled:opacity-70 flex items-center justify-center gap-2"
               >
                 {subscribing && <Loader2 size={15} className="animate-spin" />}
                 Subscribe
@@ -439,7 +439,7 @@ export default function HomePage() {
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/volunteer"
-              className="px-7 py-3 bg-[#f59e0b] hover:bg-amber-500 text-white font-semibold rounded-xl transition-all shadow-lg"
+              className="px-7 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-all shadow-lg"
             >
               Volunteer Today
             </Link>

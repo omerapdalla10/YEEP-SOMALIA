@@ -11,7 +11,9 @@ import { Volunteer } from "@/models/Volunteer";
 import { ContactMessage } from "@/models/ContactMessage";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const PIE_COLORS = ["#0f766e", "#16a34a", "#f59e0b", "#3b82f6", "#8b5cf6", "#ec4899", "#14b8a6"];
+// Categorical chart palette — brand blues stepped light→dark, then neutral
+// grays, so slices stay distinguishable without leaving the two-color brand.
+const PIE_COLORS = ["#2D8FCE", "#1F6BA0", "#7FB8DC", "#D4E6F4", "#0F3A57", "#9CA3AF", "#4B5563"];
 
 function relativeTime(date: Date): string {
   const diff = Date.now() - date.getTime();

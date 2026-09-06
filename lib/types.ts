@@ -203,4 +203,25 @@ export interface MyDashboardData {
   applications: VolunteerApplication[];
   counts: { total: number; approved: number; pending: number; programsJoined: number };
   upcomingEvents: EventItem[];
+  /** Event ids the member has an active RSVP for. */
+  registeredEventIds: string[];
+}
+
+export interface EventRegistration {
+  _id: string;
+  event: EventItem;
+  status: "Registered" | "Cancelled";
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EventRegistrant {
+  _id: string;
+  registeredAt: string;
+  user: { _id: string; name: string; email: string; phone?: string; avatar?: string };
+}
+
+export interface EventRegistrationList {
+  event: { _id: string; title: string; dateLabel: string; capacity: number; registered: number };
+  registrations: EventRegistrant[];
 }

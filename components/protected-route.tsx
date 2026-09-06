@@ -37,7 +37,7 @@ export default function ProtectedRoute({
   if (loading || denied) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#f8fafc]">
-        <Loader2 size={28} className="animate-spin text-[#0f766e]" />
+        <Loader2 size={28} className="animate-spin text-[#2D8FCE]" />
       </div>
     );
   }

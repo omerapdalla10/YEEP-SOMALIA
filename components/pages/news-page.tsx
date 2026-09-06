@@ -35,14 +35,14 @@ export default function NewsPage() {
     Events: "bg-blue-100 text-blue-700",
     Partnerships: "bg-purple-100 text-purple-700",
     Stories: "bg-pink-100 text-pink-700",
-    Impact: "bg-green-100 text-green-700",
-    Education: "bg-teal-100 text-teal-700",
+    Impact: "bg-[#D4E6F4] text-[#1F6BA0]",
+    Education: "bg-[#D4E6F4] text-[#1F6BA0]",
   };
 
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-[#0f766e] to-[#115e59]">
+      <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
             News & Blog
@@ -66,8 +66,8 @@ export default function NewsPage() {
                   onClick={() => setActiveCategory(c)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     activeCategory === c
-                      ? "bg-[#0f766e] text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-teal-50 hover:text-[#0f766e]"
+                      ? "bg-[#2D8FCE] text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-[#D4E6F4] hover:text-[#1F6BA0]"
                   }`}
                 >
                   {c}
@@ -84,7 +84,7 @@ export default function NewsPage() {
                 placeholder="Search articles..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-[#0f766e] w-56"
+                className="pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-[#2D8FCE] w-56"
               />
             </div>
           </div>
@@ -110,7 +110,7 @@ export default function NewsPage() {
                     alt={featured.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <span className="absolute top-4 left-4 px-3 py-1 bg-[#f59e0b] text-white text-xs font-bold rounded-full">
+                  <span className="absolute top-4 left-4 px-3 py-1 bg-[#2D8FCE] text-white text-xs font-bold rounded-full">
                     Featured
                   </span>
                 </div>
@@ -133,7 +133,7 @@ export default function NewsPage() {
                       <Tag size={11} /> {featured.readTime} read
                     </span>
                   </div>
-                  <button className="self-start flex items-center gap-2 px-5 py-2.5 bg-[#0f766e] text-white text-sm font-semibold rounded-xl hover:bg-[#0d9488] transition-colors">
+                  <button className="self-start flex items-center gap-2 px-5 py-2.5 bg-[#2D8FCE] text-white text-sm font-semibold rounded-xl hover:bg-[#1F6BA0] transition-colors">
                     Read Article <ArrowRight size={14} />
                   </button>
                 </div>
@@ -172,7 +172,7 @@ export default function NewsPage() {
                         <Tag size={10} /> {article.readTime}
                       </span>
                     </div>
-                    <button className="flex items-center gap-1.5 text-sm font-semibold text-[#0f766e] hover:text-[#0d9488] transition-colors">
+                    <button className="flex items-center gap-1.5 text-sm font-semibold text-[#2D8FCE] hover:text-[#1F6BA0] transition-colors">
                       Read More <ArrowRight size={13} />
                     </button>
                   </div>
@@ -187,8 +187,8 @@ export default function NewsPage() {
                   key={i}
                   className={`w-9 h-9 rounded-xl text-sm font-medium transition-colors ${
                     p === 1
-                      ? "bg-[#0f766e] text-white"
-                      : "bg-white text-gray-500 hover:bg-teal-50 hover:text-[#0f766e] border border-gray-200"
+                      ? "bg-[#2D8FCE] text-white"
+                      : "bg-white text-gray-500 hover:bg-[#D4E6F4] hover:text-[#1F6BA0] border border-gray-200"
                   }`}
                 >
                   {p}

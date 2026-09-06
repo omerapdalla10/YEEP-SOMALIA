@@ -3,17 +3,21 @@
 @theme {
   --font-poppins: var(--font-poppins-src), "Poppins", ui-sans-serif, system-ui, sans-serif;
 
-  --color-teal-50: #f0fdfa;
-  --color-teal-100: #ccfbf1;
-  --color-teal-500: #14b8a6;
-  --color-teal-600: #0d9488;
-  --color-teal-700: #0f766e;
-  --color-teal-800: #115e59;
-  --color-teal-900: #134e4a;
+  /* Brand palette — two colors from the YEEP Somalia logo, plus one
+     derived darker blue for hover / pressed / text-on-tint contrast. */
+  --color-teal-50: #d4e6f4;
+  --color-teal-100: #d4e6f4;
+  --color-teal-500: #2d8fce;
+  --color-teal-600: #1f6ba0;
+  --color-teal-700: #2d8fce;
+  --color-teal-800: #1f6ba0;
+  --color-teal-900: #1f6ba0;
 
-  --color-brand-primary: #0f766e;
-  --color-brand-secondary: #16a34a;
-  --color-brand-accent: #f59e0b;
+  --color-brand-primary: #2d8fce;
+  --color-brand-primary-dark: #1f6ba0;
+  --color-brand-secondary: #2d8fce;
+  --color-brand-accent: #2d8fce;
+  --color-brand-tint: #d4e6f4;
   --color-brand-bg: #f8fafc;
   --color-brand-text: #1f2937;
 }
@@ -41,7 +45,7 @@ body {
   background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #0f766e;
+  background: #2d8fce;
   border-radius: 3px;
 }
 

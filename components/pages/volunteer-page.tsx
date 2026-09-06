@@ -85,7 +85,7 @@ export default function VolunteerPage() {
             alt="Volunteers"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-[#0f766e]/85" />
+          <div className="absolute inset-0 bg-[#2D8FCE]/85" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
@@ -115,7 +115,7 @@ export default function VolunteerPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#0f766e] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
               Why Volunteer
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">What You Gain by Giving</h2>
@@ -124,12 +124,12 @@ export default function VolunteerPage() {
             {benefits.map((b) => (
               <div
                 key={b.title}
-                className="group text-center p-7 rounded-2xl border border-gray-100 hover:border-[#0f766e] hover:bg-teal-50 transition-all"
+                className="group text-center p-7 rounded-2xl border border-gray-100 hover:border-[#2D8FCE] hover:bg-[#D4E6F4] transition-all"
               >
-                <div className="w-14 h-14 rounded-2xl bg-teal-50 group-hover:bg-[#0f766e] flex items-center justify-center mx-auto mb-4 transition-colors">
+                <div className="w-14 h-14 rounded-2xl bg-[#D4E6F4] group-hover:bg-[#2D8FCE] flex items-center justify-center mx-auto mb-4 transition-colors">
                   <b.icon
                     size={24}
-                    className="text-[#0f766e] group-hover:text-white transition-colors"
+                    className="text-[#2D8FCE] group-hover:text-white transition-colors"
                   />
                 </div>
                 <h4 className="font-bold text-gray-900 mb-2">{b.title}</h4>
@@ -144,7 +144,7 @@ export default function VolunteerPage() {
       <section className="py-20 bg-[#f8fafc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#0f766e] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
               Opportunities
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">Current Volunteer Roles</h2>
@@ -162,19 +162,19 @@ export default function VolunteerPage() {
                   key={opp._id}
                   className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center mb-3">
-                    <Users size={18} className="text-[#0f766e]" />
+                  <div className="w-10 h-10 rounded-xl bg-[#D4E6F4] flex items-center justify-center mb-3">
+                    <Users size={18} className="text-[#2D8FCE]" />
                   </div>
                   <h3 className="font-bold text-gray-900 mb-3">{opp.role}</h3>
                   <div className="space-y-1.5 text-sm text-gray-500 mb-4">
                     <div className="flex items-center gap-2">
-                      <Clock size={13} className="text-[#0f766e]" /> {opp.commitment}
+                      <Clock size={13} className="text-[#2D8FCE]" /> {opp.commitment}
                     </div>
                     <div className="flex items-center gap-2">
-                      <Globe size={13} className="text-[#0f766e]" /> {opp.location}
+                      <Globe size={13} className="text-[#2D8FCE]" /> {opp.location}
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle size={13} className="text-[#0f766e]" /> {opp.skills}
+                      <CheckCircle size={13} className="text-[#2D8FCE]" /> {opp.skills}
                     </div>
                   </div>
                   <button
@@ -184,7 +184,7 @@ export default function VolunteerPage() {
                         .getElementById("volunteer-form")
                         ?.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="w-full py-2 text-sm font-semibold border border-[#0f766e] text-[#0f766e] rounded-xl hover:bg-teal-50 transition-colors"
+                    className="w-full py-2 text-sm font-semibold border border-[#2D8FCE] text-[#2D8FCE] rounded-xl hover:bg-[#D4E6F4] transition-colors"
                   >
                     Apply for this Role
                   </button>
@@ -199,7 +199,7 @@ export default function VolunteerPage() {
       <section id="volunteer-form" className="py-20 bg-white">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <span className="text-[#0f766e] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
               Apply
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">Volunteer Application</h2>
@@ -207,8 +207,8 @@ export default function VolunteerPage() {
 
           {submitted ? (
             <div className="text-center py-16">
-              <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-                <CheckCircle size={36} className="text-[#16a34a]" />
+              <div className="w-20 h-20 rounded-full bg-[#D4E6F4] flex items-center justify-center mx-auto mb-4">
+                <CheckCircle size={36} className="text-[#2D8FCE]" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Application Received!</h3>
               <p className="text-gray-500">
@@ -231,7 +231,7 @@ export default function VolunteerPage() {
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0f766e] transition-colors"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors"
                     placeholder="Your full name"
                   />
                 </div>
@@ -245,7 +245,7 @@ export default function VolunteerPage() {
                     required
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0f766e] transition-colors"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors"
                     placeholder="you@email.com"
                   />
                 </div>
@@ -260,7 +260,7 @@ export default function VolunteerPage() {
                     suppressHydrationWarning
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0f766e] transition-colors"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors"
                     placeholder="+252 61 000 0000"
                   />
                 </div>
@@ -272,7 +272,7 @@ export default function VolunteerPage() {
                     required
                     value={form.role}
                     onChange={(e) => setForm({ ...form, role: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0f766e] transition-colors bg-white"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors bg-white"
                   >
                     <option value="">Select a role</option>
                     {opportunities.map((o) => (
@@ -291,7 +291,7 @@ export default function VolunteerPage() {
                   required
                   value={form.availability}
                   onChange={(e) => setForm({ ...form, availability: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0f766e] transition-colors bg-white"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors bg-white"
                 >
                   <option value="">Select availability</option>
                   <option>Weekdays</option>
@@ -309,7 +309,7 @@ export default function VolunteerPage() {
                   rows={4}
                   value={form.motivation}
                   onChange={(e) => setForm({ ...form, motivation: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0f766e] transition-colors resize-none"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors resize-none"
                   placeholder="Tell us what motivates you..."
                 />
               </div>
@@ -317,7 +317,7 @@ export default function VolunteerPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3 bg-[#0f766e] hover:bg-[#0d9488] text-white font-semibold rounded-xl transition-colors shadow-md hover:shadow-lg disabled:opacity-70 flex items-center justify-center gap-2"
+                className="w-full py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-colors shadow-md hover:shadow-lg disabled:opacity-70 flex items-center justify-center gap-2"
               >
                 {submitting && <Loader2 size={16} className="animate-spin" />}
                 Submit Application
@@ -337,7 +337,7 @@ export default function VolunteerPage() {
                 key={s._id}
                 className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
               >
-                <Quote size={28} className="text-[#0f766e]/20 mb-3" />
+                <Quote size={28} className="text-[#2D8FCE]/20 mb-3" />
                 <p className="text-sm text-gray-600 leading-relaxed italic mb-5">"{s.text}"</p>
                 <div className="flex items-center gap-3">
                   <img
@@ -351,7 +351,7 @@ export default function VolunteerPage() {
                   </div>
                   <div className="ml-auto flex">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} size={12} className="fill-[#f59e0b] text-[#f59e0b]" />
+                      <Star key={i} size={12} className="fill-[#2D8FCE] text-[#2D8FCE]" />
                     ))}
                   </div>
                 </div>

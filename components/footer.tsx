@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import NextImage from "next/image";
 import {
   Share2,
   Image,
@@ -42,9 +43,14 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-[#0f766e] flex items-center justify-center">
-                <span className="text-white font-bold text-lg">Y</span>
-              </div>
+              <NextImage
+                src="/logo.svg"
+                alt="YEEP Somalia"
+                width={40}
+                height={40}
+                unoptimized
+                className="w-10 h-10 object-contain rounded-xl bg-white p-1"
+              />
               <div>
                 <div className="font-bold text-xl text-white">YEEP Somalia</div>
                 <div className="text-[10px] text-gray-400 tracking-wide">
@@ -86,7 +92,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-8 h-8 rounded-lg bg-white/5 hover:bg-[#0f766e] flex items-center justify-center transition-colors group"
+                  className="w-8 h-8 rounded-lg bg-white/5 hover:bg-[#2D8FCE] flex items-center justify-center transition-colors group"
                 >
                   <Icon
                     size={15}
@@ -112,7 +118,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-400 hover:text-[#34d399] transition-colors"
+                    className="text-sm text-gray-400 hover:text-[#D4E6F4] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -133,7 +139,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-400 hover:text-[#34d399] transition-colors"
+                    className="text-sm text-gray-400 hover:text-[#D4E6F4] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -147,25 +153,25 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <MapPin size={15} className="text-[#0f766e] mt-0.5 shrink-0" />
+                <MapPin size={15} className="text-[#2D8FCE] mt-0.5 shrink-0" />
                 <span className="text-sm text-gray-400">Mogadishu, Somalia</span>
               </li>
               <li className="flex items-center gap-3">
-                <Mail size={15} className="text-[#0f766e] shrink-0" />
+                <Mail size={15} className="text-[#2D8FCE] shrink-0" />
                 <a
                   href="mailto:yeepsomalia@gmail.com"
-                  className="text-sm text-gray-400 hover:text-[#34d399] transition-colors"
+                  className="text-sm text-gray-400 hover:text-[#D4E6F4] transition-colors"
                 >
                   yeepsomalia@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <Globe size={15} className="text-[#0f766e] shrink-0" />
+                <Globe size={15} className="text-[#2D8FCE] shrink-0" />
                 <a
                   href="https://yeep.org.so"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-gray-400 hover:text-[#34d399] transition-colors"
+                  className="text-sm text-gray-400 hover:text-[#D4E6F4] transition-colors"
                 >
                   yeep.org.so
                 </a>
@@ -176,7 +182,7 @@ export default function Footer() {
             <div className="mt-6">
               <p className="text-sm font-medium text-white mb-2">Newsletter</p>
               {done ? (
-                <p className="text-xs text-[#34d399] flex items-center gap-1.5">
+                <p className="text-xs text-[#D4E6F4] flex items-center gap-1.5">
                   <Check size={13} /> Thanks for subscribing!
                 </p>
               ) : (
@@ -190,12 +196,12 @@ export default function Footer() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Your email"
-                    className="flex-1 px-3 py-2 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[#0f766e]"
+                    className="flex-1 px-3 py-2 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[#2D8FCE]"
                   />
                   <button
                     type="submit"
                     disabled={busy}
-                    className="px-3 py-2 bg-[#0f766e] hover:bg-[#0d9488] text-white text-xs font-medium rounded-lg transition-colors disabled:opacity-70"
+                    className="px-3 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-medium rounded-lg transition-colors disabled:opacity-70"
                   >
                     Subscribe
                   </button>
@@ -210,7 +216,7 @@ export default function Footer() {
             © 2026 YEEP Somalia — Youth Engagement and Empowerment Programme. All rights reserved.
           </p>
           <p className="text-xs text-gray-500 flex items-center gap-1">
-            Made with <Heart size={11} className="text-[#f59e0b]" /> by young Somalis
+            Made with <Heart size={11} className="text-[#2D8FCE]" /> by young Somalis
           </p>
         </div>
       </div>

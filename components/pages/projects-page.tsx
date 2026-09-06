@@ -23,8 +23,8 @@ export default function ProjectsPage() {
 
   const statusColor: Record<string, string> = {
     Ongoing: "bg-blue-100 text-blue-700",
-    Completed: "bg-green-100 text-green-700",
-    Planned: "bg-amber-100 text-amber-700",
+    Completed: "bg-[#D4E6F4] text-[#1F6BA0]",
+    Planned: "bg-[#D4E6F4] text-[#1F6BA0]",
   };
 
   const counts = {
@@ -49,7 +49,7 @@ export default function ProjectsPage() {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-[#115e59] to-[#0f766e] relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-[#1F6BA0] to-[#2D8FCE] relative overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
             Projects
@@ -74,7 +74,7 @@ export default function ProjectsPage() {
                 { label: "Planned", value: counts.Planned },
               ].map((s) => (
                 <div key={s.label} className="text-center">
-                  <div className="text-xl font-bold text-[#0f766e]">{s.value}</div>
+                  <div className="text-xl font-bold text-[#2D8FCE]">{s.value}</div>
                   <div className="text-xs text-gray-400">{s.label}</div>
                 </div>
               ))}
@@ -86,8 +86,8 @@ export default function ProjectsPage() {
                   onClick={() => setFilter(s)}
                   className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                     filter === s
-                      ? "bg-[#0f766e] text-white shadow-md"
-                      : "bg-gray-100 text-gray-600 hover:bg-teal-50 hover:text-[#0f766e]"
+                      ? "bg-[#2D8FCE] text-white shadow-md"
+                      : "bg-gray-100 text-gray-600 hover:bg-[#D4E6F4] hover:text-[#1F6BA0]"
                   }`}
                 >
                   {s}
@@ -148,11 +148,11 @@ export default function ProjectsPage() {
                     <div className="mb-4">
                       <div className="flex justify-between text-xs mb-1.5">
                         <span className="text-gray-400">Progress</span>
-                        <span className="font-semibold text-[#0f766e]">{proj.progress}%</span>
+                        <span className="font-semibold text-[#2D8FCE]">{proj.progress}%</span>
                       </div>
                       <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-[#0f766e] to-[#16a34a] rounded-full"
+                          className="h-full bg-gradient-to-r from-[#2D8FCE] to-[#2D8FCE] rounded-full"
                           style={{ width: `${proj.progress}%` }}
                         />
                       </div>
@@ -160,7 +160,7 @@ export default function ProjectsPage() {
 
                     <button
                       onClick={() => setSelected(proj)}
-                      className="flex items-center justify-center gap-2 py-2.5 border border-[#0f766e] text-[#0f766e] text-sm font-semibold rounded-xl hover:bg-teal-50 transition-colors"
+                      className="flex items-center justify-center gap-2 py-2.5 border border-[#2D8FCE] text-[#2D8FCE] text-sm font-semibold rounded-xl hover:bg-[#D4E6F4] transition-colors"
                     >
                       Read More <ArrowRight size={14} />
                     </button>
@@ -228,11 +228,11 @@ export default function ProjectsPage() {
               <div className="mb-6">
                 <div className="flex justify-between text-xs mb-1.5">
                   <span className="text-gray-400">Progress</span>
-                  <span className="font-semibold text-[#0f766e]">{selected.progress}%</span>
+                  <span className="font-semibold text-[#2D8FCE]">{selected.progress}%</span>
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-[#0f766e] to-[#16a34a] rounded-full"
+                    className="h-full bg-gradient-to-r from-[#2D8FCE] to-[#2D8FCE] rounded-full"
                     style={{ width: `${selected.progress}%` }}
                   />
                 </div>

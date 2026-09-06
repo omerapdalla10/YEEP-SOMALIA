@@ -4,7 +4,7 @@ import { AlertCircle, CheckCircle2, Inbox, Loader2 } from "lucide-react";
 export function LoadingState({ label = "Loading…" }: { label?: string }) {
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-16 text-gray-400">
-      <Loader2 size={26} className="animate-spin text-[#0f766e]" />
+      <Loader2 size={26} className="animate-spin text-[#2D8FCE]" />
       <span className="text-sm">{label}</span>
     </div>
   );
@@ -21,7 +21,7 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
       {onRetry && (
         <button
           onClick={onRetry}
-          className="mt-1 px-4 py-2 text-sm font-semibold text-[#0f766e] border border-[#0f766e] rounded-xl hover:bg-teal-50 transition-colors"
+          className="mt-1 px-4 py-2 text-sm font-semibold text-[#2D8FCE] border border-[#2D8FCE] rounded-xl hover:bg-[#D4E6F4] transition-colors"
         >
           Try Again
         </button>
@@ -48,7 +48,7 @@ export function FormAlert({ error, success }: { error?: string | null; success?:
   if (!error && !success) return null;
   if (success) {
     return (
-      <p className="flex items-center gap-2 text-sm text-[#16a34a] bg-green-50 rounded-lg px-3 py-2">
+      <p className="flex items-center gap-2 text-sm text-[#1F6BA0] bg-[#D4E6F4] rounded-lg px-3 py-2">
         <CheckCircle2 size={15} className="shrink-0" />
         <span>{success}</span>
       </p>

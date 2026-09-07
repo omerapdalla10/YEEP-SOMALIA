@@ -45,7 +45,7 @@ import { api, ApiError } from "@/lib/client/api";
 import { img } from "@/lib/client/img";
 import { formatDateShort } from "@/lib/client/format";
 import { roleLabel } from "@/lib/roles";
-import { fileToAvatarDataUrl, fileToCoverDataUrl } from "@/lib/client/resize-image";
+import { uploadImage } from "@/lib/client/upload";
 import { useAdminTheme } from "@/components/admin/use-admin-theme";
 import { GrowthChart, Donut } from "@/components/admin/charts";
 import { CommandPalette } from "@/components/admin/command-palette";
@@ -289,7 +289,8 @@ function SavedState({ label }: { label: string }) {
   );
 }
 
-/** Image picker used by every content modal. Stores a resized data URL. */
+/** Image picker used by every content modal. Uploads to ImageKit and stores
+ *  the delivery URL (falls back to a data URL when uploads aren't configured). */
 function ImageField({
   value,
   onChange,
@@ -312,11 +313,9 @@ function ImageField({
     setBusy(true);
     setErr(null);
     try {
-      onChange(
-        shape === "square" ? await fileToAvatarDataUrl(file, 512) : await fileToCoverDataUrl(file),
-      );
+      onChange(await uploadImage(file, "content", shape));
     } catch (x) {
-      setErr(x instanceof Error ? x.message : "Could not read that image.");
+      setErr(x instanceof Error ? x.message : "Could not upload that image.");
     } finally {
       setBusy(false);
     }
@@ -371,8 +370,8 @@ function AdminAccountCard() {
     setAvatarBusy(true);
     setAvatarMsg(null);
     try {
-      const dataUrl = await fileToAvatarDataUrl(file);
-      const res = await api.patch<AuthUser>("/auth/me", { avatar: dataUrl });
+      const url = await uploadImage(file, "avatar");
+      const res = await api.patch<AuthUser>("/auth/me", { avatar: url });
       updateUser(res.data);
       setAvatarMsg("Photo updated.");
     } catch (err) {

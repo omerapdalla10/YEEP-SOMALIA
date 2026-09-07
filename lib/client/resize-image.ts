@@ -1,14 +1,12 @@
 /**
- * Read an image File and return a downscaled, centre-cropped JPEG data URL of
- * exactly `width` x `height`. Keeps inline uploads small enough to store on the
- * record itself.
+ * Client-side image downscaling. Reads an image File and centre-crops it to
+ * exact pixel dimensions on a canvas, then hands back either a data URL or a
+ * Blob. Keeping the resize on the client makes uploads small — important on
+ * slow connections — before they go to ImageKit (or straight onto the record
+ * as a data URL when uploads aren't configured).
  */
-export function fileToCroppedDataUrl(
-  file: File,
-  width: number,
-  height: number,
-  quality = 0.85,
-): Promise<string> {
+
+function drawCropped(file: File, width: number, height: number): Promise<HTMLCanvasElement> {
   return new Promise((resolve, reject) => {
     if (!file.type.startsWith("image/")) {
       reject(new Error("Please choose an image file."));
@@ -32,11 +30,39 @@ export function fileToCroppedDataUrl(
         const w = image.width * scale;
         const h = image.height * scale;
         ctx.drawImage(image, (width - w) / 2, (height - h) / 2, w, h);
-        resolve(canvas.toDataURL("image/jpeg", quality));
+        resolve(canvas);
       };
       image.src = reader.result as string;
     };
     reader.readAsDataURL(file);
+  });
+}
+
+/** Downscaled, centre-cropped JPEG data URL of exactly `width` x `height`. */
+export async function fileToCroppedDataUrl(
+  file: File,
+  width: number,
+  height: number,
+  quality = 0.85,
+): Promise<string> {
+  const canvas = await drawCropped(file, width, height);
+  return canvas.toDataURL("image/jpeg", quality);
+}
+
+/** Same, but a JPEG Blob — for uploading rather than embedding. */
+export async function fileToCroppedBlob(
+  file: File,
+  width: number,
+  height: number,
+  quality = 0.85,
+): Promise<Blob> {
+  const canvas = await drawCropped(file, width, height);
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => (blob ? resolve(blob) : reject(new Error("Could not process that image."))),
+      "image/jpeg",
+      quality,
+    );
   });
 }
 
@@ -53,4 +79,19 @@ export function fileToCoverDataUrl(
   quality = 0.82,
 ): Promise<string> {
   return fileToCroppedDataUrl(file, width, height, quality);
+}
+
+/** Square avatar Blob for upload. */
+export function fileToAvatarBlob(file: File, size = 512, quality = 0.85): Promise<Blob> {
+  return fileToCroppedBlob(file, size, size, quality);
+}
+
+/** Landscape cover Blob for upload. */
+export function fileToCoverBlob(
+  file: File,
+  width = 1600,
+  height = 900,
+  quality = 0.85,
+): Promise<Blob> {
+  return fileToCroppedBlob(file, width, height, quality);
 }

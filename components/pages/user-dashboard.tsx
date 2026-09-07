@@ -32,7 +32,7 @@ import { api, ApiError } from "@/lib/client/api";
 import { img } from "@/lib/client/img";
 import { formatDateShort } from "@/lib/client/format";
 import { roleLabel } from "@/lib/roles";
-import { fileToAvatarDataUrl } from "@/lib/client/resize-image";
+import { uploadImage } from "@/lib/client/upload";
 import { useAdminTheme } from "@/components/admin/use-admin-theme";
 import { Donut } from "@/components/admin/charts";
 import { CommandPalette } from "@/components/admin/command-palette";
@@ -148,8 +148,8 @@ function AccountCard() {
     setAvatarBusy(true);
     setProfileMsg(null);
     try {
-      const dataUrl = await fileToAvatarDataUrl(file);
-      const res = await api.patch<AuthUser>("/auth/me", { avatar: dataUrl });
+      const url = await uploadImage(file, "avatar");
+      const res = await api.patch<AuthUser>("/auth/me", { avatar: url });
       updateUser(res.data);
       setProfileMsg({ text: "Photo updated.", ok: true });
     } catch (err) {

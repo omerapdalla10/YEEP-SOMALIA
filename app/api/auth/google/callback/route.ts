@@ -11,6 +11,8 @@ import {
   type GoogleProfile,
 } from "@/lib/api/google";
 import { appUrl, jwt as jwtConfig, oauthSuccessRedirect } from "@/lib/env";
+import { sendMail } from "@/lib/api/mailer";
+import { welcomeEmail } from "@/lib/api/emails/welcome";
 import { User } from "@/models/User";
 
 /**
@@ -74,6 +76,9 @@ export const GET = route(async (req: NextRequest) => {
       authProvider: "google",
       avatar: profile.picture,
     });
+    // Fire-and-forget: a mail failure must never break sign-in.
+    const mail = welcomeEmail(user.name);
+    void sendMail({ to: user.email, ...mail });
   } else if (!user.googleId) {
     // Existing local account with the same email — link it to Google.
     user.googleId = profile.sub;

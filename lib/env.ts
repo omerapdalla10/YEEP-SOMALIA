@@ -43,3 +43,19 @@ export const googleOAuthEnabled = Boolean(
 
 /** Name of the httpOnly cookie holding the session JWT. */
 export const AUTH_COOKIE = "yeep_token";
+
+export const smtp = {
+  host: process.env.SMTP_HOST ?? "",
+  port: Number(process.env.SMTP_PORT ?? 587),
+  /** true for port 465 (implicit TLS); false uses STARTTLS. */
+  secure: process.env.SMTP_SECURE === "true" || Number(process.env.SMTP_PORT) === 465,
+  user: process.env.SMTP_USER ?? "",
+  pass: process.env.SMTP_PASS ?? "",
+  /** RFC-5322 From header, e.g. `YEEP Somalia <noreply@yeep.org.so>`. */
+  from: process.env.SMTP_FROM || "YEEP Somalia <no-reply@yeep.org.so>",
+};
+
+/** True only when the SMTP transport has the host + credentials it needs. */
+export const emailEnabled = Boolean(
+  process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS,
+);

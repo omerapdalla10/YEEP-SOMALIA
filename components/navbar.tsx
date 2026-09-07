@@ -6,6 +6,9 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, ChevronDown, LayoutDashboard, LogOut } from "lucide-react";
 import { useAuth } from "@/components/auth-context";
+import { useT } from "@/lib/i18n/context";
+import LanguageToggle from "@/components/language-toggle";
+import ThemeToggle from "@/components/theme-toggle";
 import { img } from "@/lib/client/img";
 import { roleLabel } from "@/lib/roles";
 
@@ -19,21 +22,45 @@ function initials(name?: string): string {
     .join("");
 }
 
+/** Avatar image with an initials fallback if the src is missing or fails. */
+function Avatar({ src, name, size }: { src?: string; name?: string; size: number }) {
+  const [broken, setBroken] = useState(false);
+  const fallback = (
+    <span
+      className="rounded-lg bg-[#2D8FCE] text-white font-semibold flex items-center justify-center shrink-0"
+      style={{ width: size, height: size, fontSize: Math.round(size * 0.4) }}
+    >
+      {initials(name)}
+    </span>
+  );
+  if (!src || broken) return fallback;
+  return (
+    <img
+      src={img(src, "w=96&h=96&fit=crop&auto=format")}
+      alt=""
+      referrerPolicy="no-referrer"
+      onError={() => setBroken(true)}
+      className="rounded-lg object-cover bg-[#D4E6F4] shrink-0"
+      style={{ width: size, height: size }}
+    />
+  );
+}
+
 const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { key: "nav.home", href: "/" },
+  { key: "nav.about", href: "/about" },
   {
-    label: "Our Work",
+    key: "nav.ourWork",
     children: [
-      { label: "Programs", href: "/programs" },
-      { label: "Projects", href: "/projects" },
-      { label: "Events", href: "/events" },
+      { key: "nav.programs", href: "/programs" },
+      { key: "nav.projects", href: "/projects" },
+      { key: "nav.events", href: "/events" },
     ],
   },
-  { label: "Gallery", href: "/gallery" },
-  { label: "News", href: "/news" },
-  { label: "Volunteer", href: "/volunteer" },
-  { label: "Contact", href: "/contact" },
+  { key: "nav.gallery", href: "/gallery" },
+  { key: "nav.news", href: "/news" },
+  { key: "nav.volunteer", href: "/volunteer" },
+  { key: "nav.contact", href: "/contact" },
 ];
 
 export default function Navbar() {
@@ -44,9 +71,10 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
+  const t = useT();
   const isStaff = Boolean(user && user.role !== "volunteer");
   const dashboardHref = isStaff ? "/admin" : "/dashboard";
-  const dashboardLabel = isStaff ? "Admin Console" : "My Dashboard";
+  const dashboardLabel = isStaff ? t("nav.adminConsole") : t("nav.myDashboard");
 
   const handleLogout = () => {
     setAccountOpen(false);
@@ -54,23 +82,6 @@ export default function Navbar() {
     logout();
     router.push("/");
   };
-
-  const avatar = (size: number) =>
-    user?.avatar ? (
-      <img
-        src={img(user.avatar, "w=64&h=64&fit=crop&auto=format")}
-        alt=""
-        className="rounded-lg object-cover bg-[#D4E6F4] shrink-0"
-        style={{ width: size, height: size }}
-      />
-    ) : (
-      <span
-        className="rounded-lg bg-[#2D8FCE] text-white font-semibold flex items-center justify-center shrink-0"
-        style={{ width: size, height: size, fontSize: Math.round(size * 0.4) }}
-      >
-        {initials(user?.name)}
-      </span>
-    );
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -89,8 +100,10 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-white shadow-md" : "bg-white/95 backdrop-blur-sm"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+        scrolled
+          ? "bg-white shadow-md border-transparent dark:bg-[#141d1a] dark:border-[#26332f] dark:shadow-black/40"
+          : "bg-white/95 backdrop-blur-sm border-transparent dark:bg-[#141d1a]/92 dark:border-[#20302b]"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -119,19 +132,19 @@ export default function Navbar() {
             {navLinks.map((link) =>
               link.children ? (
                 <div
-                  key={link.label}
+                  key={link.key}
                   className="relative"
-                  onMouseEnter={() => setDropdown(link.label)}
+                  onMouseEnter={() => setDropdown(link.key)}
                   onMouseLeave={() => setDropdown(null)}
                 >
                   <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#1F6BA0] transition-colors rounded-lg hover:bg-[#D4E6F4]">
-                    {link.label}
+                    {t(link.key)}
                     <ChevronDown
                       size={14}
-                      className={`transition-transform ${dropdown === link.label ? "rotate-180" : ""}`}
+                      className={`transition-transform ${dropdown === link.key ? "rotate-180" : ""}`}
                     />
                   </button>
-                  {dropdown === link.label && (
+                  {dropdown === link.key && (
                     <div className="absolute top-full left-0 mt-1 w-44 bg-white rounded-xl shadow-xl border border-gray-100 py-1 overflow-hidden">
                       {link.children.map((child) => (
                         <Link
@@ -139,7 +152,7 @@ export default function Navbar() {
                           href={child.href}
                           className="block px-4 py-2.5 text-sm text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4] transition-colors"
                         >
-                          {child.label}
+                          {t(child.key)}
                         </Link>
                       ))}
                     </div>
@@ -155,21 +168,23 @@ export default function Navbar() {
                       : "text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4]"
                   }`}
                 >
-                  {link.label}
+                  {t(link.key)}
                 </Link>
               ),
             )}
           </nav>
 
           {/* CTA buttons */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-2.5">
+            <ThemeToggle />
+            <LanguageToggle />
             {user ? (
               <div className="relative">
                 <button
                   onClick={() => setAccountOpen((o) => !o)}
                   className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-xl hover:bg-[#D4E6F4] transition-colors"
                 >
-                  {avatar(30)}
+                  <Avatar src={user.avatar} name={user.name} size={30} />
                   <span className="text-sm font-semibold text-gray-800 max-w-[130px] truncate">
                     {user.name}
                   </span>
@@ -207,7 +222,7 @@ export default function Navbar() {
                         className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
                       >
                         <LogOut size={15} />
-                        Sign Out
+                        {t("nav.signOut")}
                       </button>
                     </div>
                   </>
@@ -219,13 +234,13 @@ export default function Navbar() {
                   href="/login"
                   className="text-sm font-medium text-gray-600 hover:text-[#2D8FCE] transition-colors"
                 >
-                  Sign In
+                  {t("nav.signIn")}
                 </Link>
                 <Link
                   href="/register"
                   className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-[#2D8FCE] hover:bg-[#1F6BA0] rounded-xl transition-colors"
                 >
-                  Sign Up
+                  {t("nav.signUp")}
                 </Link>
               </>
             )}
@@ -243,12 +258,12 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-1">
+        <div className="lg:hidden bg-white dark:bg-[#0e1512] border-t border-gray-100 px-4 py-4 space-y-1">
           {navLinks.map((link) =>
             link.children ? (
-              <div key={link.label}>
+              <div key={link.key}>
                 <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                  {link.label}
+                  {t(link.key)}
                 </div>
                 {link.children.map((child) => (
                   <Link
@@ -256,7 +271,7 @@ export default function Navbar() {
                     href={child.href}
                     className="block px-3 py-2 text-sm text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4] rounded-lg transition-colors ml-2"
                   >
-                    {child.label}
+                    {t(child.key)}
                   </Link>
                 ))}
               </div>
@@ -270,15 +285,19 @@ export default function Navbar() {
                     : "text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4]"
                 }`}
               >
-                {link.label}
+                {t(link.key)}
               </Link>
             ),
           )}
+          <div className="pt-3 flex justify-center items-center gap-3 border-t border-gray-100">
+            <ThemeToggle />
+            <LanguageToggle />
+          </div>
           <div className="pt-3 border-t border-gray-100">
             {user ? (
               <div className="space-y-2">
                 <div className="flex items-center gap-2.5 px-3 py-2">
-                  {avatar(38)}
+                  <Avatar src={user.avatar} name={user.name} size={38} />
                   <div className="min-w-0">
                     <div className="text-sm font-semibold text-gray-800 truncate">
                       {user.name}
@@ -298,7 +317,7 @@ export default function Navbar() {
                   className="w-full flex items-center justify-center gap-2 py-2 text-sm font-medium text-red-600 border border-red-200 rounded-xl hover:bg-red-50 transition-colors"
                 >
                   <LogOut size={15} />
-                  Sign Out
+                  {t("nav.signOut")}
                 </button>
               </div>
             ) : (
@@ -307,13 +326,13 @@ export default function Navbar() {
                   href="/register"
                   className="block text-center py-2 text-sm font-semibold text-white bg-[#2D8FCE] rounded-xl hover:bg-[#1F6BA0] transition-colors"
                 >
-                  Sign Up
+                  {t("nav.signUp")}
                 </Link>
                 <Link
                   href="/login"
                   className="block text-center py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-xl hover:border-[#2D8FCE] hover:text-[#2D8FCE] transition-colors"
                 >
-                  Sign In
+                  {t("nav.signIn")}
                 </Link>
               </div>
             )}

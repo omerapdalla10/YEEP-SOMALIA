@@ -6,6 +6,7 @@ import { requireRole } from "@/lib/api/auth";
 import { volunteerStatusSchema } from "@/lib/validators";
 import { sendMail } from "@/lib/api/mailer";
 import { volunteerApprovedEmail } from "@/lib/api/emails/volunteer-approved";
+import { volunteerRejectedEmail } from "@/lib/api/emails/volunteer-rejected";
 import { Volunteer } from "@/models/Volunteer";
 
 /** PATCH /api/volunteers/:id/status — staff review decision. */
@@ -28,11 +29,15 @@ export const PATCH = route<IdContext>(async (req, ctx) => {
     throw ApiError.notFound("That volunteer application could not be found.");
   }
 
-  // Notify the applicant the first time they're approved. Fire-and-forget:
+  // Notify the applicant the first time a decision is made. Fire-and-forget:
   // a mail failure must never fail the review action.
   if (status === "Approved" && before.status !== "Approved") {
-    const mail = volunteerApprovedEmail(item.name, item.role);
-    void sendMail({ to: item.email, ...mail });
+    void sendMail({ to: item.email, ...volunteerApprovedEmail(item.name, item.role) });
+  } else if (status === "Rejected" && before.status !== "Rejected") {
+    void sendMail({
+      to: item.email,
+      ...volunteerRejectedEmail(item.name, item.role, item.reviewNote ?? undefined),
+    });
   }
 
   return ok(item);

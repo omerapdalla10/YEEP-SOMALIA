@@ -59,3 +59,16 @@ export const smtp = {
 export const emailEnabled = Boolean(
   process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS,
 );
+
+export const imagekit = {
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY ?? "",
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY ?? "",
+  urlEndpoint: (process.env.IMAGEKIT_URL_ENDPOINT ?? "").replace(/\/+$/, ""),
+};
+
+/** True when ImageKit is configured; otherwise uploads fall back to data URLs. */
+export const imageUploadsEnabled = Boolean(
+  process.env.IMAGEKIT_PUBLIC_KEY &&
+    process.env.IMAGEKIT_PRIVATE_KEY &&
+    process.env.IMAGEKIT_URL_ENDPOINT,
+);

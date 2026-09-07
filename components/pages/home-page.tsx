@@ -22,9 +22,11 @@ import { useCollection, useResource } from "@/lib/client/hooks";
 import { img } from "@/lib/client/img";
 import { formatCountPlus, formatMoneyCompact } from "@/lib/client/format";
 import { api, ApiError } from "@/lib/client/api";
+import { useT } from "@/lib/i18n/context";
 import type { Program, EventItem, Testimonial, Partner, SiteStats } from "@/lib/types";
 
 export default function HomePage() {
+  const t = useT();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [subscribing, setSubscribing] = useState(false);
@@ -95,29 +97,26 @@ export default function HomePage() {
           <div className="max-w-2xl">
             <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#2D8FCE]/20 text-[#2D8FCE] text-xs font-semibold rounded-full mb-6 border border-[#2D8FCE]/30">
               <Star size={12} />
-              Youth, Peace &amp; Security — led by young Somalis
+              {t("home.badge")}
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-              Engage. Empower.
-              <span className="block text-[#D4E6F4]">Transform.</span>
+              {t("home.heroLine1")}
+              <span className="block text-[#D4E6F4]">{t("home.heroLine2")}</span>
             </h1>
-            <p className="text-lg text-gray-200 leading-relaxed mb-8 max-w-xl">
-              YEEP Somalia is a youth-led NGO advancing Youth, Peace and Security (YPS), youth
-              leadership, civic engagement, and community resilience across Somalia.
-            </p>
+            <p className="text-lg text-gray-200 leading-relaxed mb-8 max-w-xl">{t("home.heroDesc")}</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/volunteer"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
               >
                 <Heart size={18} />
-                Get Involved
+                {t("common.getInvolved")}
               </Link>
               <Link
                 href="/volunteer"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/30 backdrop-blur-sm"
               >
-                Become a Volunteer
+                {t("common.becomeVolunteer")}
                 <ArrowRight size={18} />
               </Link>
             </div>
@@ -127,7 +126,7 @@ export default function HomePage() {
               <div className="w-11 h-11 rounded-full bg-white/20 border border-white/30 flex items-center justify-center group-hover:bg-white/30 transition-colors">
                 <Play size={16} className="ml-0.5" />
               </div>
-              <span className="text-sm font-medium">Watch Our Story</span>
+              <span className="text-sm font-medium">{t("home.watchStory")}</span>
             </button>
           </div>
         </div>
@@ -172,17 +171,17 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
             <div>
               <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
-                What We Do
+                {t("home.whatWeDo")}
               </span>
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
-                Featured Programs
+                {t("home.featuredPrograms")}
               </h2>
             </div>
             <Link
               href="/programs"
               className="flex items-center gap-1.5 text-[#2D8FCE] font-semibold text-sm hover:gap-2.5 transition-all mt-4 sm:mt-0"
             >
-              View All Programs <ArrowRight size={16} />
+              {t("home.viewAllPrograms")} <ArrowRight size={16} />
             </Link>
           </div>
 
@@ -216,7 +215,7 @@ export default function HomePage() {
                       href="/programs"
                       className="text-sm font-semibold text-[#2D8FCE] hover:text-[#1F6BA0] flex items-center gap-1 transition-colors"
                     >
-                      Learn More <ChevronRight size={14} />
+                      {t("common.learnMore")} <ChevronRight size={14} />
                     </Link>
                   </div>
                 </div>
@@ -232,7 +231,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             <div>
               <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
-                Our Impact
+                {t("home.ourImpact")}
               </span>
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2 mb-5">
                 Young People at the
@@ -293,15 +292,17 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
             <div>
               <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
-                Calendar
+                {t("home.calendar")}
               </span>
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">Upcoming Events</h2>
+              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
+                {t("home.upcomingEvents")}
+              </h2>
             </div>
             <Link
               href="/events"
               className="flex items-center gap-1.5 text-[#2D8FCE] font-semibold text-sm hover:gap-2.5 transition-all mt-4 sm:mt-0"
             >
-              All Events <ArrowRight size={16} />
+              {t("home.allEvents")} <ArrowRight size={16} />
             </Link>
           </div>
 
@@ -329,7 +330,7 @@ export default function HomePage() {
                   href="/events"
                   className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 border border-[#2D8FCE] text-[#2D8FCE] text-sm font-semibold rounded-xl hover:bg-[#D4E6F4] transition-colors"
                 >
-                  Register Now
+                  {t("common.registerNow")}
                 </Link>
               </div>
             ))}
@@ -342,9 +343,11 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
-              Testimonials
+              {t("home.testimonials")}
             </span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">Success Stories</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
+              {t("home.successStories")}
+            </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
             {stories.map((story) => (
@@ -380,7 +383,7 @@ export default function HomePage() {
       <section className="py-14 bg-[#f8fafc] border-y border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-gray-400 font-medium mb-8 uppercase tracking-wider">
-            Trusted by Leading Organizations
+            {t("home.trustedBy")}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-8">
             {partners.map((p) => (
@@ -399,16 +402,14 @@ export default function HomePage() {
       <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-            Stay Connected with YEEP Somalia
+            {t("home.newsletterTitle")}
           </h2>
-          <p className="text-white/80 mb-8">
-            Get the latest news, program updates, and impact stories delivered to your inbox.
-          </p>
+          <p className="text-white/80 mb-8">{t("home.newsletterDesc")}</p>
 
           {subscribed ? (
             <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white rounded-xl">
               <CheckCircle size={18} />
-              Thank you for subscribing!
+              {t("footer.thanks")}
             </div>
           ) : (
             <form
@@ -420,7 +421,7 @@ export default function HomePage() {
                 suppressHydrationWarning
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
+                placeholder={t("home.emailPlaceholder")}
                 className="flex-1 px-4 py-3 rounded-xl bg-white text-gray-800 placeholder-gray-400 focus:outline-none text-sm"
                 required
               />
@@ -430,7 +431,7 @@ export default function HomePage() {
                 className="px-6 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-colors whitespace-nowrap disabled:opacity-70 flex items-center justify-center gap-2"
               >
                 {subscribing && <Loader2 size={15} className="animate-spin" />}
-                Subscribe
+                {t("common.subscribe")}
               </button>
             </form>
           )}
@@ -441,13 +442,13 @@ export default function HomePage() {
               href="/volunteer"
               className="px-7 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-all shadow-lg"
             >
-              Volunteer Today
+              {t("home.volunteerToday")}
             </Link>
             <Link
               href="/contact"
               className="px-7 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/30"
             >
-              Contact Us
+              {t("common.contactUs")}
             </Link>
           </div>
         </div>

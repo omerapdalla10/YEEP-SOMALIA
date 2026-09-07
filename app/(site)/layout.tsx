@@ -1,5 +1,6 @@
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import WhatsAppButton from "@/components/whatsapp-button";
 
 /** Chrome for the public marketing site: fixed navbar + footer. */
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -8,6 +9,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 }

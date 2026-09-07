@@ -3,6 +3,8 @@ import { Poppins } from "next/font/google";
 import "@/styles/globals.css";
 import { AuthProvider } from "@/components/auth-context";
 import GoogleSignInPrompt from "@/components/google-sign-in-prompt";
+import Analytics from "@/components/analytics";
+import { LocaleProvider } from "@/lib/i18n/context";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -34,10 +36,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           inject attributes on <body> before hydration; this silences the diff
           on this element only, not its children. */}
       <body className="min-h-screen bg-white text-[#1f2937]" suppressHydrationWarning>
-        <AuthProvider>
-          <GoogleSignInPrompt />
-          {children}
-        </AuthProvider>
+        <LocaleProvider>
+          <AuthProvider>
+            <GoogleSignInPrompt />
+            {children}
+          </AuthProvider>
+        </LocaleProvider>
+        <Analytics />
       </body>
     </html>
   );

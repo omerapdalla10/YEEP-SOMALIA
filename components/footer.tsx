@@ -15,8 +15,10 @@ import {
   Check,
 } from "lucide-react";
 import { api } from "@/lib/client/api";
+import { useT } from "@/lib/i18n/context";
 
 export default function Footer() {
+  const t = useT();
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -105,7 +107,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Quick Links</h4>
+            <h4 className="text-white font-semibold mb-4">{t("footer.quickLinks")}</h4>
             <ul className="space-y-2.5">
               {[
                 { label: "About Us", href: "/about" },
@@ -129,7 +131,7 @@ export default function Footer() {
 
           {/* Get Involved */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Get Involved</h4>
+            <h4 className="text-white font-semibold mb-4">{t("footer.getInvolved")}</h4>
             <ul className="space-y-2.5">
               {[
                 { label: "Volunteer With Us", href: "/volunteer" },
@@ -150,7 +152,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Contact Us</h4>
+            <h4 className="text-white font-semibold mb-4">{t("footer.contactUs")}</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <MapPin size={15} className="text-[#2D8FCE] mt-0.5 shrink-0" />
@@ -180,10 +182,10 @@ export default function Footer() {
 
             {/* Newsletter */}
             <div className="mt-6">
-              <p className="text-sm font-medium text-white mb-2">Newsletter</p>
+              <p className="text-sm font-medium text-white mb-2">{t("footer.newsletter")}</p>
               {done ? (
                 <p className="text-xs text-[#D4E6F4] flex items-center gap-1.5">
-                  <Check size={13} /> Thanks for subscribing!
+                  <Check size={13} /> {t("footer.thanks")}
                 </p>
               ) : (
                 <form className="flex gap-2" onSubmit={subscribe}>
@@ -195,7 +197,7 @@ export default function Footer() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email"
+                    placeholder={t("footer.emailPlaceholder")}
                     className="flex-1 px-3 py-2 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[#2D8FCE]"
                   />
                   <button
@@ -203,7 +205,7 @@ export default function Footer() {
                     disabled={busy}
                     className="px-3 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-medium rounded-lg transition-colors disabled:opacity-70"
                   >
-                    Subscribe
+                    {t("common.subscribe")}
                   </button>
                 </form>
               )}
@@ -212,11 +214,10 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-gray-500">
-            © 2026 YEEP Somalia — Youth Engagement and Empowerment Programme. All rights reserved.
-          </p>
+          <p className="text-xs text-gray-500">{t("footer.rights")}</p>
           <p className="text-xs text-gray-500 flex items-center gap-1">
-            Made with <Heart size={11} className="text-[#2D8FCE]" /> by young Somalis
+            {t("footer.madeWith")} <Heart size={11} className="text-[#2D8FCE]" />{" "}
+            {t("footer.byYoungSomalis")}
           </p>
         </div>
       </div>

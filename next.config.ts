@@ -4,8 +4,8 @@ const nextConfig: NextConfig = {
   // Produce a self-contained build for the production Docker image.
   output: "standalone",
 
-  // Mongoose ships its own CJS/dynamic requires — keep it out of the bundler.
-  serverExternalPackages: ["mongoose"],
+  // Mongoose and nodemailer ship CJS/dynamic requires — keep them unbundled.
+  serverExternalPackages: ["mongoose", "nodemailer"],
 
   images: {
     remotePatterns: [

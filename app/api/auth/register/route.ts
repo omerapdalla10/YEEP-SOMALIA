@@ -6,6 +6,8 @@ import { ApiError } from "@/lib/api/errors";
 import { signToken } from "@/lib/api/token";
 import { setAuthCookie } from "@/lib/api/auth";
 import { registerSchema } from "@/lib/validators";
+import { sendMail } from "@/lib/api/mailer";
+import { welcomeEmail } from "@/lib/api/emails/welcome";
 import { User } from "@/models/User";
 
 /** POST /api/auth/register — public sign-up. */
@@ -21,6 +23,10 @@ export const POST = route(async (req: NextRequest) => {
 
   const user = await User.create({ name, email, password, phone });
   const token = signToken({ sub: user.id, role: user.role });
+
+  // Fire-and-forget: a mail failure must never break sign-up.
+  const mail = welcomeEmail(user.name);
+  void sendMail({ to: user.email, ...mail });
 
   const res = created({ user, token });
   setAuthCookie(res, token);

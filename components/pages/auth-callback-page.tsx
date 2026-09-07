@@ -45,8 +45,10 @@ export default function AuthCallbackPage() {
 
     loginWithToken(token)
       .then((user) => {
+        // Staff/admin go to the console; members land on the home page (a
+        // stored "from" path still wins if they were sent here mid-navigation).
         const dest =
-          takePostLoginRedirect() ?? (user.role !== "volunteer" ? "/admin" : "/dashboard");
+          takePostLoginRedirect() ?? (user.role !== "volunteer" ? "/admin" : "/");
         router.replace(dest);
       })
       .catch(() => {

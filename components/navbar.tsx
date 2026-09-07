@@ -3,9 +3,21 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, LayoutDashboard } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, X, ChevronDown, LayoutDashboard, LogOut } from "lucide-react";
 import { useAuth } from "@/components/auth-context";
+import { img } from "@/lib/client/img";
+import { roleLabel } from "@/lib/roles";
+
+function initials(name?: string): string {
+  if (!name) return "?";
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -28,9 +40,37 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [dropdown, setDropdown] = useState<string | null>(null);
+  const [accountOpen, setAccountOpen] = useState(false);
   const pathname = usePathname();
-  const { user } = useAuth();
-  const dashboardHref = user && user.role !== "volunteer" ? "/admin" : "/dashboard";
+  const router = useRouter();
+  const { user, logout } = useAuth();
+  const isStaff = Boolean(user && user.role !== "volunteer");
+  const dashboardHref = isStaff ? "/admin" : "/dashboard";
+  const dashboardLabel = isStaff ? "Admin Console" : "My Dashboard";
+
+  const handleLogout = () => {
+    setAccountOpen(false);
+    setOpen(false);
+    logout();
+    router.push("/");
+  };
+
+  const avatar = (size: number) =>
+    user?.avatar ? (
+      <img
+        src={img(user.avatar, "w=64&h=64&fit=crop&auto=format")}
+        alt=""
+        className="rounded-lg object-cover bg-[#D4E6F4] shrink-0"
+        style={{ width: size, height: size }}
+      />
+    ) : (
+      <span
+        className="rounded-lg bg-[#2D8FCE] text-white font-semibold flex items-center justify-center shrink-0"
+        style={{ width: size, height: size, fontSize: Math.round(size * 0.4) }}
+      >
+        {initials(user?.name)}
+      </span>
+    );
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -43,6 +83,7 @@ export default function Navbar() {
     /* eslint-disable react-hooks/set-state-in-effect */
     setOpen(false);
     setDropdown(null);
+    setAccountOpen(false);
     /* eslint-enable react-hooks/set-state-in-effect */
   }, [pathname]);
 
@@ -123,20 +164,70 @@ export default function Navbar() {
           {/* CTA buttons */}
           <div className="hidden lg:flex items-center gap-3">
             {user ? (
-              <Link
-                href={dashboardHref}
-                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-[#2D8FCE] hover:bg-[#1F6BA0] rounded-xl transition-colors"
-              >
-                <LayoutDashboard size={15} />
-                Dashboard
-              </Link>
+              <div className="relative">
+                <button
+                  onClick={() => setAccountOpen((o) => !o)}
+                  className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-xl hover:bg-[#D4E6F4] transition-colors"
+                >
+                  {avatar(30)}
+                  <span className="text-sm font-semibold text-gray-800 max-w-[130px] truncate">
+                    {user.name}
+                  </span>
+                  <ChevronDown
+                    size={14}
+                    className={`text-gray-400 transition-transform ${accountOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {accountOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-40"
+                      onClick={() => setAccountOpen(false)}
+                    />
+                    <div className="absolute right-0 top-full mt-2 w-60 bg-white rounded-xl shadow-xl border border-gray-100 py-1.5 overflow-hidden z-50">
+                      <div className="px-4 py-2.5 border-b border-gray-100">
+                        <div className="text-sm font-semibold text-gray-800 truncate">
+                          {user.name}
+                        </div>
+                        <div className="text-xs text-gray-400 truncate">{user.email}</div>
+                        <div className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-[#1F6BA0]">
+                          {roleLabel(user.role)}
+                        </div>
+                      </div>
+                      <Link
+                        href={dashboardHref}
+                        onClick={() => setAccountOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-[#D4E6F4] hover:text-[#1F6BA0] transition-colors"
+                      >
+                        <LayoutDashboard size={15} />
+                        {dashboardLabel}
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                      >
+                        <LogOut size={15} />
+                        Sign Out
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
             ) : (
-              <Link
-                href="/login"
-                className="text-sm font-medium text-gray-600 hover:text-[#2D8FCE] transition-colors"
-              >
-                Sign In
-              </Link>
+              <>
+                <Link
+                  href="/login"
+                  className="text-sm font-medium text-gray-600 hover:text-[#2D8FCE] transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/register"
+                  className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-[#2D8FCE] hover:bg-[#1F6BA0] rounded-xl transition-colors"
+                >
+                  Sign Up
+                </Link>
+              </>
             )}
           </div>
 
@@ -185,19 +276,46 @@ export default function Navbar() {
           )}
           <div className="pt-3 border-t border-gray-100">
             {user ? (
-              <Link
-                href={dashboardHref}
-                className="block text-center py-2 text-sm font-semibold text-white bg-[#2D8FCE] rounded-xl hover:bg-[#1F6BA0] transition-colors"
-              >
-                Go to Dashboard
-              </Link>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2.5 px-3 py-2">
+                  {avatar(38)}
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold text-gray-800 truncate">
+                      {user.name}
+                    </div>
+                    <div className="text-xs text-gray-400 truncate">{user.email}</div>
+                  </div>
+                </div>
+                <Link
+                  href={dashboardHref}
+                  className="flex items-center justify-center gap-2 py-2 text-sm font-semibold text-white bg-[#2D8FCE] rounded-xl hover:bg-[#1F6BA0] transition-colors"
+                >
+                  <LayoutDashboard size={15} />
+                  {dashboardLabel}
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-center gap-2 py-2 text-sm font-medium text-red-600 border border-red-200 rounded-xl hover:bg-red-50 transition-colors"
+                >
+                  <LogOut size={15} />
+                  Sign Out
+                </button>
+              </div>
             ) : (
-              <Link
-                href="/login"
-                className="block text-center py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-xl hover:border-[#2D8FCE] hover:text-[#2D8FCE] transition-colors"
-              >
-                Sign In
-              </Link>
+              <div className="space-y-2">
+                <Link
+                  href="/register"
+                  className="block text-center py-2 text-sm font-semibold text-white bg-[#2D8FCE] rounded-xl hover:bg-[#1F6BA0] transition-colors"
+                >
+                  Sign Up
+                </Link>
+                <Link
+                  href="/login"
+                  className="block text-center py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-xl hover:border-[#2D8FCE] hover:text-[#2D8FCE] transition-colors"
+                >
+                  Sign In
+                </Link>
+              </div>
             )}
           </div>
         </div>

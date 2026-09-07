@@ -42,7 +42,9 @@ export default function RegisterPage() {
         password: form.password,
         phone: form.phone || undefined,
       });
-      router.replace("/dashboard");
+      // New members land on the public home page; they reach their dashboard
+      // from the account menu in the navbar.
+      router.replace("/");
     } catch (err) {
       setError(errorMessage(err, "Unable to create account. Please try again."));
       setFields(fieldErrors(err));

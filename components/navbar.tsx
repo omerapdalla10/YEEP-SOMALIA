@@ -19,6 +19,30 @@ function initials(name?: string): string {
     .join("");
 }
 
+/** Avatar image with an initials fallback if the src is missing or fails. */
+function Avatar({ src, name, size }: { src?: string; name?: string; size: number }) {
+  const [broken, setBroken] = useState(false);
+  const fallback = (
+    <span
+      className="rounded-lg bg-[#2D8FCE] text-white font-semibold flex items-center justify-center shrink-0"
+      style={{ width: size, height: size, fontSize: Math.round(size * 0.4) }}
+    >
+      {initials(name)}
+    </span>
+  );
+  if (!src || broken) return fallback;
+  return (
+    <img
+      src={img(src, "w=96&h=96&fit=crop&auto=format")}
+      alt=""
+      referrerPolicy="no-referrer"
+      onError={() => setBroken(true)}
+      className="rounded-lg object-cover bg-[#D4E6F4] shrink-0"
+      style={{ width: size, height: size }}
+    />
+  );
+}
+
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
@@ -54,23 +78,6 @@ export default function Navbar() {
     logout();
     router.push("/");
   };
-
-  const avatar = (size: number) =>
-    user?.avatar ? (
-      <img
-        src={img(user.avatar, "w=64&h=64&fit=crop&auto=format")}
-        alt=""
-        className="rounded-lg object-cover bg-[#D4E6F4] shrink-0"
-        style={{ width: size, height: size }}
-      />
-    ) : (
-      <span
-        className="rounded-lg bg-[#2D8FCE] text-white font-semibold flex items-center justify-center shrink-0"
-        style={{ width: size, height: size, fontSize: Math.round(size * 0.4) }}
-      >
-        {initials(user?.name)}
-      </span>
-    );
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -169,7 +176,7 @@ export default function Navbar() {
                   onClick={() => setAccountOpen((o) => !o)}
                   className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-xl hover:bg-[#D4E6F4] transition-colors"
                 >
-                  {avatar(30)}
+                  <Avatar src={user.avatar} name={user.name} size={30} />
                   <span className="text-sm font-semibold text-gray-800 max-w-[130px] truncate">
                     {user.name}
                   </span>
@@ -278,7 +285,7 @@ export default function Navbar() {
             {user ? (
               <div className="space-y-2">
                 <div className="flex items-center gap-2.5 px-3 py-2">
-                  {avatar(38)}
+                  <Avatar src={user.avatar} name={user.name} size={38} />
                   <div className="min-w-0">
                     <div className="text-sm font-semibold text-gray-800 truncate">
                       {user.name}

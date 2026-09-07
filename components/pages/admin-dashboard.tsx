@@ -432,6 +432,7 @@ function AdminAccountCard() {
             <img
               src={img(user.avatar, "w=140&h=140&fit=crop&auto=format")}
               alt=""
+              referrerPolicy="no-referrer"
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
           ) : (
@@ -2871,6 +2872,7 @@ export default function AdminDashboard() {
                     className="adm-avatar"
                     src={img(user.avatar, "w=76&h=76&fit=crop&auto=format")}
                     alt=""
+                    referrerPolicy="no-referrer"
                   />
                 ) : (
                   <span className="adm-avatar">{initials(user?.name)}</span>

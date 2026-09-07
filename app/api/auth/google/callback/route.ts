@@ -79,11 +79,21 @@ export const GET = route(async (req: NextRequest) => {
     // Fire-and-forget: a mail failure must never break sign-in.
     const mail = welcomeEmail(user.name);
     void sendMail({ to: user.email, ...mail });
-  } else if (!user.googleId) {
-    // Existing local account with the same email — link it to Google.
-    user.googleId = profile.sub;
-    if (!user.avatar && profile.picture) user.avatar = profile.picture;
-    await user.save();
+  } else {
+    // Link the account on first Google sign-in, and on every sign-in keep the
+    // Google photo fresh — unless the member has uploaded their own avatar
+    // (a data: URL or a non-Google host), which we never overwrite.
+    let changed = false;
+    if (!user.googleId) {
+      user.googleId = profile.sub;
+      changed = true;
+    }
+    const usingGooglePhoto = !user.avatar || /googleusercontent\.com/.test(user.avatar);
+    if (profile.picture && usingGooglePhoto && user.avatar !== profile.picture) {
+      user.avatar = profile.picture;
+      changed = true;
+    }
+    if (changed) await user.save();
   }
 
   if (!user.isActive) {

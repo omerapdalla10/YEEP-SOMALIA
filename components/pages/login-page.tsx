@@ -145,9 +145,12 @@ export default function LoginPage() {
                 />
                 <span className="text-sm text-gray-600">Remember me</span>
               </label>
-              <a href="#" className="text-sm text-[#2D8FCE] font-medium hover:underline">
+              <Link
+                href="/forgot-password"
+                className="text-sm text-[#2D8FCE] font-medium hover:underline"
+              >
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
             <FormAlert error={error} />

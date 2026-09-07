@@ -23,6 +23,9 @@ export interface UserAttrs {
   authProvider: AuthProvider;
   /** Google's stable account id (`sub` claim), when linked. */
   googleId?: string;
+  /** SHA-256 of the active password-reset token; cleared once used. */
+  resetTokenHash?: string;
+  resetTokenExpires?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -63,6 +66,8 @@ const userSchema = new Schema<UserAttrs, UserModel, UserMethods>(
     isActive: { type: Boolean, default: true },
     authProvider: { type: String, enum: ["local", "google"], default: "local" },
     googleId: { type: String, unique: true, sparse: true },
+    resetTokenHash: { type: String, select: false },
+    resetTokenExpires: { type: Date, select: false },
   },
   { timestamps: true },
 );
@@ -85,6 +90,8 @@ userSchema.set("toJSON", {
     const r = ret as unknown as Record<string, unknown>;
     delete r.password;
     delete r.googleId;
+    delete r.resetTokenHash;
+    delete r.resetTokenExpires;
     return ret;
   },
 });

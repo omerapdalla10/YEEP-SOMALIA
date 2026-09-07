@@ -19,6 +19,7 @@ import {
   Handshake,
   ImagePlus,
   Images,
+  Inbox,
   KeyRound,
   LayoutDashboard,
   Loader2,
@@ -61,6 +62,7 @@ import type {
   Testimonial,
   Partner,
   EventRegistrationList,
+  ContactMessage,
 } from "@/lib/types";
 
 /* ------------------------------- constants ------------------------------- */
@@ -70,6 +72,7 @@ const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", id: "dashboard" },
   { icon: Users, label: "Users", id: "users", adminOnly: true },
   { icon: UserCheck, label: "Volunteers", id: "volunteers" },
+  { icon: Inbox, label: "Messages", id: "messages" },
   { icon: FolderOpen, label: "Projects", id: "projects" },
   { icon: BookOpen, label: "Programs", id: "programs" },
   { icon: Calendar, label: "Events", id: "events" },
@@ -735,6 +738,134 @@ function RegistrantsModal({ eventId, onClose }: { eventId: string; onClose: () =
   );
 }
 
+const MSG_STATUS_VARIANT: Record<string, string> = {
+  New: "amber",
+  Read: "blue",
+  Replied: "green",
+  Archived: "",
+};
+
+/** Read one contact message and act on it (reply / mark replied / archive). */
+function MessageModal({
+  message,
+  onClose,
+  onChanged,
+}: {
+  message: ContactMessage;
+  onClose: () => void;
+  onChanged: () => void;
+}) {
+  const [status, setStatus] = useState(message.status);
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  useEffect(() => {
+    // Opening a "New" message marks it "Read" server-side.
+    if (message.status === "New") {
+      api
+        .get(`/contact/${message._id}`)
+        .then(() => onChanged())
+        .catch(() => {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const setMsgStatus = async (next: "Replied" | "Archived") => {
+    setBusy(true);
+    try {
+      await api.patch(`/contact/${message._id}/status`, { status: next });
+      setStatus(next);
+      onChanged();
+    } catch {
+      /* leave as-is */
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const mailto = `mailto:${message.email}?subject=${encodeURIComponent(`Re: ${message.subject}`)}`;
+
+  return (
+    <div className="adm-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="adm-modal" role="dialog" aria-label="Contact message">
+        <div className="adm-modal-head">
+          <h3>{message.subject}</h3>
+          <button className="adm-iact" onClick={onClose} aria-label="Close">
+            <X size={16} />
+          </button>
+        </div>
+        <div className="adm-modal-body">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              flexWrap: "wrap",
+              marginTop: -4,
+            }}
+          >
+            <span className="adm-t-name">
+              {message.name}
+              <div className="em">{message.email}</div>
+            </span>
+            <span
+              className={`adm-badge${
+                MSG_STATUS_VARIANT[status] ? ` adm-badge-${MSG_STATUS_VARIANT[status]}` : ""
+              }`}
+              style={{ marginLeft: "auto" }}
+            >
+              {status}
+            </span>
+          </div>
+          <div className="adm-modal-note" style={{ marginTop: -6 }}>
+            {formatDateShort(message.createdAt)}
+          </div>
+          <div
+            style={{
+              fontSize: 14,
+              lineHeight: 1.6,
+              color: "var(--ink)",
+              whiteSpace: "pre-wrap",
+              background: "var(--bg)",
+              border: "1px solid var(--line)",
+              borderRadius: 12,
+              padding: "16px 18px",
+            }}
+          >
+            {message.message}
+          </div>
+          <div className="adm-modal-foot">
+            <a className="adm-btn adm-btn-primary" href={mailto} style={{ flex: 1 }}>
+              Reply by email
+            </a>
+            <button
+              className="adm-btn"
+              onClick={() => setMsgStatus("Replied")}
+              disabled={busy || status === "Replied"}
+            >
+              Mark replied
+            </button>
+            <button
+              className="adm-btn"
+              onClick={() => setMsgStatus("Archived")}
+              disabled={busy || status === "Archived"}
+            >
+              Archive
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ============================== main component =========================== */
 
 export default function AdminDashboard() {
@@ -746,6 +877,7 @@ export default function AdminDashboard() {
   const [notifRead, setNotifRead] = useState(false);
   const [statModal, setStatModal] = useState<string | null>(null);
   const [registrantsFor, setRegistrantsFor] = useState<string | null>(null);
+  const [openMessage, setOpenMessage] = useState<ContactMessage | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [range, setRange] = useState<"Year" | "Quarter" | "Month">("Year");
 
@@ -764,6 +896,9 @@ export default function AdminDashboard() {
     active === "volunteers" ? "/volunteers" : null,
     { limit: 100 },
   );
+  const messages = useCollection<ContactMessage>(active === "messages" ? "/contact" : null, {
+    limit: 100,
+  });
   const projects = useCollection<Project>(active === "projects" ? "/projects" : null, {
     limit: 100,
   });
@@ -1740,6 +1875,90 @@ export default function AdminDashboard() {
     </div>
   );
 
+  const renderMessages = () => (
+    <div className="adm-panel">
+      <div className="adm-panel-p" style={{ borderBottom: "1px solid var(--line)" }}>
+        <h3 style={{ fontSize: 15.5 }}>Contact Inbox</h3>
+        <div className="sub" style={{ fontSize: 12, color: "var(--sub)", marginTop: 3 }}>
+          Messages sent through the website contact form
+        </div>
+      </div>
+      {messages.loading ? (
+        <Loading label="Loading messages…" />
+      ) : messages.error ? (
+        <ErrorBox message={messages.error} onRetry={messages.refetch} />
+      ) : (
+        <div className="adm-table-wrap">
+          <table className="adm-table">
+            <thead>
+              <tr>
+                <th>From</th>
+                <th>Subject</th>
+                <th>Received</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {messages.data.map((m) => (
+                <tr key={m._id}>
+                  <td>
+                    <div className="adm-t-name">
+                      {m.name}
+                      <div className="em">{m.email}</div>
+                    </div>
+                  </td>
+                  <td
+                    style={{
+                      maxWidth: 320,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      fontWeight: m.status === "New" ? 700 : 400,
+                    }}
+                  >
+                    {m.subject}
+                  </td>
+                  <td style={{ color: "var(--sub)" }}>{formatDateShort(m.createdAt)}</td>
+                  <td>
+                    <span
+                      className={`adm-badge${
+                        MSG_STATUS_VARIANT[m.status]
+                          ? ` adm-badge-${MSG_STATUS_VARIANT[m.status]}`
+                          : ""
+                      }`}
+                    >
+                      {m.status}
+                    </span>
+                  </td>
+                  <td>
+                    <div style={{ display: "flex", gap: 4 }}>
+                      <button
+                        className="adm-chipbtn"
+                        onClick={() => setOpenMessage(m)}
+                        title="Open"
+                      >
+                        Open
+                      </button>
+                      <button
+                        className="adm-iact danger"
+                        onClick={() => remove(`/contact/${m._id}`, messages.refetch)}
+                        title="Delete"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {messages.data.length === 0 && <div className="adm-empty">No messages yet.</div>}
+        </div>
+      )}
+    </div>
+  );
+
   const renderProjects = () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <SectionHead
@@ -2667,6 +2886,7 @@ export default function AdminDashboard() {
           {active === "dashboard" && renderDashboard()}
           {active === "users" && isAdmin && renderUsers()}
           {active === "volunteers" && renderVolunteers()}
+          {active === "messages" && renderMessages()}
           {active === "projects" && renderProjects()}
           {active === "programs" && renderPrograms()}
           {active === "events" && renderEvents()}
@@ -2700,6 +2920,14 @@ export default function AdminDashboard() {
         <RegistrantsModal
           eventId={registrantsFor}
           onClose={() => setRegistrantsFor(null)}
+        />
+      )}
+
+      {openMessage && (
+        <MessageModal
+          message={openMessage}
+          onClose={() => setOpenMessage(null)}
+          onChanged={messages.refetch}
         />
       )}
 

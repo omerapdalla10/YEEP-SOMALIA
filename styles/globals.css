@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Class-based dark mode: `dark:` utilities apply when <html> has `.dark`. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-poppins: var(--font-poppins-src), "Poppins", ui-sans-serif, system-ui, sans-serif;
 
@@ -60,4 +63,106 @@ body {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* ==========================================================================
+   Dark theme for the PUBLIC marketing site only (scoped to `.site-root`, set
+   by app/(site)/layout.tsx — so the admin console and member dashboard, which
+   have their own `.adm[data-theme]` theming, are never touched).
+
+   The pages are built with hard-coded light utilities, so rather than adding
+   `dark:` to every one we remap the handful of surface / text / border colours
+   the pages actually use. Navbar, footer and the hero are hand-tuned with real
+   `dark:` classes on top.
+   ========================================================================== */
+.dark body {
+  background: #0e1512;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #17211e;
+}
+
+.dark .site-root {
+  --dk-bg: #0e1512;
+  --dk-surface: #141d1a;
+  --dk-surface-2: #1b2623;
+  --dk-line: #26332f;
+  background: #0e1512;
+  color: #d7dedb;
+}
+
+.dark .site-root .bg-white {
+  background-color: var(--dk-surface) !important;
+}
+.dark .site-root .bg-\[\#f8fafc\],
+.dark .site-root .bg-slate-50,
+.dark .site-root .bg-gray-50 {
+  background-color: var(--dk-bg) !important;
+}
+.dark .site-root .bg-gray-100,
+.dark .site-root .bg-slate-100 {
+  background-color: var(--dk-surface-2) !important;
+}
+
+.dark .site-root .text-gray-900,
+.dark .site-root .text-slate-900 {
+  color: #f1f5f4 !important;
+}
+.dark .site-root .text-gray-800,
+.dark .site-root .text-slate-800 {
+  color: #e5eae8 !important;
+}
+.dark .site-root .text-gray-700,
+.dark .site-root .text-slate-700 {
+  color: #cdd6d2 !important;
+}
+.dark .site-root .text-gray-600,
+.dark .site-root .text-slate-600 {
+  color: #a9b4b0 !important;
+}
+.dark .site-root .text-gray-500,
+.dark .site-root .text-slate-500 {
+  color: #8f9c97 !important;
+}
+.dark .site-root .text-gray-400,
+.dark .site-root .text-slate-400 {
+  color: #75827d !important;
+}
+
+.dark .site-root .border-gray-100,
+.dark .site-root .border-slate-100 {
+  border-color: #202b28 !important;
+}
+.dark .site-root .border-gray-200,
+.dark .site-root .border-slate-200 {
+  border-color: var(--dk-line) !important;
+}
+
+.dark .site-root .shadow-sm,
+.dark .site-root .shadow-md,
+.dark .site-root .shadow-lg,
+.dark .site-root .shadow-xl,
+.dark .site-root .shadow-2xl {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* light-tinted brand chips stay legible */
+.dark .site-root .bg-\[\#D4E6F4\] {
+  background-color: rgba(45, 143, 206, 0.18) !important;
+}
+.dark .site-root .text-\[\#1F6BA0\] {
+  color: #7fc0ea !important;
+}
+
+/* form controls */
+.dark .site-root input,
+.dark .site-root textarea,
+.dark .site-root select {
+  background-color: var(--dk-surface-2) !important;
+  border-color: var(--dk-line) !important;
+  color: #e5eae8 !important;
+}
+.dark .site-root input::placeholder,
+.dark .site-root textarea::placeholder {
+  color: #6f7c77 !important;
 }

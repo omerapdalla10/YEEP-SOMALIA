@@ -5,6 +5,7 @@ import { AuthProvider } from "@/components/auth-context";
 import GoogleSignInPrompt from "@/components/google-sign-in-prompt";
 import Analytics from "@/components/analytics";
 import { LocaleProvider } from "@/lib/i18n/context";
+import { ThemeProvider, themeInitScript } from "@/lib/theme/context";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,17 +32,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={poppins.variable}>
-      {/* suppressHydrationWarning: browser extensions (ColorZilla, Grammarly, …)
-          inject attributes on <body> before hydration; this silences the diff
-          on this element only, not its children. */}
+    // suppressHydrationWarning: the theme script below toggles `.dark` on
+    // <html> before React hydrates; also covers <body> attributes injected
+    // by browser extensions (ColorZilla, Grammarly, …).
+    <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <body className="min-h-screen bg-white text-[#1f2937]" suppressHydrationWarning>
-        <LocaleProvider>
-          <AuthProvider>
-            <GoogleSignInPrompt />
-            {children}
-          </AuthProvider>
-        </LocaleProvider>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <ThemeProvider>
+          <LocaleProvider>
+            <AuthProvider>
+              <GoogleSignInPrompt />
+              {children}
+            </AuthProvider>
+          </LocaleProvider>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

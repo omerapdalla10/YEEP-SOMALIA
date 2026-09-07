@@ -8,6 +8,7 @@ import { Menu, X, ChevronDown, LayoutDashboard, LogOut } from "lucide-react";
 import { useAuth } from "@/components/auth-context";
 import { useT } from "@/lib/i18n/context";
 import LanguageToggle from "@/components/language-toggle";
+import ThemeToggle from "@/components/theme-toggle";
 import { img } from "@/lib/client/img";
 import { roleLabel } from "@/lib/roles";
 
@@ -99,8 +100,10 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-white shadow-md" : "bg-white/95 backdrop-blur-sm"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+        scrolled
+          ? "bg-white shadow-md border-transparent dark:bg-[#141d1a] dark:border-[#26332f] dark:shadow-black/40"
+          : "bg-white/95 backdrop-blur-sm border-transparent dark:bg-[#141d1a]/92 dark:border-[#20302b]"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -172,7 +175,8 @@ export default function Navbar() {
           </nav>
 
           {/* CTA buttons */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-2.5">
+            <ThemeToggle />
             <LanguageToggle />
             {user ? (
               <div className="relative">
@@ -254,7 +258,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-1">
+        <div className="lg:hidden bg-white dark:bg-[#0e1512] border-t border-gray-100 px-4 py-4 space-y-1">
           {navLinks.map((link) =>
             link.children ? (
               <div key={link.key}>
@@ -285,7 +289,8 @@ export default function Navbar() {
               </Link>
             ),
           )}
-          <div className="pt-3 flex justify-center border-t border-gray-100">
+          <div className="pt-3 flex justify-center items-center gap-3 border-t border-gray-100">
+            <ThemeToggle />
             <LanguageToggle />
           </div>
           <div className="pt-3 border-t border-gray-100">

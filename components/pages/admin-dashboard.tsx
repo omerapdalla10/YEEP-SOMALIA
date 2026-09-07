@@ -900,6 +900,12 @@ export default function AdminDashboard() {
   const messages = useCollection<ContactMessage>(active === "messages" ? "/contact" : null, {
     limit: 100,
   });
+  // Unread count for the sidebar badge — kept loaded regardless of the tab.
+  const unreadMessages = useCollection<ContactMessage>("/contact", {
+    status: "New",
+    limit: 100,
+  });
+  const newMsgCount = unreadMessages.data.length;
   const projects = useCollection<Project>(active === "projects" ? "/projects" : null, {
     limit: 100,
   });
@@ -1943,7 +1949,12 @@ export default function AdminDashboard() {
                       </button>
                       <button
                         className="adm-iact danger"
-                        onClick={() => remove(`/contact/${m._id}`, messages.refetch)}
+                        onClick={() =>
+                          remove(`/contact/${m._id}`, () => {
+                            messages.refetch();
+                            unreadMessages.refetch();
+                          })
+                        }
                         title="Delete"
                       >
                         <Trash2 size={14} />
@@ -2770,6 +2781,14 @@ export default function AdminDashboard() {
               >
                 <item.icon size={17} />
                 <span className="lbl">{item.label}</span>
+                {item.id === "messages" && newMsgCount > 0 && (
+                  <span
+                    className="adm-badge adm-badge-red"
+                    style={{ marginLeft: "auto", padding: "1px 7px", fontSize: 10.5 }}
+                  >
+                    {newMsgCount > 99 ? "99+" : newMsgCount}
+                  </span>
+                )}
               </button>
             ))}
             <button
@@ -2929,7 +2948,10 @@ export default function AdminDashboard() {
         <MessageModal
           message={openMessage}
           onClose={() => setOpenMessage(null)}
-          onChanged={messages.refetch}
+          onChanged={() => {
+            messages.refetch();
+            unreadMessages.refetch();
+          }}
         />
       )}
 

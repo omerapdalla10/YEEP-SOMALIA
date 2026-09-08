@@ -12,6 +12,7 @@ export interface AuthUser {
   role: Role;
   avatar?: string;
   isActive: boolean;
+  emailVerified: boolean;
   createdAt: string;
 }
 

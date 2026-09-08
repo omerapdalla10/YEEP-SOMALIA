@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   output: "standalone",
 
   // These ship CJS/dynamic requires — keep them out of the bundler.
-  serverExternalPackages: ["mongoose", "nodemailer", "imagekit"],
+  serverExternalPackages: ["mongoose", "nodemailer", "imagekit", "pdf-lib"],
 
   images: {
     remotePatterns: [

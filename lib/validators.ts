@@ -76,6 +76,10 @@ export const resetPasswordSchema = z.object({
   password: z.string().min(8).max(128),
 });
 
+export const tokenSchema = z.object({
+  token: z.string().min(20).max(200),
+});
+
 /* ----------------------------- Resources ---------------------------- */
 
 export const programSchema = z.object({
@@ -214,6 +218,18 @@ export const volunteerApplicationSchema = z.object({
 export const volunteerStatusSchema = z.object({
   status: z.enum(VOLUNTEER_STATUSES),
   reviewNote: str.max(1000).optional(),
+});
+
+export const volunteerHoursSchema = z.object({
+  activity: str.min(3).max(300),
+  hours: num.min(0.5).max(24),
+  date: isoDate,
+  event: str.regex(/^[a-f\d]{24}$/i, "Invalid event id").optional(),
+});
+
+export const volunteerHoursStatusSchema = z.object({
+  status: z.enum(["Approved", "Rejected"]),
+  reviewNote: str.max(500).optional(),
 });
 
 export const contactMessageSchema = z.object({

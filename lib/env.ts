@@ -44,6 +44,9 @@ export const googleOAuthEnabled = Boolean(
 /** Name of the httpOnly cookie holding the session JWT. */
 export const AUTH_COOKIE = "yeep_token";
 
+/** Shared secret for the /api/cron/* endpoints (Bearer header or ?key=). */
+export const cronSecret = process.env.CRON_SECRET ?? "";
+
 export const smtp = {
   host: process.env.SMTP_HOST ?? "",
   port: Number(process.env.SMTP_PORT ?? 587),

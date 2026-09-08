@@ -13,6 +13,8 @@ const eventRegistrationSchema = new Schema(
     event: { type: Schema.Types.ObjectId, ref: "Event", required: true, index: true },
     user: { type: Schema.Types.ObjectId, ref: "User", required: true, index: true },
     status: { type: String, enum: REGISTRATION_STATUSES, default: "Registered" },
+    /** Set once a "your event is soon" reminder has been emailed. */
+    reminderSentAt: { type: Date },
   },
   { timestamps: true },
 );

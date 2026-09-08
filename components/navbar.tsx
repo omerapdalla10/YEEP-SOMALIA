@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, ChevronDown, LayoutDashboard, LogOut } from "lucide-react";
+import { Menu, X, ChevronDown, LayoutDashboard, LogOut, Search } from "lucide-react";
 import { useAuth } from "@/components/auth-context";
 import { useT } from "@/lib/i18n/context";
 import LanguageToggle from "@/components/language-toggle";
 import ThemeToggle from "@/components/theme-toggle";
+import SearchModal from "@/components/search-modal";
 import { img } from "@/lib/client/img";
 import { roleLabel } from "@/lib/roles";
 
@@ -68,6 +69,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [dropdown, setDropdown] = useState<string | null>(null);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
@@ -83,10 +85,24 @@ export default function Navbar() {
     router.push("/");
   };
 
+  // Jump to top even when the link points at the page we're already on.
+  const scrollTop = () => window.scrollTo(0, 0);
+
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handler);
     return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSearchOpen((v) => !v);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   useEffect(() => {
@@ -109,7 +125,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
+          <Link href="/" onClick={scrollTop} className="flex items-center gap-2.5 group">
             <Image
               src="/logo.svg"
               alt="YEEP Somalia"
@@ -150,6 +166,7 @@ export default function Navbar() {
                         <Link
                           key={child.href}
                           href={child.href}
+                          onClick={scrollTop}
                           className="block px-4 py-2.5 text-sm text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4] transition-colors"
                         >
                           {t(child.key)}
@@ -162,6 +179,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href!}
+                  onClick={scrollTop}
                   className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                     pathname === link.href
                       ? "text-[#1F6BA0] bg-[#D4E6F4]"
@@ -176,6 +194,17 @@ export default function Navbar() {
 
           {/* CTA buttons */}
           <div className="hidden lg:flex items-center gap-2.5">
+            <button
+              onClick={() => setSearchOpen(true)}
+              aria-label={t("nav.search")}
+              className="h-8 flex items-center gap-2 rounded-lg border border-gray-200 px-2.5 text-xs text-gray-400 hover:text-[#2D8FCE] hover:border-[#2D8FCE] transition-colors dark:border-[#26332f] dark:text-gray-400"
+            >
+              <Search size={14} />
+              <span className="hidden xl:inline">{t("nav.search")}</span>
+              <kbd className="hidden xl:inline rounded bg-gray-100 px-1 text-[10px] font-semibold text-gray-400 dark:bg-white/10">
+                ⌘K
+              </kbd>
+            </button>
             <ThemeToggle />
             <LanguageToggle />
             {user ? (
@@ -269,6 +298,7 @@ export default function Navbar() {
                   <Link
                     key={child.href}
                     href={child.href}
+                    onClick={scrollTop}
                     className="block px-3 py-2 text-sm text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4] rounded-lg transition-colors ml-2"
                   >
                     {t(child.key)}
@@ -279,6 +309,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href!}
+                onClick={scrollTop}
                 className={`block px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
                   pathname === link.href
                     ? "text-[#1F6BA0] bg-[#D4E6F4]"
@@ -289,6 +320,15 @@ export default function Navbar() {
               </Link>
             ),
           )}
+          <button
+            onClick={() => {
+              setOpen(false);
+              setSearchOpen(true);
+            }}
+            className="flex w-full items-center gap-2 px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-[#D4E6F4] transition-colors"
+          >
+            <Search size={16} /> {t("nav.search")}
+          </button>
           <div className="pt-3 flex justify-center items-center gap-3 border-t border-gray-100">
             <ThemeToggle />
             <LanguageToggle />
@@ -339,6 +379,8 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+      {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} />}
     </header>
   );
 }

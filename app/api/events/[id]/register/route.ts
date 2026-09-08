@@ -2,6 +2,9 @@ import { route, type IdContext } from "@/lib/api/route";
 import { ok, created } from "@/lib/api/response";
 import { ApiError } from "@/lib/api/errors";
 import { requireUser } from "@/lib/api/auth";
+import { sendMail } from "@/lib/api/mailer";
+import { eventRegisteredEmail } from "@/lib/api/emails/event-registered";
+import { eventToIcs } from "@/lib/api/ics";
 import { Event } from "@/models/Event";
 import { EventRegistration } from "@/models/EventRegistration";
 
@@ -57,6 +60,32 @@ export const POST = route<IdContext>(async (req, ctx) => {
     await Event.updateOne({ _id: id, registered: { $gt: 0 } }, { $inc: { registered: -1 } });
     throw err;
   }
+
+  // Fire-and-forget: confirmation email with a calendar invite attached.
+  const mail = eventRegisteredEmail(user.name, {
+    title: event.title,
+    dateLabel: event.dateLabel ?? undefined,
+    timeLabel: event.timeLabel ?? undefined,
+    location: event.location ?? undefined,
+  });
+  void sendMail({
+    to: user.email,
+    ...mail,
+    attachments: [
+      {
+        filename: "event.ics",
+        contentType: "text/calendar",
+        content: eventToIcs({
+          id: String(event._id),
+          title: event.title,
+          description: event.description ?? undefined,
+          location: event.location ?? undefined,
+          start: event.startDate,
+          end: event.endDate ?? undefined,
+        }),
+      },
+    ],
+  });
 
   return created(registration, "You're registered.");
 });

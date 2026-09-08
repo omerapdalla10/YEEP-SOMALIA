@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import {
   Activity,
   AlertCircle,
+  Award,
   Bell,
   BookOpen,
   Calendar,
@@ -63,6 +64,7 @@ import type {
   Partner,
   EventRegistrationList,
   ContactMessage,
+  VolunteerHoursEntry,
 } from "@/lib/types";
 
 /* ------------------------------- constants ------------------------------- */
@@ -72,6 +74,7 @@ const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", id: "dashboard" },
   { icon: Users, label: "Users", id: "users", adminOnly: true },
   { icon: UserCheck, label: "Volunteers", id: "volunteers" },
+  { icon: Clock, label: "Hours", id: "hours" },
   { icon: Inbox, label: "Messages", id: "messages" },
   { icon: FolderOpen, label: "Projects", id: "projects" },
   { icon: BookOpen, label: "Programs", id: "programs" },
@@ -899,12 +902,21 @@ export default function AdminDashboard() {
   const messages = useCollection<ContactMessage>(active === "messages" ? "/contact" : null, {
     limit: 100,
   });
-  // Unread count for the sidebar badge — kept loaded regardless of the tab.
+  const hours = useCollection<VolunteerHoursEntry>(
+    active === "hours" ? "/volunteer-hours" : null,
+    { limit: 200 },
+  );
+  // Sidebar badge counts — kept loaded regardless of the active tab.
   const unreadMessages = useCollection<ContactMessage>("/contact", {
     status: "New",
     limit: 100,
   });
   const newMsgCount = unreadMessages.data.length;
+  const pendingVolunteers = useCollection<VolunteerApplication>("/volunteers", {
+    status: "Pending",
+    limit: 100,
+  });
+  const pendingVolCount = pendingVolunteers.data.length;
   const projects = useCollection<Project>(active === "projects" ? "/projects" : null, {
     limit: 100,
   });
@@ -1845,7 +1857,10 @@ export default function AdminDashboard() {
                         onClick={() =>
                           api
                             .patch(`/volunteers/${v._id}/status`, { status: "Approved" })
-                            .then(volunteers.refetch)
+                            .then(() => {
+                              volunteers.refetch();
+                              pendingVolunteers.refetch();
+                            })
                             .catch(() => {})
                         }
                       >
@@ -1856,15 +1871,32 @@ export default function AdminDashboard() {
                         onClick={() =>
                           api
                             .patch(`/volunteers/${v._id}/status`, { status: "Rejected" })
-                            .then(volunteers.refetch)
+                            .then(() => {
+                              volunteers.refetch();
+                              pendingVolunteers.refetch();
+                            })
                             .catch(() => {})
                         }
                       >
                         Reject
                       </button>
+                      {v.status === "Approved" && (
+                        <a
+                          className="adm-iact"
+                          href={`/api/volunteers/${v._id}/certificate`}
+                          title="Download certificate"
+                        >
+                          <Award size={14} />
+                        </a>
+                      )}
                       <button
                         className="adm-iact danger"
-                        onClick={() => remove(`/volunteers/${v._id}`, volunteers.refetch)}
+                        onClick={() =>
+                          remove(`/volunteers/${v._id}`, () => {
+                            volunteers.refetch();
+                            pendingVolunteers.refetch();
+                          })
+                        }
                         title="Delete"
                       >
                         <Trash2 size={14} />
@@ -1880,6 +1912,96 @@ export default function AdminDashboard() {
       )}
     </div>
   );
+
+  const renderHours = () => {
+    const total = hours.data
+      .filter((h) => h.status === "Approved")
+      .reduce((s, h) => s + h.hours, 0);
+    const setStatus = (id: string, status: "Approved" | "Rejected") =>
+      api
+        .patch(`/volunteer-hours/${id}/status`, { status })
+        .then(hours.refetch)
+        .catch(() => {});
+    return (
+      <div className="adm-panel">
+        <div className="adm-panel-p" style={{ borderBottom: "1px solid var(--line)" }}>
+          <h3 style={{ fontSize: 15.5 }}>Volunteer Hours</h3>
+          <div className="sub" style={{ fontSize: 12, color: "var(--sub)", marginTop: 3 }}>
+            {total} approved hour{total === 1 ? "" : "s"} logged across all members
+          </div>
+        </div>
+        {hours.loading ? (
+          <Loading label="Loading time log…" />
+        ) : hours.error ? (
+          <ErrorBox message={hours.error} onRetry={hours.refetch} />
+        ) : (
+          <div className="adm-table-wrap">
+            <table className="adm-table">
+              <thead>
+                <tr>
+                  <th>Member</th>
+                  <th>Activity</th>
+                  <th>Date</th>
+                  <th>Hours</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {hours.data.map((h) => (
+                  <tr key={h._id}>
+                    <td>
+                      <div className="adm-t-name">
+                        {h.user?.name ?? "—"}
+                        <div className="em">{h.user?.email}</div>
+                      </div>
+                    </td>
+                    <td style={{ maxWidth: 260 }}>
+                      {h.activity}
+                      {h.event && <div className="em">{h.event.title}</div>}
+                    </td>
+                    <td style={{ color: "var(--sub)" }}>{formatDateShort(h.date)}</td>
+                    <td>{h.hours}</td>
+                    <td>
+                      <StatusBadge status={h.status} />
+                    </td>
+                    <td>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <button
+                          className="adm-chipbtn ok"
+                          disabled={h.status === "Approved"}
+                          onClick={() => setStatus(h._id, "Approved")}
+                        >
+                          Approve
+                        </button>
+                        <button
+                          className="adm-chipbtn no"
+                          disabled={h.status === "Rejected"}
+                          onClick={() => setStatus(h._id, "Rejected")}
+                        >
+                          Reject
+                        </button>
+                        <button
+                          className="adm-iact danger"
+                          onClick={() => remove(`/volunteer-hours/${h._id}`, hours.refetch)}
+                          title="Delete"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {hours.data.length === 0 && (
+              <div className="adm-empty">No volunteer hours logged yet.</div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   const renderMessages = () => (
     <div className="adm-panel">
@@ -2788,6 +2910,14 @@ export default function AdminDashboard() {
                     {newMsgCount > 99 ? "99+" : newMsgCount}
                   </span>
                 )}
+                {item.id === "volunteers" && pendingVolCount > 0 && (
+                  <span
+                    className="adm-badge adm-badge-amber"
+                    style={{ marginLeft: "auto", padding: "1px 7px", fontSize: 10.5 }}
+                  >
+                    {pendingVolCount > 99 ? "99+" : pendingVolCount}
+                  </span>
+                )}
               </button>
             ))}
             <button
@@ -2906,6 +3036,7 @@ export default function AdminDashboard() {
           {active === "dashboard" && renderDashboard()}
           {active === "users" && isAdmin && renderUsers()}
           {active === "volunteers" && renderVolunteers()}
+          {active === "hours" && renderHours()}
           {active === "messages" && renderMessages()}
           {active === "projects" && renderProjects()}
           {active === "programs" && renderPrograms()}

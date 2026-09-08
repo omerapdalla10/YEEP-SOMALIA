@@ -8,6 +8,7 @@ import { Project } from "@/models/Project";
 import { Event } from "@/models/Event";
 import { Article } from "@/models/Article";
 import { Volunteer } from "@/models/Volunteer";
+import { VolunteerHours } from "@/models/VolunteerHours";
 import { ContactMessage } from "@/models/ContactMessage";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -54,7 +55,10 @@ export const GET = route(async (req: NextRequest) => {
     Volunteer.countDocuments({ status: { $in: ["Pending", "Under Review"] } }),
     ContactMessage.countDocuments({ status: "New" }),
     Event.countDocuments({ startDate: { $gte: now } }),
-    Volunteer.aggregate<{ hours: number }>([{ $group: { _id: null, hours: { $sum: 48 } } }]),
+    VolunteerHours.aggregate<{ hours: number }>([
+      { $match: { status: "Approved" } },
+      { $group: { _id: null, hours: { $sum: "$hours" } } },
+    ]),
     Program.aggregate<{ _id: string; value: number }>([
       { $group: { _id: "$category", value: { $sum: 1 } } },
       { $sort: { value: -1 } },

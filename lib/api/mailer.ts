@@ -15,6 +15,12 @@ function getTransport(): Transporter {
   return transporter;
 }
 
+export interface MailAttachment {
+  filename: string;
+  content: string | Buffer;
+  contentType?: string;
+}
+
 export interface Mail {
   to: string;
   subject: string;
@@ -22,6 +28,7 @@ export interface Mail {
   /** Plain-text fallback for clients that don't render HTML. */
   text: string;
   replyTo?: string;
+  attachments?: MailAttachment[];
 }
 
 /**
@@ -42,6 +49,7 @@ export async function sendMail(mail: Mail): Promise<boolean> {
       text: mail.text,
       html: mail.html,
       replyTo: mail.replyTo,
+      attachments: mail.attachments,
     });
     return true;
   } catch (err) {

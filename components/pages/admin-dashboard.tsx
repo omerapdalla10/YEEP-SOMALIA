@@ -906,12 +906,17 @@ export default function AdminDashboard() {
     active === "hours" ? "/volunteer-hours" : null,
     { limit: 200 },
   );
-  // Unread count for the sidebar badge — kept loaded regardless of the tab.
+  // Sidebar badge counts — kept loaded regardless of the active tab.
   const unreadMessages = useCollection<ContactMessage>("/contact", {
     status: "New",
     limit: 100,
   });
   const newMsgCount = unreadMessages.data.length;
+  const pendingVolunteers = useCollection<VolunteerApplication>("/volunteers", {
+    status: "Pending",
+    limit: 100,
+  });
+  const pendingVolCount = pendingVolunteers.data.length;
   const projects = useCollection<Project>(active === "projects" ? "/projects" : null, {
     limit: 100,
   });
@@ -1852,7 +1857,10 @@ export default function AdminDashboard() {
                         onClick={() =>
                           api
                             .patch(`/volunteers/${v._id}/status`, { status: "Approved" })
-                            .then(volunteers.refetch)
+                            .then(() => {
+                              volunteers.refetch();
+                              pendingVolunteers.refetch();
+                            })
                             .catch(() => {})
                         }
                       >
@@ -1863,7 +1871,10 @@ export default function AdminDashboard() {
                         onClick={() =>
                           api
                             .patch(`/volunteers/${v._id}/status`, { status: "Rejected" })
-                            .then(volunteers.refetch)
+                            .then(() => {
+                              volunteers.refetch();
+                              pendingVolunteers.refetch();
+                            })
                             .catch(() => {})
                         }
                       >
@@ -1880,7 +1891,12 @@ export default function AdminDashboard() {
                       )}
                       <button
                         className="adm-iact danger"
-                        onClick={() => remove(`/volunteers/${v._id}`, volunteers.refetch)}
+                        onClick={() =>
+                          remove(`/volunteers/${v._id}`, () => {
+                            volunteers.refetch();
+                            pendingVolunteers.refetch();
+                          })
+                        }
                         title="Delete"
                       >
                         <Trash2 size={14} />
@@ -2892,6 +2908,14 @@ export default function AdminDashboard() {
                     style={{ marginLeft: "auto", padding: "1px 7px", fontSize: 10.5 }}
                   >
                     {newMsgCount > 99 ? "99+" : newMsgCount}
+                  </span>
+                )}
+                {item.id === "volunteers" && pendingVolCount > 0 && (
+                  <span
+                    className="adm-badge adm-badge-amber"
+                    style={{ marginLeft: "auto", padding: "1px 7px", fontSize: 10.5 }}
+                  >
+                    {pendingVolCount > 99 ? "99+" : pendingVolCount}
                   </span>
                 )}
               </button>

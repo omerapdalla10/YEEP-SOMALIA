@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, ChevronDown, LayoutDashboard, LogOut } from "lucide-react";
+import { Menu, X, ChevronDown, LayoutDashboard, LogOut, Search } from "lucide-react";
 import { useAuth } from "@/components/auth-context";
 import { useT } from "@/lib/i18n/context";
 import LanguageToggle from "@/components/language-toggle";
@@ -176,6 +176,13 @@ export default function Navbar() {
 
           {/* CTA buttons */}
           <div className="hidden lg:flex items-center gap-2.5">
+            <Link
+              href="/search"
+              aria-label={t("nav.search")}
+              className="h-8 w-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:text-[#2D8FCE] transition-colors dark:border-[#26332f] dark:text-gray-300"
+            >
+              <Search size={15} />
+            </Link>
             <ThemeToggle />
             <LanguageToggle />
             {user ? (
@@ -289,6 +296,12 @@ export default function Navbar() {
               </Link>
             ),
           )}
+          <Link
+            href="/search"
+            className="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-[#D4E6F4] transition-colors"
+          >
+            <Search size={16} /> {t("nav.search")}
+          </Link>
           <div className="pt-3 flex justify-center items-center gap-3 border-t border-gray-100">
             <ThemeToggle />
             <LanguageToggle />

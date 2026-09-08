@@ -19,6 +19,7 @@ import {
   LayoutDashboard,
   Loader2,
   LogOut,
+  MailWarning,
   Menu,
   Moon,
   Search,
@@ -37,6 +38,60 @@ import { useAdminTheme } from "@/components/admin/use-admin-theme";
 import { Donut } from "@/components/admin/charts";
 import { CommandPalette } from "@/components/admin/command-palette";
 import type { MyDashboardData } from "@/lib/types";
+
+/* ---------------------------- verify banner ----------------------------- */
+
+function VerifyBanner() {
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  const resend = async () => {
+    setBusy(true);
+    setMsg(null);
+    try {
+      const res = await api.post<null>("/auth/resend-verification");
+      setMsg(res.message ?? "Confirmation link sent — check your inbox.");
+    } catch {
+      setMsg("Could not send the link. Please try again in a moment.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        flexWrap: "wrap",
+        background: "var(--amber-tint)",
+        border: "1px solid color-mix(in srgb, var(--amber) 30%, transparent)",
+        color: "var(--ink)",
+        borderRadius: 12,
+        padding: "12px 16px",
+        marginBottom: 16,
+        fontSize: 13.5,
+      }}
+    >
+      <MailWarning size={17} style={{ color: "var(--amber)", flexShrink: 0 }} />
+      <span style={{ flex: 1, minWidth: 180 }}>
+        {msg ?? "Please confirm your email address to secure your account."}
+      </span>
+      {!msg && (
+        <button
+          className="adm-btn adm-btn-sm"
+          onClick={resend}
+          disabled={busy}
+          style={{ flexShrink: 0 }}
+        >
+          {busy && <Loader2 size={12} className="adm-spin" />}
+          Resend link
+        </button>
+      )}
+    </div>
+  );
+}
 
 /* ------------------------------- constants ------------------------------- */
 
@@ -1179,6 +1234,8 @@ export default function UserDashboard() {
               </div>
             </div>
           </header>
+
+          {!loading && user && !user.emailVerified && <VerifyBanner />}
 
           {active === "dashboard" && renderDashboard()}
           {active === "profile" && <AccountCard />}

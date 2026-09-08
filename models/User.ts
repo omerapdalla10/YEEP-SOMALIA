@@ -26,6 +26,10 @@ export interface UserAttrs {
   /** SHA-256 of the active password-reset token; cleared once used. */
   resetTokenHash?: string;
   resetTokenExpires?: Date;
+  /** Email ownership confirmed (true for Google accounts). */
+  emailVerified: boolean;
+  verifyTokenHash?: string;
+  verifyTokenExpires?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -68,6 +72,9 @@ const userSchema = new Schema<UserAttrs, UserModel, UserMethods>(
     googleId: { type: String, unique: true, sparse: true },
     resetTokenHash: { type: String, select: false },
     resetTokenExpires: { type: Date, select: false },
+    emailVerified: { type: Boolean, default: false },
+    verifyTokenHash: { type: String, select: false },
+    verifyTokenExpires: { type: Date, select: false },
   },
   { timestamps: true },
 );
@@ -92,6 +99,8 @@ userSchema.set("toJSON", {
     delete r.googleId;
     delete r.resetTokenHash;
     delete r.resetTokenExpires;
+    delete r.verifyTokenHash;
+    delete r.verifyTokenExpires;
     return ret;
   },
 });

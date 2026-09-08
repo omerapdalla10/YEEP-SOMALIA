@@ -76,6 +76,10 @@ export const resetPasswordSchema = z.object({
   password: z.string().min(8).max(128),
 });
 
+export const tokenSchema = z.object({
+  token: z.string().min(20).max(200),
+});
+
 /* ----------------------------- Resources ---------------------------- */
 
 export const programSchema = z.object({

@@ -75,6 +75,7 @@ export const GET = route(async (req: NextRequest) => {
       googleId: profile.sub,
       authProvider: "google",
       avatar: profile.picture,
+      emailVerified: true, // Google has already verified the address
     });
     // Fire-and-forget: a mail failure must never break sign-in.
     const mail = welcomeEmail(user.name);
@@ -91,6 +92,11 @@ export const GET = route(async (req: NextRequest) => {
     const usingGooglePhoto = !user.avatar || /googleusercontent\.com/.test(user.avatar);
     if (profile.picture && usingGooglePhoto && user.avatar !== profile.picture) {
       user.avatar = profile.picture;
+      changed = true;
+    }
+    // Signing in through Google proves control of the address.
+    if (!user.emailVerified) {
+      user.emailVerified = true;
       changed = true;
     }
     if (changed) await user.save();

@@ -225,3 +225,20 @@ export interface EventRegistrationList {
   event: { _id: string; title: string; dateLabel: string; capacity: number; registered: number };
   registrations: EventRegistrant[];
 }
+
+export interface VolunteerHoursEntry {
+  _id: string;
+  user?: { _id: string; name: string; email: string; avatar?: string };
+  event?: { _id: string; title: string } | null;
+  activity: string;
+  hours: number;
+  date: string;
+  status: "Pending" | "Approved" | "Rejected";
+  reviewNote?: string;
+  createdAt: string;
+}
+
+export interface MyHoursData {
+  entries: VolunteerHoursEntry[];
+  totals: { approved: number; pending: number };
+}

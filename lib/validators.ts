@@ -220,6 +220,18 @@ export const volunteerStatusSchema = z.object({
   reviewNote: str.max(1000).optional(),
 });
 
+export const volunteerHoursSchema = z.object({
+  activity: str.min(3).max(300),
+  hours: num.min(0.5).max(24),
+  date: isoDate,
+  event: str.regex(/^[a-f\d]{24}$/i, "Invalid event id").optional(),
+});
+
+export const volunteerHoursStatusSchema = z.object({
+  status: z.enum(["Approved", "Rejected"]),
+  reviewNote: str.max(500).optional(),
+});
+
 export const contactMessageSchema = z.object({
   name: str.min(2).max(120),
   email: str.email().toLowerCase(),

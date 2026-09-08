@@ -9,6 +9,7 @@ import { useAuth } from "@/components/auth-context";
 import { useT } from "@/lib/i18n/context";
 import LanguageToggle from "@/components/language-toggle";
 import ThemeToggle from "@/components/theme-toggle";
+import SearchModal from "@/components/search-modal";
 import { img } from "@/lib/client/img";
 import { roleLabel } from "@/lib/roles";
 
@@ -68,6 +69,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [dropdown, setDropdown] = useState<string | null>(null);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
@@ -87,6 +89,17 @@ export default function Navbar() {
     const handler = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handler);
     return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSearchOpen((v) => !v);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   useEffect(() => {
@@ -176,13 +189,17 @@ export default function Navbar() {
 
           {/* CTA buttons */}
           <div className="hidden lg:flex items-center gap-2.5">
-            <Link
-              href="/search"
+            <button
+              onClick={() => setSearchOpen(true)}
               aria-label={t("nav.search")}
-              className="h-8 w-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:text-[#2D8FCE] transition-colors dark:border-[#26332f] dark:text-gray-300"
+              className="h-8 flex items-center gap-2 rounded-lg border border-gray-200 px-2.5 text-xs text-gray-400 hover:text-[#2D8FCE] hover:border-[#2D8FCE] transition-colors dark:border-[#26332f] dark:text-gray-400"
             >
-              <Search size={15} />
-            </Link>
+              <Search size={14} />
+              <span className="hidden xl:inline">{t("nav.search")}</span>
+              <kbd className="hidden xl:inline rounded bg-gray-100 px-1 text-[10px] font-semibold text-gray-400 dark:bg-white/10">
+                ⌘K
+              </kbd>
+            </button>
             <ThemeToggle />
             <LanguageToggle />
             {user ? (
@@ -296,12 +313,15 @@ export default function Navbar() {
               </Link>
             ),
           )}
-          <Link
-            href="/search"
-            className="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-[#D4E6F4] transition-colors"
+          <button
+            onClick={() => {
+              setOpen(false);
+              setSearchOpen(true);
+            }}
+            className="flex w-full items-center gap-2 px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-[#D4E6F4] transition-colors"
           >
             <Search size={16} /> {t("nav.search")}
-          </Link>
+          </button>
           <div className="pt-3 flex justify-center items-center gap-3 border-t border-gray-100">
             <ThemeToggle />
             <LanguageToggle />
@@ -352,6 +372,8 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+      {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} />}
     </header>
   );
 }

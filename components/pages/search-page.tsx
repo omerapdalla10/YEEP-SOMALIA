@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, ArrowRight, BookOpen, FolderOpen, Newspaper, Calendar } from "lucide-react";
@@ -33,10 +33,24 @@ export default function SearchPage() {
   const totalCount =
     programs.data.length + projects.data.length + news.data.length + events.data.length;
 
+  // Live search: push the term into the URL a beat after the user stops typing.
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    const id = setTimeout(() => {
+      const v = term.trim();
+      router.replace(v ? `/search?q=${encodeURIComponent(v)}` : "/search");
+    }, 300);
+    return () => clearTimeout(id);
+  }, [term, router]);
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const v = term.trim();
-    router.push(v ? `/search?q=${encodeURIComponent(v)}` : "/search");
+    router.replace(v ? `/search?q=${encodeURIComponent(v)}` : "/search");
   };
 
   return (

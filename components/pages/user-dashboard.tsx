@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   AlertCircle,
+  Award,
   Bell,
   BookOpen,
   Calendar,
@@ -37,6 +38,7 @@ import { uploadImage } from "@/lib/client/upload";
 import { useAdminTheme } from "@/components/admin/use-admin-theme";
 import { Donut } from "@/components/admin/charts";
 import { CommandPalette } from "@/components/admin/command-palette";
+import HoursLog from "@/components/dashboard/hours-log";
 import type { MyDashboardData } from "@/lib/types";
 
 /* ---------------------------- verify banner ----------------------------- */
@@ -99,6 +101,7 @@ const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", id: "dashboard" },
   { icon: User, label: "My Profile", id: "profile" },
   { icon: BookOpen, label: "Applications", id: "applications" },
+  { icon: Clock, label: "My Hours", id: "hours" },
   { icon: Bell, label: "Notifications", id: "notifications" },
   { icon: Settings, label: "Settings", id: "settings" },
 ];
@@ -950,6 +953,7 @@ export default function UserDashboard() {
                 <th>Role</th>
                 <th>Applied</th>
                 <th>Status</th>
+                <th />
               </tr>
             </thead>
             <tbody>
@@ -966,6 +970,16 @@ export default function UserDashboard() {
                   <td>{formatDateShort(app.createdAt)}</td>
                   <td>
                     <StatusBadge status={app.status} />
+                  </td>
+                  <td>
+                    {app.status === "Approved" && (
+                      <a
+                        className="adm-btn adm-btn-sm"
+                        href={`/api/volunteers/${app._id}/certificate`}
+                      >
+                        <Award size={13} /> Certificate
+                      </a>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -1240,6 +1254,7 @@ export default function UserDashboard() {
           {active === "dashboard" && renderDashboard()}
           {active === "profile" && <AccountCard />}
           {active === "applications" && renderApplications()}
+          {active === "hours" && <HoursLog />}
           {active === "notifications" && renderNotifications()}
           {active === "settings" && renderSettings()}
         </main>

@@ -85,6 +85,9 @@ export default function Navbar() {
     router.push("/");
   };
 
+  // Jump to top even when the link points at the page we're already on.
+  const scrollTop = () => window.scrollTo(0, 0);
+
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handler);
@@ -122,7 +125,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
+          <Link href="/" onClick={scrollTop} className="flex items-center gap-2.5 group">
             <Image
               src="/logo.svg"
               alt="YEEP Somalia"
@@ -163,6 +166,7 @@ export default function Navbar() {
                         <Link
                           key={child.href}
                           href={child.href}
+                          onClick={scrollTop}
                           className="block px-4 py-2.5 text-sm text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4] transition-colors"
                         >
                           {t(child.key)}
@@ -175,6 +179,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href!}
+                  onClick={scrollTop}
                   className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                     pathname === link.href
                       ? "text-[#1F6BA0] bg-[#D4E6F4]"
@@ -293,6 +298,7 @@ export default function Navbar() {
                   <Link
                     key={child.href}
                     href={child.href}
+                    onClick={scrollTop}
                     className="block px-3 py-2 text-sm text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4] rounded-lg transition-colors ml-2"
                   >
                     {t(child.key)}
@@ -303,6 +309,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href!}
+                onClick={scrollTop}
                 className={`block px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
                   pathname === link.href
                     ? "text-[#1F6BA0] bg-[#D4E6F4]"

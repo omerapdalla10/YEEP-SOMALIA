@@ -1064,6 +1064,32 @@ export default function AdminDashboard() {
     return () => clearTimeout(t);
   }, [toast]);
 
+  // Near-real-time badge counts: re-poll every 30s and whenever the tab
+  // regains focus, plus refresh the open list if it's messages/volunteers.
+  const refreshMsg = unreadMessages.refetch;
+  const refreshVol = pendingVolunteers.refetch;
+  const refreshMsgList = messages.refetch;
+  const refreshVolList = volunteers.refetch;
+  useEffect(() => {
+    const tick = () => {
+      refreshMsg();
+      refreshVol();
+      if (active === "messages") refreshMsgList();
+      if (active === "volunteers") refreshVolList();
+    };
+    const id = setInterval(tick, 30_000);
+    const onVisible = () => {
+      if (!document.hidden) tick();
+    };
+    window.addEventListener("focus", tick);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("focus", tick);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, [active, refreshMsg, refreshVol, refreshMsgList, refreshVolList]);
+
   function goTo(id: string) {
     setActive(id);
     setSidebarOpen(false);

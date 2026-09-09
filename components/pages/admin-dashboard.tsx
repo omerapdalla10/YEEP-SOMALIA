@@ -1547,7 +1547,6 @@ export default function AdminDashboard() {
 
   const notifs = notifFeed.data?.items ?? [];
   const notifUnreadCount = notifFeed.data?.unread ?? 0;
-  const notifUnread = notifUnreadCount > 0;
 
   const markNotifsRead = () => {
     if (notifUnreadCount === 0) return;
@@ -2995,7 +2994,9 @@ export default function AdminDashboard() {
                   aria-label="Notifications"
                 >
                   <Bell size={17} />
-                  {notifUnread && <span className="rd" />}
+                  {notifUnreadCount > 0 && (
+                    <span className="ct">{notifUnreadCount > 99 ? "99+" : notifUnreadCount}</span>
+                  )}
                 </button>
                 {notifOpen && (
                   <>

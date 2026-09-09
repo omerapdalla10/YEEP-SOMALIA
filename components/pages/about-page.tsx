@@ -27,7 +27,7 @@ import { img } from "@/lib/client/img";
 import { CountUp } from "@/components/count-up";
 import { QueryBoundary } from "@/components/data-states";
 import { useT } from "@/lib/i18n/context";
-import type { TeamMember, Milestone, SiteStats, Partner, Report } from "@/lib/types";
+import type { TeamMember, Milestone, SiteStats, Partner, Report, SiteContent } from "@/lib/types";
 
 const REGIONS = [
   "Banadir",
@@ -45,6 +45,7 @@ export default function AboutPage() {
   const partners = useCollection<Partner>("/partners", { limit: 100 });
   const reports = useCollection<Report>("/reports", { published: true, limit: 100 });
   const { data: stats } = useResource<SiteStats>("/stats");
+  const { data: site } = useResource<SiteContent>("/site-content");
   const [bio, setBio] = useState<TeamMember | null>(null);
 
   useEffect(() => {
@@ -136,7 +137,10 @@ export default function AboutPage() {
             </div>
             <div className="rounded-2xl overflow-hidden shadow-xl bg-gray-100">
               <img
-                src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=700&h=500&fit=crop&auto=format"
+                src={
+                  img(site?.aboutImage, "w=700&h=500&fit=crop&auto=format") ||
+                  "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=700&h=500&fit=crop&auto=format"
+                }
                 alt="YEEP Somalia team"
                 className="w-full h-full object-cover"
               />

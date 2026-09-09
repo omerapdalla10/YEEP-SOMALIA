@@ -67,6 +67,7 @@ import type {
   ContactMessage,
   NotificationItem,
   Report,
+  SiteContent,
   VolunteerHoursEntry,
 } from "@/lib/types";
 
@@ -549,6 +550,88 @@ function AdminAccountCard() {
           Update password
         </button>
       </form>
+    </div>
+  );
+}
+
+function SiteImagesCard() {
+  const { data, loading, refetch } = useResource<SiteContent>("/site-content");
+  const [form, setForm] = useState<SiteContent>({});
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<{ text: string; ok: boolean } | null>(null);
+  const [dirty, setDirty] = useState(false);
+
+  useEffect(() => {
+    if (!data) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setForm({
+      heroImage: data.heroImage ?? "",
+      homeImpactImage: data.homeImpactImage ?? "",
+      aboutImage: data.aboutImage ?? "",
+    });
+  }, [data]);
+
+  const set = (k: keyof SiteContent) => (v: string) => {
+    setForm((f) => ({ ...f, [k]: v }));
+    setDirty(true);
+  };
+
+  const save = async () => {
+    setBusy(true);
+    setMsg(null);
+    try {
+      await api.patch("/site-content", form);
+      setMsg({ text: "Images saved.", ok: true });
+      setDirty(false);
+      refetch();
+    } catch (err) {
+      setMsg({ text: err instanceof ApiError ? err.message : "Could not save.", ok: false });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="adm-panel adm-panel-p" style={{ maxWidth: 560 }}>
+      <h3 style={{ fontSize: 15.5, marginBottom: 6 }}>Site images</h3>
+      <p style={{ fontSize: 12, color: "var(--sub)", marginBottom: 18 }}>
+        Photos shown on the public home and About pages.
+      </p>
+      {loading && !data ? (
+        <Loading label="Loading…" />
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <ImageField
+            label="Home — hero background"
+            value={form.heroImage ?? ""}
+            onChange={set("heroImage")}
+          />
+          <ImageField
+            label="Home — “Our Impact” photo"
+            value={form.homeImpactImage ?? ""}
+            onChange={set("homeImpactImage")}
+          />
+          <ImageField
+            label="About — “Who We Are” photo"
+            value={form.aboutImage ?? ""}
+            onChange={set("aboutImage")}
+          />
+          <button
+            className="adm-btn adm-btn-primary"
+            style={{ alignSelf: "flex-start" }}
+            onClick={save}
+            disabled={busy || !dirty}
+          >
+            {busy && <Loader2 size={14} className="adm-spin" />}
+            Save images
+          </button>
+          {msg && (
+            <span className={msg.ok ? "adm-msg-ok" : "adm-msg-err"} style={{ fontSize: 12 }}>
+              {msg.text}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -2970,6 +3053,7 @@ export default function AdminDashboard() {
   const renderSettings = () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <AdminAccountCard />
+      <SiteImagesCard />
       {isAdmin && (
         <div className="adm-panel adm-panel-p" style={{ maxWidth: 560 }}>
           <h3 style={{ fontSize: 15.5, marginBottom: 18 }}>Appearance</h3>

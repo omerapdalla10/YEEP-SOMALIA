@@ -136,6 +136,12 @@ export interface Partner {
   order: number;
 }
 
+export interface SiteContent {
+  heroImage?: string;
+  homeImpactImage?: string;
+  aboutImage?: string;
+}
+
 export interface Report {
   _id: string;
   kind: "Annual Report" | "Financial Statement" | "Strategy" | "Policy" | "Research" | "Other";

@@ -37,6 +37,7 @@ import type {
   SiteStats,
   Article,
   GalleryItem,
+  SiteContent,
 } from "@/lib/types";
 
 function CardSkeleton() {
@@ -92,6 +93,7 @@ export default function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const { data: stats } = useResource<SiteStats>("/stats");
+  const { data: site } = useResource<SiteContent>("/site-content");
   const { data: programs, loading: programsLoading } = useCollection<Program>("/programs", {
     featured: true,
     limit: 3,
@@ -180,7 +182,7 @@ export default function HomePage() {
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="/hero.jpg"
+            src={img(site?.heroImage, "w=1600&h=1000&fit=crop&auto=format") || "/hero.jpg"}
             alt="YEEP SOMALIA youth gathering"
             className="w-full h-full object-cover"
           />
@@ -357,8 +359,11 @@ export default function HomePage() {
             <div className="relative">
               <div className="rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
                 <img
-                  src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=700&h=500&fit=crop&auto=format"
-                  alt="Students in class"
+                  src={
+                    img(site?.homeImpactImage, "w=700&h=500&fit=crop&auto=format") ||
+                    "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=700&h=500&fit=crop&auto=format"
+                  }
+                  alt="Young people at a YEEP Somalia session"
                   className="w-full h-80 object-cover"
                 />
               </div>

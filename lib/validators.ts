@@ -195,6 +195,12 @@ export const partnerSchema = z.object({
   order: num.optional(),
 });
 
+export const siteContentSchema = z.object({
+  heroImage: image,
+  homeImpactImage: image,
+  aboutImage: image,
+});
+
 export const reportSchema = z.object({
   kind: z.enum(REPORT_KINDS).optional(),
   title: str.min(2).max(200),

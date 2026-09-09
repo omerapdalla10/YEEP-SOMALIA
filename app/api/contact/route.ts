@@ -8,6 +8,7 @@ import { contactMessageSchema } from "@/lib/validators";
 import { sendMail } from "@/lib/api/mailer";
 import { contactNotificationEmail, contactAckEmail } from "@/lib/api/emails/contact";
 import { SUPPORT_EMAIL } from "@/lib/api/emails/layout";
+import { notify } from "@/lib/api/notify";
 import { ContactMessage } from "@/models/ContactMessage";
 
 const INBOX = process.env.CONTACT_INBOX || SUPPORT_EMAIL;
@@ -24,6 +25,10 @@ export const POST = route(async (req: NextRequest) => {
     ...contactNotificationEmail(body),
   });
   void sendMail({ to: body.email, ...contactAckEmail(body.name, body.subject) });
+  notify("contact_message", `${body.name}: "${body.subject}"`, {
+    link: "messages",
+    actorName: body.name,
+  });
 
   return created({ id: message.id }, "Message received");
 });

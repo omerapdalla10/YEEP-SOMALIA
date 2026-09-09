@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/api/auth";
 import { sendMail } from "@/lib/api/mailer";
 import { eventRegisteredEmail } from "@/lib/api/emails/event-registered";
 import { eventToIcs } from "@/lib/api/ics";
+import { notify } from "@/lib/api/notify";
 import { Event } from "@/models/Event";
 import { EventRegistration } from "@/models/EventRegistration";
 
@@ -60,6 +61,11 @@ export const POST = route<IdContext>(async (req, ctx) => {
     await Event.updateOne({ _id: id, registered: { $gt: 0 } }, { $inc: { registered: -1 } });
     throw err;
   }
+
+  notify("event_rsvp", `${user.name} registered for "${event.title}"`, {
+    link: "events",
+    actorName: user.name,
+  });
 
   // Fire-and-forget: confirmation email with a calendar invite attached.
   const mail = eventRegisteredEmail(user.name, {

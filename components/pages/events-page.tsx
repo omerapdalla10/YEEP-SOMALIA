@@ -2,11 +2,22 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Calendar, MapPin, Clock, Users, ArrowRight, Check, Loader2, X } from "lucide-react";
+import {
+  Calendar,
+  MapPin,
+  Clock,
+  Users,
+  ArrowRight,
+  Check,
+  CalendarPlus,
+  Loader2,
+  X,
+} from "lucide-react";
 import { useCollection } from "@/lib/client/hooks";
 import { useAuth } from "@/components/auth-context";
 import { api, ApiError } from "@/lib/client/api";
 import { img } from "@/lib/client/img";
+import { downloadIcs } from "@/lib/client/calendar";
 import { QueryBoundary } from "@/components/data-states";
 import type { EventItem, EventRegistration } from "@/lib/types";
 
@@ -14,12 +25,21 @@ const typeColor: Record<string, string> = {
   Community: "bg-[#D4E6F4] text-[#1F6BA0]",
   Conference: "bg-blue-100 text-blue-700",
   Workshop: "bg-purple-100 text-purple-700",
-  Fundraiser: "bg-[#D4E6F4] text-[#1F6BA0]",
+  Fundraiser: "bg-emerald-100 text-emerald-700",
   Forum: "bg-[#D4E6F4] text-[#1F6BA0]",
   Networking: "bg-rose-100 text-rose-700",
 };
+const badge = (type: string) => typeColor[type] || "bg-gray-100 text-gray-600";
+
+function monthOf(iso: string) {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime())
+    ? ""
+    : d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+}
 
 export default function EventsPage() {
+  const [tab, setTab] = useState<"upcoming" | "past">("upcoming");
   const [activeMonth, setActiveMonth] = useState("All");
   const { user } = useAuth();
   const {
@@ -29,10 +49,9 @@ export default function EventsPage() {
     refetch,
   } = useCollection<EventItem>("/events", { limit: 100 });
 
-  const {
-    data: registrations,
-    refetch: refetchRegistrations,
-  } = useCollection<EventRegistration>(user ? "/events/me" : null);
+  const { data: registrations, refetch: refetchRegistrations } = useCollection<EventRegistration>(
+    user ? "/events/me" : null,
+  );
 
   const registeredIds = useMemo(
     () => new Set(registrations.map((r) => r.event?._id).filter(Boolean)),
@@ -41,11 +60,26 @@ export default function EventsPage() {
 
   const [busyId, setBusyId] = useState<string | null>(null);
   const [cardError, setCardError] = useState<{ id: string; message: string } | null>(null);
-  // Snapshot "now" once per mount so deadline checks stay stable across renders.
   const [now] = useState(() => Date.now());
 
-  const months = Array.from(new Set(events.map((e) => e.month).filter(Boolean))) as string[];
-  const filtered = activeMonth === "All" ? events : events.filter((e) => e.month === activeMonth);
+  const { upcoming, past } = useMemo(() => {
+    const up: EventItem[] = [];
+    const pa: EventItem[] = [];
+    for (const e of events) {
+      (new Date(e.startDate).getTime() >= now ? up : pa).push(e);
+    }
+    up.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    pa.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+    return { upcoming: up, past: pa };
+  }, [events, now]);
+
+  const list = tab === "upcoming" ? upcoming : past;
+  const months = useMemo(
+    () => Array.from(new Set(list.map((e) => monthOf(e.startDate)).filter(Boolean))),
+    [list],
+  );
+  const filtered =
+    activeMonth === "All" ? list : list.filter((e) => monthOf(e.startDate) === activeMonth);
 
   async function toggleRegistration(event: EventItem, registered: boolean) {
     setBusyId(event._id);
@@ -73,7 +107,7 @@ export default function EventsPage() {
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
             Events
           </span>
-          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-5">Upcoming Events</h1>
+          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-5">Events</h1>
           <p className="text-xl text-white/80 max-w-2xl mx-auto">
             Join us at forums, workshops, dialogues, and roundtables — every event is a chance to
             connect and build peace.
@@ -81,24 +115,42 @@ export default function EventsPage() {
         </div>
       </section>
 
-      {/* Month filter */}
+      {/* Tabs + month filter */}
       <section className="py-6 bg-white border-b border-gray-100 sticky top-16 lg:top-20 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-2 flex-wrap">
-            {["All", ...months].map((m) => (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
+          <div className="inline-flex rounded-xl bg-gray-100 p-1">
+            {(["upcoming", "past"] as const).map((t) => (
               <button
-                key={m}
-                onClick={() => setActiveMonth(m)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                  activeMonth === m
-                    ? "bg-[#2D8FCE] text-white shadow-md"
-                    : "bg-gray-100 text-gray-600 hover:bg-[#D4E6F4] hover:text-[#1F6BA0]"
+                key={t}
+                onClick={() => {
+                  setTab(t);
+                  setActiveMonth("All");
+                }}
+                className={`px-5 py-1.5 rounded-lg text-sm font-semibold capitalize transition-all ${
+                  tab === t ? "bg-white text-[#1F6BA0] shadow-sm" : "text-gray-500"
                 }`}
               >
-                {m}
+                {t} ({t === "upcoming" ? upcoming.length : past.length})
               </button>
             ))}
           </div>
+          {months.length > 1 && (
+            <div className="flex gap-2 flex-wrap">
+              {["All", ...months].map((m) => (
+                <button
+                  key={m}
+                  onClick={() => setActiveMonth(m)}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                    activeMonth === m
+                      ? "bg-[#2D8FCE] text-white shadow-md"
+                      : "bg-gray-100 text-gray-600 hover:bg-[#D4E6F4] hover:text-[#1F6BA0]"
+                  }`}
+                >
+                  {m}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -110,7 +162,11 @@ export default function EventsPage() {
             error={error}
             empty={filtered.length === 0}
             onRetry={refetch}
-            emptyLabel="No events scheduled for this month."
+            emptyLabel={
+              tab === "upcoming"
+                ? "No upcoming events right now — check back soon."
+                : "No past events to show yet."
+            }
             loadingLabel="Loading events…"
           >
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
@@ -119,6 +175,7 @@ export default function EventsPage() {
                 const registeredCount = event.registered || 0;
                 const isRegistered = registeredIds.has(event._id);
                 const isFull = spots > 0 && registeredCount >= spots && !isRegistered;
+                const isPast = tab === "past";
                 const isClosed =
                   new Date(event.startDate).getTime() <= now ||
                   (!!event.registrationDeadline &&
@@ -134,13 +191,16 @@ export default function EventsPage() {
                       <img
                         src={img(event.image, "w=400&h=300&fit=crop&auto=format")}
                         alt={event.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${
+                          isPast ? "grayscale" : ""
+                        }`}
                       />
                     </div>
                     <div className="p-5 flex flex-col flex-1">
                       <div className="flex items-center gap-2 mb-2">
                         <span
-                          className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${typeColor[event.type]}`}
+                          className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${badge(event.type)}`}
                         >
                           {event.type}
                         </span>
@@ -156,89 +216,115 @@ export default function EventsPage() {
                       >
                         {event.title}
                       </Link>
-                      <p className="text-xs text-gray-500 leading-relaxed mb-3 flex-1">
+                      <p className="text-xs text-gray-500 leading-relaxed mb-3 flex-1 line-clamp-2">
                         {event.description}
                       </p>
-                      <Link
-                        href={`/events/${event.slug}`}
-                        className="text-xs font-semibold text-[#2D8FCE] hover:text-[#1F6BA0] mb-3"
-                      >
-                        View details &rarr;
-                      </Link>
                       <div className="grid grid-cols-2 gap-1.5 text-xs text-gray-400 mb-3">
                         <span className="flex items-center gap-1">
-                          <Calendar size={11} className="text-[#2D8FCE]" /> {event.dateLabel}
+                          <Calendar size={11} className="text-[#2D8FCE]" />{" "}
+                          {event.dateLabel || monthOf(event.startDate)}
                         </span>
-                        <span className="flex items-center gap-1">
-                          <Clock size={11} className="text-[#2D8FCE]" /> {event.timeLabel}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <MapPin size={11} className="text-[#2D8FCE]" /> {event.location}
-                        </span>
+                        {event.timeLabel && (
+                          <span className="flex items-center gap-1">
+                            <Clock size={11} className="text-[#2D8FCE]" /> {event.timeLabel}
+                          </span>
+                        )}
+                        {event.location && (
+                          <span className="flex items-center gap-1">
+                            <MapPin size={11} className="text-[#2D8FCE]" /> {event.location}
+                          </span>
+                        )}
                         <span className="flex items-center gap-1">
                           <Users size={11} className="text-[#2D8FCE]" /> {registeredCount}
                           {spots ? `/${spots}` : ""} registered
                         </span>
                       </div>
-                      {/* Spots progress */}
-                      <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden mb-3">
-                        <div
-                          className="h-full bg-[#2D8FCE] rounded-full"
-                          style={{
-                            width: `${spots ? Math.min(100, (registeredCount / spots) * 100) : 0}%`,
-                          }}
-                        />
-                      </div>
 
-                      {!user ? (
-                        <Link
-                          href="/login"
-                          className="flex items-center justify-center gap-1.5 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-semibold rounded-xl transition-colors"
-                        >
-                          Sign in to register <ArrowRight size={12} />
-                        </Link>
-                      ) : isRegistered ? (
-                        <button
-                          onClick={() => toggleRegistration(event, true)}
-                          disabled={busy}
-                          className="flex items-center justify-center gap-1.5 py-2 border border-gray-200 text-gray-600 hover:border-red-300 hover:text-red-600 text-xs font-semibold rounded-xl transition-colors disabled:opacity-60"
-                        >
-                          {busy ? (
-                            <Loader2 size={12} className="animate-spin" />
-                          ) : (
-                            <X size={12} />
-                          )}
-                          Cancel registration
-                        </button>
-                      ) : isClosed ? (
-                        <button
-                          disabled
-                          className="py-2 bg-gray-100 text-gray-400 text-xs font-semibold rounded-xl cursor-not-allowed"
-                        >
-                          Registration closed
-                        </button>
-                      ) : isFull ? (
-                        <button
-                          disabled
-                          className="py-2 bg-gray-100 text-gray-400 text-xs font-semibold rounded-xl cursor-not-allowed"
-                        >
-                          Event full
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => toggleRegistration(event, false)}
-                          disabled={busy}
-                          className="flex items-center justify-center gap-1.5 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-semibold rounded-xl transition-colors disabled:opacity-60"
-                        >
-                          {busy ? (
-                            <Loader2 size={12} className="animate-spin" />
-                          ) : (
-                            <>
-                              Register Now <ArrowRight size={12} />
-                            </>
-                          )}
-                        </button>
+                      {!isPast && (
+                        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden mb-3">
+                          <div
+                            className="h-full bg-[#2D8FCE] rounded-full"
+                            style={{
+                              width: `${spots ? Math.min(100, (registeredCount / spots) * 100) : 0}%`,
+                            }}
+                          />
+                        </div>
                       )}
+
+                      <div className="flex gap-2">
+                        {isPast ? (
+                          <Link
+                            href={`/events/${event.slug}`}
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2 border border-gray-200 text-gray-600 text-xs font-semibold rounded-xl hover:border-[#2D8FCE] hover:text-[#2D8FCE] transition-colors"
+                          >
+                            View details <ArrowRight size={12} />
+                          </Link>
+                        ) : !user ? (
+                          <Link
+                            href="/login"
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-semibold rounded-xl transition-colors"
+                          >
+                            Sign in to register <ArrowRight size={12} />
+                          </Link>
+                        ) : isRegistered ? (
+                          <button
+                            onClick={() => toggleRegistration(event, true)}
+                            disabled={busy}
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2 border border-gray-200 text-gray-600 hover:border-red-300 hover:text-red-600 text-xs font-semibold rounded-xl transition-colors disabled:opacity-60"
+                          >
+                            {busy ? <Loader2 size={12} className="animate-spin" /> : <X size={12} />}
+                            Cancel registration
+                          </button>
+                        ) : isClosed ? (
+                          <button
+                            disabled
+                            className="flex-1 py-2 bg-gray-100 text-gray-400 text-xs font-semibold rounded-xl cursor-not-allowed"
+                          >
+                            Registration closed
+                          </button>
+                        ) : isFull ? (
+                          <button
+                            disabled
+                            className="flex-1 py-2 bg-gray-100 text-gray-400 text-xs font-semibold rounded-xl cursor-not-allowed"
+                          >
+                            Event full
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => toggleRegistration(event, false)}
+                            disabled={busy}
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-semibold rounded-xl transition-colors disabled:opacity-60"
+                          >
+                            {busy ? (
+                              <Loader2 size={12} className="animate-spin" />
+                            ) : (
+                              <>
+                                Register Now <ArrowRight size={12} />
+                              </>
+                            )}
+                          </button>
+                        )}
+
+                        {!isPast && (
+                          <button
+                            onClick={() =>
+                              downloadIcs({
+                                id: event._id,
+                                title: event.title,
+                                description: event.description ?? undefined,
+                                location: event.location ?? undefined,
+                                start: event.startDate,
+                                end: event.endDate ?? undefined,
+                              })
+                            }
+                            title="Add to calendar"
+                            aria-label="Add to calendar"
+                            className="shrink-0 px-2.5 py-2 border border-gray-200 text-gray-500 rounded-xl hover:border-[#2D8FCE] hover:text-[#2D8FCE] transition-colors"
+                          >
+                            <CalendarPlus size={14} />
+                          </button>
+                        )}
+                      </div>
                       {cardError?.id === event._id && (
                         <p className="text-xs text-red-500 mt-2 text-center">{cardError.message}</p>
                       )}

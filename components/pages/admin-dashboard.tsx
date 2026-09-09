@@ -568,6 +568,13 @@ function SiteImagesCard() {
       heroImage: data.heroImage ?? "",
       homeImpactImage: data.homeImpactImage ?? "",
       aboutImage: data.aboutImage ?? "",
+      volunteerImage: data.volunteerImage ?? "",
+      contactEmail: data.contactEmail ?? "",
+      contactPhone: data.contactPhone ?? "",
+      contactWhatsapp: data.contactWhatsapp ?? "",
+      officeAddress: data.officeAddress ?? "",
+      officeHours: data.officeHours ?? "",
+      mapEmbedSrc: data.mapEmbedSrc ?? "",
     });
   }, [data]);
 
@@ -575,13 +582,15 @@ function SiteImagesCard() {
     setForm((f) => ({ ...f, [k]: v }));
     setDirty(true);
   };
+  const setInput = (k: keyof SiteContent) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    set(k)(e.target.value);
 
   const save = async () => {
     setBusy(true);
     setMsg(null);
     try {
       await api.patch("/site-content", form);
-      setMsg({ text: "Images saved.", ok: true });
+      setMsg({ text: "Saved.", ok: true });
       setDirty(false);
       refetch();
     } catch (err) {
@@ -593,9 +602,9 @@ function SiteImagesCard() {
 
   return (
     <div className="adm-panel adm-panel-p" style={{ maxWidth: 560 }}>
-      <h3 style={{ fontSize: 15.5, marginBottom: 6 }}>Site images</h3>
+      <h3 style={{ fontSize: 15.5, marginBottom: 6 }}>Site content</h3>
       <p style={{ fontSize: 12, color: "var(--sub)", marginBottom: 18 }}>
-        Photos shown on the public home and About pages.
+        Images and contact details shown on the public pages.
       </p>
       {loading && !data ? (
         <Loading label="Loading…" />
@@ -616,6 +625,68 @@ function SiteImagesCard() {
             value={form.aboutImage ?? ""}
             onChange={set("aboutImage")}
           />
+          <ImageField
+            label="Volunteer — hero background"
+            value={form.volunteerImage ?? ""}
+            onChange={set("volunteerImage")}
+          />
+
+          <div style={{ borderTop: "1px solid var(--line)", paddingTop: 14 }}>
+            <h4 style={{ fontSize: 13, fontWeight: 600, marginBottom: 12 }}>Contact details</h4>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <Field label="Public email">
+                <input
+                  className="adm-input"
+                  placeholder="info@yeep.org.so"
+                  value={form.contactEmail ?? ""}
+                  onChange={setInput("contactEmail")}
+                />
+              </Field>
+              <div className="adm-modal-grid">
+                <Field label="Phone">
+                  <input
+                    className="adm-input"
+                    placeholder="+252 61 000 0000"
+                    value={form.contactPhone ?? ""}
+                    onChange={setInput("contactPhone")}
+                  />
+                </Field>
+                <Field label="WhatsApp (digits only)">
+                  <input
+                    className="adm-input"
+                    placeholder="25261..."
+                    value={form.contactWhatsapp ?? ""}
+                    onChange={setInput("contactWhatsapp")}
+                  />
+                </Field>
+              </div>
+              <Field label="Office address">
+                <input
+                  className="adm-input"
+                  placeholder="Mogadishu, Somalia"
+                  value={form.officeAddress ?? ""}
+                  onChange={setInput("officeAddress")}
+                />
+              </Field>
+              <Field label="Office hours">
+                <input
+                  className="adm-input"
+                  placeholder="Sat – Thu: 8:00 AM – 4:00 PM"
+                  value={form.officeHours ?? ""}
+                  onChange={setInput("officeHours")}
+                />
+              </Field>
+              <Field label="Map embed src (OpenStreetMap / Google Maps iframe URL)">
+                <input
+                  className="adm-input"
+                  placeholder="https://www.openstreetmap.org/export/embed.html?bbox=..."
+                  value={form.mapEmbedSrc ?? ""}
+                  onChange={setInput("mapEmbedSrc")}
+                />
+              </Field>
+            </div>
+          </div>
+
           <button
             className="adm-btn adm-btn-primary"
             style={{ alignSelf: "flex-start" }}
@@ -623,7 +694,7 @@ function SiteImagesCard() {
             disabled={busy || !dirty}
           >
             {busy && <Loader2 size={14} className="adm-spin" />}
-            Save images
+            Save
           </button>
           {msg && (
             <span className={msg.ok ? "adm-msg-ok" : "adm-msg-err"} style={{ fontSize: 12 }}>

@@ -140,6 +140,13 @@ export interface SiteContent {
   heroImage?: string;
   homeImpactImage?: string;
   aboutImage?: string;
+  volunteerImage?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  contactWhatsapp?: string;
+  officeAddress?: string;
+  officeHours?: string;
+  mapEmbedSrc?: string;
 }
 
 export interface Report {

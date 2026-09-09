@@ -199,6 +199,13 @@ export const siteContentSchema = z.object({
   heroImage: image,
   homeImpactImage: image,
   aboutImage: image,
+  volunteerImage: image,
+  contactEmail: str.max(160).optional(),
+  contactPhone: str.max(40).optional(),
+  contactWhatsapp: str.max(20).optional(),
+  officeAddress: str.max(200).optional(),
+  officeHours: str.max(200).optional(),
+  mapEmbedSrc: str.max(1000).optional(),
 });
 
 export const reportSchema = z.object({

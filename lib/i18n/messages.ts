@@ -191,6 +191,8 @@ const en: Dict = {
     "© 2026 YEEP Somalia — Youth Engagement and Empowerment Programme. All rights reserved.",
   "footer.madeWith": "Made with",
   "footer.byYoungSomalis": "by young Somalis",
+  "footer.privacy": "Privacy",
+  "footer.terms": "Terms",
 
   // chat
   "chat.whatsapp": "Chat with us",
@@ -374,6 +376,8 @@ const so: Dict = {
     "© 2026 YEEP Somalia — Barnaamijka Ka-qeyb-galka iyo Awood-siinta Dhalinyarada. Dhammaan xuquuqda way dhowran tahay.",
   "footer.madeWith": "Waxaa sameeyay",
   "footer.byYoungSomalis": "dhalinyaro Soomaali ah",
+  "footer.privacy": "Asturnaanta",
+  "footer.terms": "Shuruudaha",
 
   // chat
   "chat.whatsapp": "Nala sheekayso",

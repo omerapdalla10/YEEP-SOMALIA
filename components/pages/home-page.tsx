@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -24,6 +24,7 @@ import {
   Newspaper,
 } from "lucide-react";
 import { useCollection, useResource } from "@/lib/client/hooks";
+import { CountUp } from "@/components/count-up";
 import { img } from "@/lib/client/img";
 import { formatCountPlus, formatMoneyCompact, formatDate } from "@/lib/client/format";
 import { api, ApiError } from "@/lib/client/api";
@@ -37,42 +38,6 @@ import type {
   Article,
   GalleryItem,
 } from "@/lib/types";
-
-/** Count from 0 up to `value` once the element scrolls into view. */
-function CountUp({ value, format }: { value: number; format: (n: number) => string }) {
-  const [display, setDisplay] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const done = useRef(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || done.current) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (!entries[0].isIntersecting || done.current) return;
-        done.current = true;
-        const duration = 1100;
-        const start = performance.now();
-        const tick = (now: number) => {
-          const p = Math.min(1, (now - start) / duration);
-          const eased = 1 - Math.pow(1 - p, 3);
-          setDisplay(Math.round(value * eased));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      },
-      { threshold: 0.3 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [value]);
-
-  return (
-    <div ref={ref} className="text-3xl font-bold text-[#2D8FCE] mb-1">
-      {format(display)}
-    </div>
-  );
-}
 
 function CardSkeleton() {
   return (

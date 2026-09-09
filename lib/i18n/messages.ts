@@ -104,6 +104,76 @@ const en: Dict = {
   "home.faq4A":
     "Reach out through our contact page. We work with government institutions, schools and civil society on Youth, Peace and Security.",
 
+  // about
+  "about.metaDesc":
+    "YEEP Somalia is a youth-led NGO in Mogadishu strengthening youth leadership in peacebuilding and preventing violent extremism across Somalia.",
+  "about.badge": "About Us",
+  "about.heroTitle": "Our Story, Mission & Vision",
+  "about.heroDesc":
+    "YEEP Somalia is a youth-led NGO in Mogadishu, strengthening youth leadership in peacebuilding and preventing violent extremism across Somalia.",
+  "about.whoKicker": "Who We Are",
+  "about.whoTitle": "A Youth-Led Movement for Peace",
+  "about.statFounded": "Founded",
+  "about.statBase": "Base",
+  "about.statFocus": "Focus",
+  "about.statPartners": "Partners",
+  "about.visionTitle": "Our Vision",
+  "about.missionTitle": "Our Mission",
+  "about.objectivesTitle": "Strategic Objectives",
+  "about.valuesKicker": "What Drives Us",
+  "about.valuesTitle": "Core Values",
+  "about.approachKicker": "How We Work",
+  "about.approachTitle": "Our Approach to Change",
+  "about.approachDesc":
+    "Lasting peace is built step by step — with young people leading at every stage.",
+  "about.approach1Title": "Train",
+  "about.approach1Desc": "Equip young Somalis with leadership, peacebuilding and civic skills.",
+  "about.approach2Title": "Engage",
+  "about.approach2Desc":
+    "Open safe spaces where youth, elders and authorities solve problems together.",
+  "about.approach3Title": "Advocate",
+  "about.approach3Desc": "Carry youth priorities into peace and security policy at every level.",
+  "about.approach4Title": "Sustain",
+  "about.approach4Desc":
+    "Back youth-led initiatives and partnerships so change outlasts any single project.",
+  "about.whereKicker": "Our Reach",
+  "about.whereTitle": "Where We Work",
+  "about.whereDesc":
+    "Headquartered in Mogadishu, we deliver programmes across Banadir and several federal member states.",
+  "about.timelineKicker": "Our Journey",
+  "about.timelineTitle": "Timeline of Achievements",
+  "about.teamKicker": "The People",
+  "about.teamTitle": "Meet the Leadership Team",
+  "about.readBio": "Read bio",
+  "about.governanceKicker": "Governance",
+  "about.governanceTitle": "How We Are Run",
+  "about.governanceDesc":
+    "YEEP Somalia is governed by a volunteer board and run day to day by a young executive team, with a clear separation between oversight and delivery.",
+  "about.govBoardTitle": "Board of Directors",
+  "about.govBoardDesc":
+    "Sets strategy, approves budgets, and holds the organisation accountable to its mission.",
+  "about.govStaffTitle": "Executive Team",
+  "about.govStaffDesc":
+    "Leads programmes, partnerships and operations, and reports to the board.",
+  "about.govAccountTitle": "Accountability",
+  "about.govAccountDesc":
+    "We keep financial records and safeguarding policies, and report on results to our partners and the communities we serve.",
+  "about.partnersKicker": "Collaboration",
+  "about.partnersTitle": "Our Partners",
+  "about.partnersDesc":
+    "We work alongside government institutions and civil society organisations advancing Youth, Peace and Security.",
+  "about.letterKicker": "A Word From Us",
+  "about.letterTitle": "Why This Work Matters",
+  "about.letterP1":
+    "More than 70% of Somalis are under 30. Young people carry the heaviest cost of conflict — and hold the clearest path out of it.",
+  "about.letterP2":
+    "YEEP Somalia exists so that young Somalis are in the room where decisions about peace are made — not waiting outside it. Every training, dialogue and partnership is a step toward that.",
+  "about.letterSign": "— YEEP Somalia Leadership",
+  "about.ctaTitle": "Join Our Mission",
+  "about.ctaDesc":
+    "Whether you volunteer or partner with us — every action creates ripples of change.",
+  "about.ctaPartner": "Partner With Us",
+
   // footer
   "footer.tagline": "Engage. Empower. Transform.",
   "footer.quickLinks": "Quick Links",
@@ -209,6 +279,78 @@ const so: Dict = {
   "home.faq4Q": "Sidee ururkaygu idinla shaqeyn karaa?",
   "home.faq4A":
     "Nagala soo xiriir bogga xiriirka. Waxaan la shaqeynaa hay'adaha dowladda, dugsiyada iyo bulshada rayidka arrimaha Dhalinyarada, Nabadda iyo Amniga.",
+
+  // about
+  "about.metaDesc":
+    "YEEP Somalia waa urur aan dawli ahayn oo dhalinyaro hoggaamiyaan, fadhigiisu Muqdisho yahay, kaasoo xoojiya hoggaanka dhalinyarada ee nabad-dhiska iyo ka hortagga argagixisada Soomaaliya oo dhan.",
+  "about.badge": "Nagu Saabsan",
+  "about.heroTitle": "Sheekadeena, Hadafkeena & Aragtideena",
+  "about.heroDesc":
+    "YEEP Somalia waa urur aan dawli ahayn oo dhalinyaro hoggaamiyaan oo Muqdisho fadhi ku leh, kaasoo xoojiya hoggaanka dhalinyarada nabad-dhiska kana hortagga argagixisada Soomaaliya oo dhan.",
+  "about.whoKicker": "Yaan Nahay",
+  "about.whoTitle": "Dhaqdhaqaaq Dhalinyaro Hoggaamiyaan oo Nabad Doon ah",
+  "about.statFounded": "La Aasaasay",
+  "about.statBase": "Fadhi",
+  "about.statFocus": "Diirad",
+  "about.statPartners": "Shuraako",
+  "about.visionTitle": "Aragtideena",
+  "about.missionTitle": "Hadafkeena",
+  "about.objectivesTitle": "Yoolalka Istiraatijiga ah",
+  "about.valuesKicker": "Waxa Na Dhaqaajiya",
+  "about.valuesTitle": "Qiyamkeena Aasaasiga ah",
+  "about.approachKicker": "Sida Aan U Shaqeyno",
+  "about.approachTitle": "Habkeena Isbeddelka",
+  "about.approachDesc":
+    "Nabad waarta waxaa la dhisaa tallaabo tallaabo — iyadoo dhalinyaradu hoggaaminayaan marxalad kasta.",
+  "about.approach1Title": "Tababar",
+  "about.approach1Desc":
+    "U qalabee dhalinyarada Soomaaliyeed xirfadaha hoggaaminta, nabad-dhiska iyo bulsho-galka.",
+  "about.approach2Title": "Ka-qeyb-gelin",
+  "about.approach2Desc":
+    "Fur meelo ammaan ah oo dhalinyarada, odayaasha iyo maamulku ay wadajir wax uga xalliyaan.",
+  "about.approach3Title": "U-doodid",
+  "about.approach3Desc":
+    "Gee mudnaantaha dhalinyarada siyaasadda nabadda iyo amniga heer kasta.",
+  "about.approach4Title": "Sii-wadid",
+  "about.approach4Desc":
+    "Taageer hindisayaal iyo iskaashiyo dhalinyaro hoggaamiyaan si isbeddelku uga sii jiro mashruuc kasta.",
+  "about.whereKicker": "Baaxadeena",
+  "about.whereTitle": "Meelaha Aan Ka Shaqeyno",
+  "about.whereDesc":
+    "Xaruntayadu waa Muqdisho, waxaanan barnaamijyo ka fulinnaa Banaadir iyo dhowr dowlad-goboleed.",
+  "about.timelineKicker": "Safarkeena",
+  "about.timelineTitle": "Jadwalka Guulaha",
+  "about.teamKicker": "Dadka",
+  "about.teamTitle": "La Kulan Kooxda Hoggaanka",
+  "about.readBio": "Akhri taariikh-nololeed",
+  "about.governanceKicker": "Maamulka",
+  "about.governanceTitle": "Sida Loo Maamulo",
+  "about.governanceDesc":
+    "YEEP Somalia waxaa maamula guddi mutadawiciin ah, maalin kastana waxaa wada koox fulineed oo dhalinyaro ah, iyadoo si cad loo kala saaray kormeerka iyo fulinta.",
+  "about.govBoardTitle": "Guddiga Agaasimayaasha",
+  "about.govBoardDesc":
+    "Wuxuu dejiyaa istiraatijiyada, ansixiyaa miisaaniyadaha, isla xisaabtanna uga dhigaa ururka hadafkiisa.",
+  "about.govStaffTitle": "Kooxda Fulinta",
+  "about.govStaffDesc":
+    "Waxay hoggaamisaa barnaamijyada, iskaashiga iyo hawlgallada, waxayna warbixin u gudbisaa guddiga.",
+  "about.govAccountTitle": "Isla-xisaabtan",
+  "about.govAccountDesc":
+    "Waxaan haynaa diiwaanno maaliyadeed iyo siyaasado ilaalin, waxaanan warbixin ka bixinnaa natiijooyinka shuraakada iyo bulshada aan u adeegno.",
+  "about.partnersKicker": "Iskaashi",
+  "about.partnersTitle": "Shuraakadeena",
+  "about.partnersDesc":
+    "Waxaan la shaqeynaa hay'ado dowladeed iyo ururro bulsho rayid ah oo horumariya Dhalinyarada, Nabadda iyo Amniga.",
+  "about.letterKicker": "Eray Naga Yimid",
+  "about.letterTitle": "Sababta Shaqadani u Muhiim tahay",
+  "about.letterP1":
+    "In ka badan 70% Soomaalida waa ka yar 30 jir. Dhalinyaradu waxay qaadaan qarashka ugu culus ee colaadda — waxayna hayaan jidka ugu cad ee laga baxo.",
+  "about.letterP2":
+    "YEEP Somalia waxay u jirtaa in dhalinyarada Soomaaliyeed ay ku jiraan qolka lagu go'aamiyo nabadda — ee aysan dibadda ku sugin. Tababar, wada-hadal iyo iskaashi kastaa waa tallaabo xagaas u socota.",
+  "about.letterSign": "— Hoggaanka YEEP Somalia",
+  "about.ctaTitle": "Ku Biir Hadafkeena",
+  "about.ctaDesc":
+    "Hadaad iskaa wax u qabato ama aad nala shaqeyso — falkastaa wuxuu abuuraa mowjado isbeddel ah.",
+  "about.ctaPartner": "Nala Shaqee",
 
   // footer
   "footer.tagline": "Ka Qeyb Qaado. Awood-siin. Isbeddel.",

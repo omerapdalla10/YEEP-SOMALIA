@@ -7,6 +7,7 @@ import { GALLERY_CATEGORIES } from "@/models/GalleryItem";
 import { VOLUNTEER_STATUSES } from "@/models/Volunteer";
 import { CONTACT_STATUSES } from "@/models/ContactMessage";
 import { TESTIMONIAL_PLACEMENTS } from "@/models/Testimonial";
+import { REPORT_KINDS } from "@/models/Report";
 
 const str = z.string().trim();
 const optStr = str.max(2000).optional();
@@ -191,6 +192,17 @@ export const partnerSchema = z.object({
   name: str.min(1).max(120),
   logo: image,
   website: str.max(500).optional(),
+  order: num.optional(),
+});
+
+export const reportSchema = z.object({
+  kind: z.enum(REPORT_KINDS).optional(),
+  title: str.min(2).max(200),
+  year: str.max(12).optional(),
+  fileUrl: str.min(4).max(1000),
+  summary: str.max(400).optional(),
+  fileSize: str.max(20).optional(),
+  published: z.coerce.boolean().optional(),
   order: num.optional(),
 });
 

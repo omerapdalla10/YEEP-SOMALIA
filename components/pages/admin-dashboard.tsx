@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Clock,
   Edit,
+  FileText,
   FolderOpen,
   Handshake,
   ImagePlus,
@@ -65,6 +66,7 @@ import type {
   EventRegistrationList,
   ContactMessage,
   NotificationItem,
+  Report,
   VolunteerHoursEntry,
 } from "@/lib/types";
 
@@ -85,6 +87,7 @@ const navItems = [
   { icon: UserCheck, label: "Team", id: "team" },
   { icon: Quote, label: "Testimonials", id: "testimonials" },
   { icon: Handshake, label: "Partners", id: "partners" },
+  { icon: FileText, label: "Reports", id: "reports" },
   { icon: Settings, label: "Settings", id: "settings" },
 ];
 
@@ -937,6 +940,7 @@ export default function AdminDashboard() {
   const partners = useCollection<Partner>(active === "partners" ? "/partners" : null, {
     limit: 100,
   });
+  const reports = useCollection<Report>(active === "reports" ? "/reports" : null, { limit: 100 });
 
   const [modal, setModal] = useState<
     | null
@@ -949,6 +953,7 @@ export default function AdminDashboard() {
     | "team"
     | "testimonial"
     | "partner"
+    | "report"
   >(null);
   const [saved, setSaved] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -1028,6 +1033,16 @@ export default function AdminDashboard() {
     order: "",
   };
   const emptyPartnerForm = { name: "", logo: "", website: "", order: "" };
+  const emptyReportForm = {
+    kind: "Annual Report",
+    title: "",
+    year: "",
+    fileUrl: "",
+    summary: "",
+    fileSize: "",
+    published: true,
+    order: "",
+  };
 
   const [projForm, setProjForm] = useState(emptyProjForm);
   const [progForm, setProgForm] = useState(emptyProgForm);
@@ -1037,6 +1052,7 @@ export default function AdminDashboard() {
   const [teamForm, setTeamForm] = useState(emptyTeamForm);
   const [testimonialForm, setTestimonialForm] = useState(emptyTestimonialForm);
   const [partnerForm, setPartnerForm] = useState(emptyPartnerForm);
+  const [reportForm, setReportForm] = useState(emptyReportForm);
   const [userForm, setUserForm] = useState({
     name: "",
     email: "",
@@ -1265,6 +1281,26 @@ export default function AdminDashboard() {
     setModal("partner");
   }
 
+  function openReportModal(r?: Report) {
+    setEditId(r?._id ?? null);
+    setReportForm(
+      r
+        ? {
+            kind: r.kind ?? "Annual Report",
+            title: r.title,
+            year: r.year ?? "",
+            fileUrl: r.fileUrl,
+            summary: r.summary ?? "",
+            fileSize: r.fileSize ?? "",
+            published: r.published ?? true,
+            order: r.order != null ? String(r.order) : "",
+          }
+        : emptyReportForm,
+    );
+    setFormError(null);
+    setModal("report");
+  }
+
   const closeModal = () => {
     setModal(null);
     setSaved(false);
@@ -1451,6 +1487,22 @@ export default function AdminDashboard() {
       if (editId) await api.patch(`/partners/${editId}`, payload);
       else await api.post("/partners", payload);
     }, partners.refetch);
+
+  const handleSaveReport = () =>
+    submit(async () => {
+      const payload = {
+        kind: reportForm.kind,
+        title: reportForm.title,
+        year: reportForm.year || undefined,
+        fileUrl: reportForm.fileUrl,
+        summary: reportForm.summary || undefined,
+        fileSize: reportForm.fileSize || undefined,
+        published: reportForm.published,
+        order: reportForm.order === "" ? undefined : Number(reportForm.order),
+      };
+      if (editId) await api.patch(`/reports/${editId}`, payload);
+      else await api.post("/reports", payload);
+    }, reports.refetch);
 
   const handleSaveUser = () =>
     submit(async () => {
@@ -2829,6 +2881,92 @@ export default function AdminDashboard() {
     </div>
   );
 
+  const renderReports = () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <SectionHead
+        sub={`${reports.data.length} publications`}
+        action={
+          <button className="adm-btn adm-btn-primary" onClick={() => openReportModal()}>
+            <Plus size={15} /> Add report
+          </button>
+        }
+      />
+      <div className="adm-panel">
+        {reports.loading ? (
+          <Loading label="Loading reports…" />
+        ) : reports.error ? (
+          <ErrorBox message={reports.error} onRetry={reports.refetch} />
+        ) : (
+          <div className="adm-table-wrap">
+            <table className="adm-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Type</th>
+                  <th>Year</th>
+                  <th>Status</th>
+                  <th>Order</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {reports.data.map((r) => (
+                  <tr key={r._id}>
+                    <td>
+                      <div className="adm-cellmain">
+                        <span className="adm-thumb-ph">
+                          <FileText size={14} />
+                        </span>
+                        <a
+                          href={r.fileUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="adm-t-name"
+                          style={{ color: "var(--teal-deep)" }}
+                        >
+                          {r.title}
+                        </a>
+                      </div>
+                    </td>
+                    <td style={{ color: "var(--sub)" }}>{r.kind}</td>
+                    <td style={{ color: "var(--sub)" }}>{r.year || "—"}</td>
+                    <td>
+                      <span className={`adm-badge ${r.published ? "adm-badge-green" : ""}`}>
+                        {r.published ? "Published" : "Draft"}
+                      </span>
+                    </td>
+                    <td style={{ color: "var(--sub)" }}>{r.order}</td>
+                    <td>
+                      <div style={{ display: "flex", gap: 4 }}>
+                        <button
+                          className="adm-iact"
+                          onClick={() => openReportModal(r)}
+                          title="Edit"
+                        >
+                          <Edit size={14} />
+                        </button>
+                        <button
+                          className="adm-iact danger"
+                          onClick={() => remove(`/reports/${r._id}`, reports.refetch)}
+                          title="Delete"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {reports.data.length === 0 && (
+              <div className="adm-empty">No reports yet. Add your first publication.</div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   const renderSettings = () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <AdminAccountCard />
@@ -3067,6 +3205,7 @@ export default function AdminDashboard() {
           {active === "team" && renderTeam()}
           {active === "testimonials" && renderTestimonials()}
           {active === "partners" && renderPartners()}
+          {active === "reports" && renderReports()}
           {active === "settings" && renderSettings()}
         </main>
       </div>
@@ -3995,6 +4134,105 @@ export default function AdminDashboard() {
                 handleSavePartner,
                 submitting || !partnerForm.name,
                 editId ? "Save Changes" : "Add Partner",
+              )}
+            </>
+          )}
+        </Modal>
+      )}
+
+      {modal === "report" && (
+        <Modal title={editId ? "Edit Report" : "Add Report"} onClose={closeModal}>
+          {saved ? (
+            <SavedState label={editId ? "Report updated!" : "Report added!"} />
+          ) : (
+            <>
+              <Field label="Title" required>
+                <input
+                  className="adm-input"
+                  placeholder="YEEP Somalia Annual Report 2025"
+                  value={reportForm.title}
+                  onChange={(e) => setReportForm({ ...reportForm, title: e.target.value })}
+                />
+              </Field>
+              <Field label="File URL (PDF link)" required>
+                <input
+                  className="adm-input"
+                  placeholder="https://…/annual-report-2025.pdf"
+                  value={reportForm.fileUrl}
+                  onChange={(e) => setReportForm({ ...reportForm, fileUrl: e.target.value })}
+                />
+              </Field>
+              <div className="adm-modal-grid">
+                <Field label="Type">
+                  <select
+                    className="adm-select"
+                    value={reportForm.kind}
+                    onChange={(e) => setReportForm({ ...reportForm, kind: e.target.value })}
+                  >
+                    {[
+                      "Annual Report",
+                      "Financial Statement",
+                      "Strategy",
+                      "Policy",
+                      "Research",
+                      "Other",
+                    ].map((k) => (
+                      <option key={k} value={k}>
+                        {k}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+                <Field label="Year">
+                  <input
+                    className="adm-input"
+                    placeholder="2025"
+                    value={reportForm.year}
+                    onChange={(e) => setReportForm({ ...reportForm, year: e.target.value })}
+                  />
+                </Field>
+              </div>
+              <Field label="Summary">
+                <textarea
+                  className="adm-textarea"
+                  rows={2}
+                  value={reportForm.summary}
+                  onChange={(e) => setReportForm({ ...reportForm, summary: e.target.value })}
+                />
+              </Field>
+              <div className="adm-modal-grid">
+                <Field label="File size">
+                  <input
+                    className="adm-input"
+                    placeholder="2.4 MB"
+                    value={reportForm.fileSize}
+                    onChange={(e) => setReportForm({ ...reportForm, fileSize: e.target.value })}
+                  />
+                </Field>
+                <Field label="Order">
+                  <input
+                    className="adm-input"
+                    type="number"
+                    value={reportForm.order}
+                    onChange={(e) => setReportForm({ ...reportForm, order: e.target.value })}
+                  />
+                </Field>
+              </div>
+              <Field label="Published">
+                <Switch
+                  checked={reportForm.published}
+                  onChange={(v) => setReportForm({ ...reportForm, published: v })}
+                  label="Show on the About page"
+                />
+              </Field>
+              {inlineErr(
+                !reportForm.title || !reportForm.fileUrl || !!formError,
+                formError || "A title and a file URL are required.",
+              )}
+              {modalFoot(
+                handleSaveReport,
+                submitting || !reportForm.title || !reportForm.fileUrl,
+                editId ? "Save Changes" : "Add Report",
               )}
             </>
           )}

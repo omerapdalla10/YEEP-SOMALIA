@@ -17,6 +17,8 @@ import {
   Building2,
   MapPin,
   Quote,
+  Download,
+  FileText,
   X,
 } from "lucide-react";
 import Link from "next/link";
@@ -25,7 +27,7 @@ import { img } from "@/lib/client/img";
 import { CountUp } from "@/components/count-up";
 import { QueryBoundary } from "@/components/data-states";
 import { useT } from "@/lib/i18n/context";
-import type { TeamMember, Milestone, SiteStats, Partner } from "@/lib/types";
+import type { TeamMember, Milestone, SiteStats, Partner, Report } from "@/lib/types";
 
 const REGIONS = [
   "Banadir",
@@ -41,6 +43,7 @@ export default function AboutPage() {
   const team = useCollection<TeamMember>("/team", { limit: 100 });
   const timeline = useCollection<Milestone>("/milestones", { limit: 100 });
   const partners = useCollection<Partner>("/partners", { limit: 100 });
+  const reports = useCollection<Report>("/reports", { published: true, limit: 100 });
   const { data: stats } = useResource<SiteStats>("/stats");
   const [bio, setBio] = useState<TeamMember | null>(null);
 
@@ -409,6 +412,51 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Reports & Resources */}
+      {reports.data.length > 0 && (
+        <section className="py-20 bg-white">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+                {t("about.reportsKicker")}
+              </span>
+              <h2 className="text-3xl font-bold text-gray-900 mt-2">{t("about.reportsTitle")}</h2>
+              <p className="text-gray-500 mt-3 max-w-2xl mx-auto">{t("about.reportsDesc")}</p>
+            </div>
+            <div className="space-y-3">
+              {reports.data.map((r) => (
+                <a
+                  key={r._id}
+                  href={r.fileUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-center gap-4 bg-[#f8fafc] hover:bg-white border border-gray-100 hover:border-[#2D8FCE] hover:shadow-md rounded-2xl p-5 transition-all"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center shrink-0">
+                    <FileText size={20} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-gray-900 group-hover:text-[#2D8FCE] transition-colors">
+                      {r.title}
+                    </div>
+                    <div className="text-xs text-gray-400 mt-0.5">
+                      {[r.kind, r.year, r.fileSize].filter(Boolean).join(" · ")}
+                    </div>
+                    {r.summary && (
+                      <p className="text-sm text-gray-500 mt-1 line-clamp-1">{r.summary}</p>
+                    )}
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#2D8FCE] shrink-0">
+                    <Download size={15} />
+                    <span className="hidden sm:inline">{t("about.download")}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Partners */}
       {partners.data.length > 0 && (

@@ -158,6 +158,11 @@ const en: Dict = {
   "about.govAccountTitle": "Accountability",
   "about.govAccountDesc":
     "We keep financial records and safeguarding policies, and report on results to our partners and the communities we serve.",
+  "about.reportsKicker": "Transparency",
+  "about.reportsTitle": "Reports & Resources",
+  "about.reportsDesc":
+    "Our annual reports, strategy and key policies — free to download.",
+  "about.download": "Download",
   "about.partnersKicker": "Collaboration",
   "about.partnersTitle": "Our Partners",
   "about.partnersDesc":
@@ -336,6 +341,11 @@ const so: Dict = {
   "about.govAccountTitle": "Isla-xisaabtan",
   "about.govAccountDesc":
     "Waxaan haynaa diiwaanno maaliyadeed iyo siyaasado ilaalin, waxaanan warbixin ka bixinnaa natiijooyinka shuraakada iyo bulshada aan u adeegno.",
+  "about.reportsKicker": "Hufnaan",
+  "about.reportsTitle": "Warbixinno & Kheyraad",
+  "about.reportsDesc":
+    "Warbixinnadayada sannadlaha ah, istiraatijiyada iyo siyaasadaha muhiimka ah — bilaash u soo dejiso.",
+  "about.download": "Soo deji",
   "about.partnersKicker": "Iskaashi",
   "about.partnersTitle": "Shuraakadeena",
   "about.partnersDesc":

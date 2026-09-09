@@ -32,16 +32,16 @@ export const GET = route(async (req: NextRequest) => {
 
   const [programs, projects, news, events] = await Promise.all([
     Program.find({ $or: [{ title: r }, { summary: r }, { description: r }] })
-      .select("title summary image")
+      .select("title summary image slug")
       .limit(perType),
     Project.find({ $or: [{ title: r }, { description: r }, { location: r }] })
-      .select("title description image")
+      .select("title description image slug")
       .limit(perType),
     Article.find({ published: true, $or: [{ title: r }, { excerpt: r }, { content: r }] })
       .select("title excerpt image slug")
       .limit(perType),
     Event.find({ published: true, $or: [{ title: r }, { description: r }, { location: r }] })
-      .select("title dateLabel location image")
+      .select("title dateLabel location image slug")
       .sort("startDate")
       .limit(perType),
   ]);
@@ -53,7 +53,7 @@ export const GET = route(async (req: NextRequest) => {
       title: p.title,
       subtitle: p.summary || p.description || undefined,
       image: p.image || undefined,
-      href: "/programs",
+      href: `/programs/${p.slug}`,
     })),
     ...projects.map((p) => ({
       type: "project" as const,
@@ -61,7 +61,7 @@ export const GET = route(async (req: NextRequest) => {
       title: p.title,
       subtitle: p.description || undefined,
       image: p.image || undefined,
-      href: "/projects",
+      href: `/projects/${p.slug}`,
     })),
     ...news.map((a) => ({
       type: "news" as const,
@@ -69,7 +69,7 @@ export const GET = route(async (req: NextRequest) => {
       title: a.title,
       subtitle: a.excerpt || undefined,
       image: a.image || undefined,
-      href: "/news",
+      href: `/news/${a.slug}`,
     })),
     ...events.map((e) => ({
       type: "event" as const,
@@ -77,7 +77,7 @@ export const GET = route(async (req: NextRequest) => {
       title: e.title,
       subtitle: [e.dateLabel, e.location].filter(Boolean).join(" · ") || undefined,
       image: e.image || undefined,
-      href: "/events",
+      href: `/events/${e.slug}`,
     })),
   ];
 

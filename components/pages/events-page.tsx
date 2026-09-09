@@ -150,10 +150,21 @@ export default function EventsPage() {
                           </span>
                         )}
                       </div>
-                      <h3 className="font-bold text-gray-900 mb-2">{event.title}</h3>
+                      <Link
+                        href={`/events/${event.slug}`}
+                        className="font-bold text-gray-900 mb-2 hover:text-[#2D8FCE] transition-colors"
+                      >
+                        {event.title}
+                      </Link>
                       <p className="text-xs text-gray-500 leading-relaxed mb-3 flex-1">
                         {event.description}
                       </p>
+                      <Link
+                        href={`/events/${event.slug}`}
+                        className="text-xs font-semibold text-[#2D8FCE] hover:text-[#1F6BA0] mb-3"
+                      >
+                        View details &rarr;
+                      </Link>
                       <div className="grid grid-cols-2 gap-1.5 text-xs text-gray-400 mb-3">
                         <span className="flex items-center gap-1">
                           <Calendar size={11} className="text-[#2D8FCE]" /> {event.dateLabel}

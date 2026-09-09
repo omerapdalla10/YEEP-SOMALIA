@@ -1,4 +1,4 @@
-import type { Model } from "mongoose";
+import mongoose, { type Model } from "mongoose";
 import type { NextRequest } from "next/server";
 import type { ZodObject, ZodRawShape } from "zod";
 import { route, type IdContext } from "./route";
@@ -19,6 +19,8 @@ export interface ResourceConfig<T> {
   writeRole?: Role;
   /** `"public"` (default) lets anyone read; `"staff"` locks reads down too. */
   readAccess?: "public" | "staff";
+  /** When set, `GET .../[id]` also resolves a `slug` when the param isn't an id. */
+  slug?: boolean;
 }
 
 /** Binds the model's `T` to its config so route files stay one-liners. */
@@ -68,7 +70,11 @@ export function resourceItem<T>(model: Model<T>, cfg: ResourceConfig<T>) {
   const GET = route<IdContext>(async (req, ctx) => {
     if (cfg.readAccess === "staff") await requireRole(req, writeRole);
     const { id } = await ctx.params;
-    const doc = await model.findById(id);
+
+    let doc = mongoose.isValidObjectId(id) ? await model.findById(id) : null;
+    if (!doc && cfg.slug) {
+      doc = await model.findOne({ slug: id } as Record<string, unknown>);
+    }
     if (!doc) throw ApiError.notFound(notFound);
     return ok(doc);
   });

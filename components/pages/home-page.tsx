@@ -212,7 +212,7 @@ export default function HomePage() {
                       {(prog.beneficiaries ?? 0).toLocaleString()} beneficiaries
                     </span>
                     <Link
-                      href="/programs"
+                      href={`/programs/${prog.slug}`}
                       className="text-sm font-semibold text-[#2D8FCE] hover:text-[#1F6BA0] flex items-center gap-1 transition-colors"
                     >
                       {t("common.learnMore")} <ChevronRight size={14} />
@@ -315,7 +315,12 @@ export default function HomePage() {
                 <span className="text-xs font-semibold text-[#1F6BA0] bg-[#D4E6F4] px-2.5 py-1 rounded-full">
                   {ev.type}
                 </span>
-                <h3 className="font-bold text-gray-900 mt-3 mb-2">{ev.title}</h3>
+                <Link
+                  href={`/events/${ev.slug}`}
+                  className="block font-bold text-gray-900 mt-3 mb-2 hover:text-[#2D8FCE] transition-colors"
+                >
+                  {ev.title}
+                </Link>
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2 text-sm text-gray-500">
                     <Calendar size={13} className="text-[#2D8FCE]" />
@@ -327,7 +332,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 <Link
-                  href="/events"
+                  href={`/events/${ev.slug}`}
                   className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 border border-[#2D8FCE] text-[#2D8FCE] text-sm font-semibold rounded-xl hover:bg-[#D4E6F4] transition-colors"
                 >
                   {t("common.registerNow")}

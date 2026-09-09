@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Search, Calendar, User, ArrowRight, Tag } from "lucide-react";
 import { useCollection } from "@/lib/client/hooks";
 import { img } from "@/lib/client/img";
@@ -133,9 +134,12 @@ export default function NewsPage() {
                       <Tag size={11} /> {featured.readTime} read
                     </span>
                   </div>
-                  <button className="self-start flex items-center gap-2 px-5 py-2.5 bg-[#2D8FCE] text-white text-sm font-semibold rounded-xl hover:bg-[#1F6BA0] transition-colors">
+                  <Link
+                    href={`/news/${featured.slug}`}
+                    className="self-start flex items-center gap-2 px-5 py-2.5 bg-[#2D8FCE] text-white text-sm font-semibold rounded-xl hover:bg-[#1F6BA0] transition-colors"
+                  >
                     Read Article <ArrowRight size={14} />
-                  </button>
+                  </Link>
                 </div>
               </div>
             )}
@@ -143,8 +147,9 @@ export default function NewsPage() {
             {/* Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
               {filtered.map((article) => (
-                <div
+                <Link
                   key={article._id}
+                  href={`/news/${article.slug}`}
                   className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
                 >
                   <div className="relative h-44 overflow-hidden bg-gray-100">
@@ -172,27 +177,11 @@ export default function NewsPage() {
                         <Tag size={10} /> {article.readTime}
                       </span>
                     </div>
-                    <button className="flex items-center gap-1.5 text-sm font-semibold text-[#2D8FCE] hover:text-[#1F6BA0] transition-colors">
+                    <span className="flex items-center gap-1.5 text-sm font-semibold text-[#2D8FCE] group-hover:text-[#1F6BA0] transition-colors">
                       Read More <ArrowRight size={13} />
-                    </button>
+                    </span>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Pagination */}
-            <div className="flex items-center justify-center gap-2 mt-12">
-              {[1, 2, 3, "...", 8].map((p, i) => (
-                <button
-                  key={i}
-                  className={`w-9 h-9 rounded-xl text-sm font-medium transition-colors ${
-                    p === 1
-                      ? "bg-[#2D8FCE] text-white"
-                      : "bg-white text-gray-500 hover:bg-[#D4E6F4] hover:text-[#1F6BA0] border border-gray-200"
-                  }`}
-                >
-                  {p}
-                </button>
+                </Link>
               ))}
             </div>
           </QueryBoundary>

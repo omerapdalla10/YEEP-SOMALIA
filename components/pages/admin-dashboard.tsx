@@ -1000,6 +1000,7 @@ export default function AdminDashboard() {
   const emptyNewsForm = {
     title: "",
     excerpt: "",
+    content: "",
     category: "",
     author: "",
     status: "Draft",
@@ -1176,6 +1177,7 @@ export default function AdminDashboard() {
         ? {
             title: n.title,
             excerpt: n.excerpt ?? "",
+            content: n.content ?? "",
             category: n.category ?? "",
             author: n.author ?? "",
             status: n.published ? "Published" : "Draft",
@@ -1372,6 +1374,7 @@ export default function AdminDashboard() {
       const payload = {
         title: newsForm.title,
         excerpt: newsForm.excerpt || undefined,
+        content: newsForm.content || undefined,
         category: newsForm.category || undefined,
         author: newsForm.author || undefined,
         published: newsForm.status === "Published",
@@ -3536,9 +3539,18 @@ export default function AdminDashboard() {
               <Field label="Excerpt / Summary">
                 <textarea
                   className="adm-textarea"
-                  rows={3}
+                  rows={2}
                   value={newsForm.excerpt}
                   onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
+                />
+              </Field>
+              <Field label="Article body">
+                <textarea
+                  className="adm-textarea"
+                  rows={10}
+                  placeholder="Write the full article. Leave a blank line between paragraphs."
+                  value={newsForm.content}
+                  onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
                 />
               </Field>
               <div className="adm-modal-grid">

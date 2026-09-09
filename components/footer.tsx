@@ -15,10 +15,15 @@ import {
   Check,
 } from "lucide-react";
 import { api } from "@/lib/client/api";
+import { useResource } from "@/lib/client/hooks";
 import { useT } from "@/lib/i18n/context";
+import type { SiteContent } from "@/lib/types";
 
 export default function Footer() {
   const t = useT();
+  const { data: site } = useResource<SiteContent>("/site-content");
+  const contactEmail = site?.contactEmail || "yeepsomalia@gmail.com";
+  const officeAddress = site?.officeAddress || "Mogadishu, Somalia";
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -156,15 +161,15 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <MapPin size={15} className="text-[#2D8FCE] mt-0.5 shrink-0" />
-                <span className="text-sm text-gray-400">Mogadishu, Somalia</span>
+                <span className="text-sm text-gray-400">{officeAddress}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={15} className="text-[#2D8FCE] shrink-0" />
                 <a
-                  href="mailto:yeepsomalia@gmail.com"
-                  className="text-sm text-gray-400 hover:text-[#D4E6F4] transition-colors"
+                  href={`mailto:${contactEmail}`}
+                  className="text-sm text-gray-400 hover:text-[#D4E6F4] transition-colors break-all"
                 >
-                  yeepsomalia@gmail.com
+                  {contactEmail}
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -215,10 +220,18 @@ export default function Footer() {
 
         <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-gray-500">{t("footer.rights")}</p>
-          <p className="text-xs text-gray-500 flex items-center gap-1">
-            {t("footer.madeWith")} <Heart size={11} className="text-[#2D8FCE]" />{" "}
-            {t("footer.byYoungSomalis")}
-          </p>
+          <div className="flex items-center gap-4">
+            <Link href="/privacy" className="text-xs text-gray-500 hover:text-[#D4E6F4] transition-colors">
+              {t("footer.privacy")}
+            </Link>
+            <Link href="/terms" className="text-xs text-gray-500 hover:text-[#D4E6F4] transition-colors">
+              {t("footer.terms")}
+            </Link>
+            <p className="text-xs text-gray-500 flex items-center gap-1">
+              {t("footer.madeWith")} <Heart size={11} className="text-[#2D8FCE]" />{" "}
+              {t("footer.byYoungSomalis")}
+            </p>
+          </div>
         </div>
       </div>
     </footer>

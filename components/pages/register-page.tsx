@@ -241,11 +241,11 @@ export default function RegisterPage() {
 
           <p className="mt-4 text-xs text-gray-400 text-center">
             By registering, you agree to our{" "}
-            <a href="#" className="text-[#2D8FCE] hover:underline">
+            <a href="/terms" className="text-[#2D8FCE] hover:underline">
               Terms
             </a>{" "}
             and{" "}
-            <a href="#" className="text-[#2D8FCE] hover:underline">
+            <a href="/privacy" className="text-[#2D8FCE] hover:underline">
               Privacy Policy
             </a>
           </p>

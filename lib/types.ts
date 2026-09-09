@@ -136,6 +136,32 @@ export interface Partner {
   order: number;
 }
 
+export interface SiteContent {
+  heroImage?: string;
+  homeImpactImage?: string;
+  aboutImage?: string;
+  volunteerImage?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  contactWhatsapp?: string;
+  officeAddress?: string;
+  officeHours?: string;
+  mapEmbedSrc?: string;
+}
+
+export interface Report {
+  _id: string;
+  kind: "Annual Report" | "Financial Statement" | "Strategy" | "Policy" | "Research" | "Other";
+  title: string;
+  year?: string;
+  fileUrl: string;
+  summary?: string;
+  fileSize?: string;
+  published: boolean;
+  order: number;
+  createdAt: string;
+}
+
 export interface VolunteerRole {
   _id: string;
   role: string;

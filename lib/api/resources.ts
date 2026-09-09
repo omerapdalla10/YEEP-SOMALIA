@@ -13,6 +13,7 @@ import { TeamMember } from "@/models/TeamMember";
 import { Milestone } from "@/models/Milestone";
 import { Testimonial } from "@/models/Testimonial";
 import { Partner } from "@/models/Partner";
+import { Report } from "@/models/Report";
 import { VolunteerRole } from "@/models/VolunteerRole";
 import {
   programSchema,
@@ -24,6 +25,7 @@ import {
   milestoneSchema,
   testimonialSchema,
   partnerSchema,
+  reportSchema,
   volunteerRoleSchema,
 } from "@/lib/validators";
 
@@ -87,6 +89,13 @@ export const testimonials = defineResource(Testimonial, {
 export const partners = defineResource(Partner, {
   bodySchema: partnerSchema,
   searchable: ["name"],
+  defaultSort: "order",
+});
+
+export const reports = defineResource(Report, {
+  bodySchema: reportSchema,
+  filterable: ["kind", "published"],
+  searchable: ["title", "summary", "year"],
   defaultSort: "order",
 });
 

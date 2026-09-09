@@ -6,6 +6,7 @@ import { getResource, getCollection } from "@/lib/server/resource";
 import { img } from "@/lib/client/img";
 import { formatDate } from "@/lib/client/format";
 import Prose from "@/components/prose";
+import ShareButtons from "@/components/share-buttons";
 import type { Article } from "@/lib/types";
 
 type Params = Promise<{ slug: string }>;
@@ -92,18 +93,23 @@ export default async function ArticlePage({ params }: { params: Params }) {
           <p className="text-[15px] leading-relaxed text-gray-600">{article.excerpt}</p>
         )}
 
-        {Array.isArray(article.tags) && article.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-10 pt-6 border-t border-gray-100">
-            {article.tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs text-gray-500 bg-gray-100 rounded-full"
-              >
-                <Tag size={10} /> {tag}
-              </span>
-            ))}
-          </div>
-        )}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-10 pt-6 border-t border-gray-100">
+          {Array.isArray(article.tags) && article.tags.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {article.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 text-xs text-gray-500 bg-gray-100 rounded-full"
+                >
+                  <Tag size={10} /> {tag}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <span />
+          )}
+          <ShareButtons title={article.title} path={`/news/${article.slug}`} />
+        </div>
       </article>
 
       {related.length > 0 && (

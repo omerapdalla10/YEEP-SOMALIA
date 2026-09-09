@@ -11,6 +11,7 @@ import { TeamMember } from "../models/TeamMember";
 import { Milestone } from "../models/Milestone";
 import { Testimonial } from "../models/Testimonial";
 import { Partner } from "../models/Partner";
+import { Report } from "../models/Report";
 import { VolunteerRole } from "../models/VolunteerRole";
 import { Volunteer } from "../models/Volunteer";
 import { ContactMessage } from "../models/ContactMessage";
@@ -121,6 +122,28 @@ const volunteerRoles = [
   { role: "Community Mobiliser", commitment: "5 hrs/week", location: "Field", skills: "Outreach, Communication", order: 6 },
 ];
 
+const reports = [
+  {
+    kind: "Annual Report",
+    title: "YEEP Somalia Annual Report 2025",
+    year: "2025",
+    summary:
+      "A full year of youth-led peacebuilding — programmes, partnerships, reach and financials.",
+    fileUrl: "https://example.org/yeep-somalia-annual-report-2025.pdf",
+    fileSize: "3.1 MB",
+    order: 1,
+  },
+  {
+    kind: "Strategy",
+    title: "Strategic Plan 2025–2027",
+    year: "2025",
+    summary: "Our three-year direction on Youth, Peace and Security.",
+    fileUrl: "https://example.org/yeep-somalia-strategy-2025-2027.pdf",
+    fileSize: "1.4 MB",
+    order: 2,
+  },
+];
+
 async function seed() {
   await dbConnect();
 
@@ -148,6 +171,7 @@ async function seed() {
     Milestone.deleteMany({}),
     Testimonial.deleteMany({}),
     Partner.deleteMany({}),
+    Report.deleteMany({}),
     VolunteerRole.deleteMany({}),
     Volunteer.deleteMany({}),
     ContactMessage.deleteMany({}),
@@ -174,6 +198,7 @@ async function seed() {
   await Milestone.create(milestones);
   await Testimonial.create(testimonials);
   await Partner.create(partners);
+  await Report.create(reports);
   await VolunteerRole.create(volunteerRoles);
 
   console.log("[seed] done — 1 admin user + site content.");

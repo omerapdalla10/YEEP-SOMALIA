@@ -173,11 +173,11 @@ export default function LoginPage() {
           <div className="mt-6 text-center">
             <p className="text-xs text-gray-400">
               By signing in, you agree to our{" "}
-              <a href="#" className="text-[#2D8FCE] hover:underline">
+              <a href="/terms" className="text-[#2D8FCE] hover:underline">
                 Terms
               </a>{" "}
               and{" "}
-              <a href="#" className="text-[#2D8FCE] hover:underline">
+              <a href="/privacy" className="text-[#2D8FCE] hover:underline">
                 Privacy Policy
               </a>
             </p>

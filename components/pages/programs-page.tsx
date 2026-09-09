@@ -137,7 +137,7 @@ export default function ProgramsPage() {
                     </div>
 
                     <Link
-                      href="/contact"
+                      href={`/programs/${prog.slug}`}
                       className="flex items-center justify-center gap-2 py-2.5 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-sm font-semibold rounded-xl transition-colors"
                     >
                       Learn More <ChevronRight size={14} />

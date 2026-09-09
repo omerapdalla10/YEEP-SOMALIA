@@ -5,6 +5,7 @@ import { listQuery } from "@/lib/api/list-query";
 import { ok, created } from "@/lib/api/response";
 import { requireRole, requireUser } from "@/lib/api/auth";
 import { volunteerHoursSchema } from "@/lib/validators";
+import { notify } from "@/lib/api/notify";
 import { VolunteerHours } from "@/models/VolunteerHours";
 import { User } from "@/models/User";
 import { Event } from "@/models/Event";
@@ -20,6 +21,11 @@ export const POST = route(async (req: NextRequest) => {
     hours: body.hours,
     date: body.date,
     event: body.event || undefined,
+  });
+
+  notify("hours", `${user.name} logged ${body.hours}h — "${body.activity}"`, {
+    link: "hours",
+    actorName: user.name,
   });
   return created(entry);
 });

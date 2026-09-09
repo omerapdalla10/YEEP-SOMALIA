@@ -13,6 +13,7 @@ import {
 import { appUrl, jwt as jwtConfig, oauthSuccessRedirect } from "@/lib/env";
 import { sendMail } from "@/lib/api/mailer";
 import { welcomeEmail } from "@/lib/api/emails/welcome";
+import { notify } from "@/lib/api/notify";
 import { User } from "@/models/User";
 
 /**
@@ -80,6 +81,10 @@ export const GET = route(async (req: NextRequest) => {
     // Fire-and-forget: a mail failure must never break sign-in.
     const mail = welcomeEmail(user.name);
     void sendMail({ to: user.email, ...mail });
+    notify("signup", `${user.name} signed up with Google`, {
+      link: "users",
+      actorName: user.name,
+    });
   } else {
     // Link the account on first Google sign-in, and on every sign-in keep the
     // Google photo fresh — unless the member has uploaded their own avatar

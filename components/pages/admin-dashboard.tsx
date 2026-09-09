@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -64,6 +64,7 @@ import type {
   Partner,
   EventRegistrationList,
   ContactMessage,
+  NotificationItem,
   VolunteerHoursEntry,
 } from "@/lib/types";
 
@@ -877,7 +878,6 @@ export default function AdminDashboard() {
   const [collapsed, setCollapsed] = useState(false);
   const [cmdkOpen, setCmdkOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
-  const [notifRead, setNotifRead] = useState(false);
   const [statModal, setStatModal] = useState<string | null>(null);
   const [registrantsFor, setRegistrantsFor] = useState<string | null>(null);
   const [openMessage, setOpenMessage] = useState<ContactMessage | null>(null);
@@ -894,6 +894,7 @@ export default function AdminDashboard() {
   const dashboard = useResource<AdminDashboardData>(
     active === "dashboard" ? "/dashboard/admin" : null,
   );
+  const notifFeed = useResource<{ items: NotificationItem[]; unread: number }>("/notifications");
   const users = useCollection<AdminUser>(active === "users" ? "/users" : null, { limit: 100 });
   const volunteers = useCollection<VolunteerApplication>(
     active === "volunteers" ? "/volunteers" : null,
@@ -1000,6 +1001,7 @@ export default function AdminDashboard() {
   const emptyNewsForm = {
     title: "",
     excerpt: "",
+    content: "",
     category: "",
     author: "",
     status: "Draft",
@@ -1063,6 +1065,34 @@ export default function AdminDashboard() {
     const t = setTimeout(() => setToast(null), 2400);
     return () => clearTimeout(t);
   }, [toast]);
+
+  // Near-real-time badge counts: re-poll every 30s and whenever the tab
+  // regains focus, plus refresh the open list if it's messages/volunteers.
+  const refreshMsg = unreadMessages.refetch;
+  const refreshVol = pendingVolunteers.refetch;
+  const refreshMsgList = messages.refetch;
+  const refreshVolList = volunteers.refetch;
+  const refreshNotifs = notifFeed.refetch;
+  useEffect(() => {
+    const tick = () => {
+      refreshMsg();
+      refreshVol();
+      refreshNotifs();
+      if (active === "messages") refreshMsgList();
+      if (active === "volunteers") refreshVolList();
+    };
+    const id = setInterval(tick, 30_000);
+    const onVisible = () => {
+      if (!document.hidden) tick();
+    };
+    window.addEventListener("focus", tick);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("focus", tick);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, [active, refreshMsg, refreshVol, refreshMsgList, refreshVolList, refreshNotifs]);
 
   function goTo(id: string) {
     setActive(id);
@@ -1150,6 +1180,7 @@ export default function AdminDashboard() {
         ? {
             title: n.title,
             excerpt: n.excerpt ?? "",
+            content: n.content ?? "",
             category: n.category ?? "",
             author: n.author ?? "",
             status: n.published ? "Published" : "Draft",
@@ -1346,6 +1377,7 @@ export default function AdminDashboard() {
       const payload = {
         title: newsForm.title,
         excerpt: newsForm.excerpt || undefined,
+        content: newsForm.content || undefined,
         category: newsForm.category || undefined,
         author: newsForm.author || undefined,
         published: newsForm.status === "Published",
@@ -1513,28 +1545,13 @@ export default function AdminDashboard() {
   const rangeLabel =
     range === "Year" ? "this year" : range === "Quarter" ? "last 3 months" : "this month";
 
-  const notifs = useMemo(() => {
-    if (!k) return [] as { txt: string; time: string }[];
-    const list: { txt: string; time: string }[] = [];
-    if (k.pendingApplications > 0)
-      list.push({
-        txt: `${k.pendingApplications} volunteer application${k.pendingApplications === 1 ? "" : "s"} awaiting review`,
-        time: "Needs action",
-      });
-    if (k.newMessages > 0)
-      list.push({
-        txt: `${k.newMessages} new contact message${k.newMessages === 1 ? "" : "s"}`,
-        time: "Unread",
-      });
-    if (k.upcomingEvents > 0)
-      list.push({
-        txt: `${k.upcomingEvents} upcoming event${k.upcomingEvents === 1 ? "" : "s"} on the calendar`,
-        time: "Soon",
-      });
-    list.push({ txt: "Everything else looks healthy.", time: "Now" });
-    return list;
-  }, [k]);
-  const notifUnread = notifs.length > 1 && !notifRead;
+  const notifs = notifFeed.data?.items ?? [];
+  const notifUnreadCount = notifFeed.data?.unread ?? 0;
+
+  const markNotifsRead = () => {
+    if (notifUnreadCount === 0) return;
+    void api.patch("/notifications").then(() => notifFeed.refetch());
+  };
 
   const adminCount = users.data.filter((u) => u.role === "admin").length;
   const staffCount = users.data.filter((u) => u.role === "staff").length;
@@ -2977,7 +2994,9 @@ export default function AdminDashboard() {
                   aria-label="Notifications"
                 >
                   <Bell size={17} />
-                  {notifUnread && <span className="rd" />}
+                  {notifUnreadCount > 0 && (
+                    <span className="ct">{notifUnreadCount > 99 ? "99+" : notifUnreadCount}</span>
+                  )}
                 </button>
                 {notifOpen && (
                   <>
@@ -2987,26 +3006,28 @@ export default function AdminDashboard() {
                     />
                     <div className="adm-notif">
                       <div className="adm-notif-head">
-                        <b>Notifications</b>
-                        <button onClick={() => setNotifRead(true)}>Mark all read</button>
+                        <b>Notifications{notifUnreadCount > 0 ? ` (${notifUnreadCount})` : ""}</b>
+                        <button onClick={markNotifsRead}>Mark all read</button>
                       </div>
                       {notifs.length === 0 && (
-                        <div className="adm-notif-item">
+                        <div className="adm-notif-item read">
                           <span className="nd" />
                           <div>
-                            <div className="ntxt">Open the dashboard to load activity.</div>
+                            <div className="ntxt">No activity yet.</div>
                           </div>
                         </div>
                       )}
                       {notifs.map((n, i) => (
                         <div
-                          key={i}
-                          className={`adm-notif-item${notifRead || i === notifs.length - 1 ? " read" : ""}`}
+                          key={n._id}
+                          className={`adm-notif-item${i >= notifUnreadCount ? " read" : ""}`}
+                          onClick={() => n.link && goTo(n.link)}
+                          style={n.link ? { cursor: "pointer" } : undefined}
                         >
                           <span className="nd" />
                           <div>
-                            <div className="ntxt">{n.txt}</div>
-                            <div className="ntime">{n.time}</div>
+                            <div className="ntxt">{n.message}</div>
+                            <div className="ntime">{formatDateShort(n.createdAt)}</div>
                           </div>
                         </div>
                       ))}
@@ -3510,9 +3531,18 @@ export default function AdminDashboard() {
               <Field label="Excerpt / Summary">
                 <textarea
                   className="adm-textarea"
-                  rows={3}
+                  rows={2}
                   value={newsForm.excerpt}
                   onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
+                />
+              </Field>
+              <Field label="Article body">
+                <textarea
+                  className="adm-textarea"
+                  rows={10}
+                  placeholder="Write the full article. Leave a blank line between paragraphs."
+                  value={newsForm.content}
+                  onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
                 />
               </Field>
               <div className="adm-modal-grid">

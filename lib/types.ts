@@ -42,6 +42,15 @@ export interface Project {
   featured: boolean;
 }
 
+export interface NotificationItem {
+  _id: string;
+  kind: "signup" | "hours" | "event_rsvp" | "volunteer_application" | "contact_message";
+  message: string;
+  link?: string;
+  actorName?: string;
+  createdAt: string;
+}
+
 export interface EventItem {
   _id: string;
   title: string;

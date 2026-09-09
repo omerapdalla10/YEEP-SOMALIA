@@ -9,6 +9,7 @@ import { registerSchema } from "@/lib/validators";
 import { sendMail } from "@/lib/api/mailer";
 import { welcomeEmail } from "@/lib/api/emails/welcome";
 import { sendVerificationEmail } from "@/lib/api/verification";
+import { notify } from "@/lib/api/notify";
 import { User } from "@/models/User";
 
 /** POST /api/auth/register — public sign-up. */
@@ -28,6 +29,7 @@ export const POST = route(async (req: NextRequest) => {
   // Fire-and-forget: a mail failure must never break sign-up.
   void sendMail({ to: user.email, ...welcomeEmail(user.name) });
   void sendVerificationEmail(user);
+  notify("signup", `${user.name} created an account`, { link: "users", actorName: user.name });
 
   const res = created({ user, token });
   setAuthCookie(res, token);

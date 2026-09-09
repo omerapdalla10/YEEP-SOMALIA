@@ -107,7 +107,7 @@ export default function SearchPage() {
               title: p.title,
               sub: p.summary || p.description,
               image: p.image,
-              href: "/programs",
+              href: `/programs/${p.slug}`,
             }))}
           />
           <ResultGroup
@@ -119,7 +119,7 @@ export default function SearchPage() {
               title: p.title,
               sub: p.description,
               image: p.image,
-              href: "/projects",
+              href: `/projects/${p.slug}`,
             }))}
           />
           <ResultGroup
@@ -131,7 +131,7 @@ export default function SearchPage() {
               title: a.title,
               sub: a.excerpt,
               image: a.image,
-              href: `/news`,
+              href: `/news/${a.slug}`,
             }))}
           />
           <ResultGroup
@@ -143,7 +143,7 @@ export default function SearchPage() {
               title: ev.title,
               sub: [ev.dateLabel, ev.location].filter(Boolean).join(" · "),
               image: ev.image,
-              href: "/events",
+              href: `/events/${ev.slug}`,
             }))}
           />
         </div>

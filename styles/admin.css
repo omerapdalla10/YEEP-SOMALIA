@@ -366,6 +366,22 @@
   background: var(--danger);
   border: 2px solid var(--panel);
 }
+.adm-bell .ct {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--danger);
+  border: 2px solid var(--panel);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 13px;
+  text-align: center;
+}
 .adm-profile {
   display: flex;
   align-items: center;

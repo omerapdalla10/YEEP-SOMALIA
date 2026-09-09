@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { MapPin, DollarSign, Users, ArrowRight, X } from "lucide-react";
+import { useState } from "react";
+import Link from "next/link";
+import { MapPin, DollarSign, Users, ArrowRight } from "lucide-react";
 import { useCollection } from "@/lib/client/hooks";
 import { img } from "@/lib/client/img";
 import { QueryBoundary } from "@/components/data-states";
@@ -11,7 +12,6 @@ const statuses = ["All", "Ongoing", "Completed", "Planned"];
 
 export default function ProjectsPage() {
   const [filter, setFilter] = useState("All");
-  const [selected, setSelected] = useState<Project | null>(null);
   const {
     data: projects,
     loading,
@@ -33,18 +33,6 @@ export default function ProjectsPage() {
     Completed: projects.filter((p) => p.status === "Completed").length,
     Planned: projects.filter((p) => p.status === "Planned").length,
   };
-
-  // Close the detail modal with Escape and lock body scroll while it's open.
-  useEffect(() => {
-    if (!selected) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSelected(null);
-    window.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [selected]);
 
   return (
     <div className="pt-16 lg:pt-20">
@@ -158,12 +146,12 @@ export default function ProjectsPage() {
                       </div>
                     </div>
 
-                    <button
-                      onClick={() => setSelected(proj)}
+                    <Link
+                      href={`/projects/${proj.slug}`}
                       className="flex items-center justify-center gap-2 py-2.5 border border-[#2D8FCE] text-[#2D8FCE] text-sm font-semibold rounded-xl hover:bg-[#D4E6F4] transition-colors"
                     >
                       Read More <ArrowRight size={14} />
-                    </button>
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -171,113 +159,6 @@ export default function ProjectsPage() {
           </QueryBoundary>
         </div>
       </section>
-
-      {/* Detail modal */}
-      {selected && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-label={selected.title}
-        >
-          <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setSelected(null)}
-          />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="relative h-52 bg-gray-100">
-              <img
-                src={img(selected.image, "w=800&h=450&fit=crop&auto=format")}
-                alt={selected.title}
-                className="w-full h-full object-cover"
-              />
-              <span
-                className={`absolute top-4 left-4 px-2.5 py-1 text-xs font-bold rounded-full ${statusColor[selected.status]}`}
-              >
-                {selected.status}
-              </span>
-              <button
-                onClick={() => setSelected(null)}
-                className="absolute top-3 right-3 p-2 rounded-xl bg-white/90 hover:bg-white text-gray-500 hover:text-gray-800 transition-colors"
-                aria-label="Close"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            <div className="p-6 sm:p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{selected.title}</h2>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-400 mb-5">
-                {selected.location && (
-                  <span className="flex items-center gap-1">
-                    <MapPin size={12} /> {selected.location}
-                  </span>
-                )}
-                <span className="flex items-center gap-1">
-                  <DollarSign size={12} /> ${selected.budget.toLocaleString()}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Users size={12} /> {selected.beneficiaries.toLocaleString()} beneficiaries
-                </span>
-              </div>
-
-              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line mb-6">
-                {selected.description || "No description provided for this project yet."}
-              </p>
-
-              <div className="mb-6">
-                <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-gray-400">Progress</span>
-                  <span className="font-semibold text-[#2D8FCE]">{selected.progress}%</span>
-                </div>
-                <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-[#2D8FCE] to-[#2D8FCE] rounded-full"
-                    style={{ width: `${selected.progress}%` }}
-                  />
-                </div>
-              </div>
-
-              {(selected.fundedBy ||
-                selected.partners ||
-                selected.startDate ||
-                selected.region) && (
-                <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm border-t border-gray-100 pt-5">
-                  {selected.region && (
-                    <div>
-                      <dt className="text-xs text-gray-400">Region</dt>
-                      <dd className="text-gray-700">{selected.region}</dd>
-                    </div>
-                  )}
-                  {selected.startDate && (
-                    <div>
-                      <dt className="text-xs text-gray-400">Started</dt>
-                      <dd className="text-gray-700">
-                        {new Date(selected.startDate).toLocaleDateString("en-US", {
-                          month: "long",
-                          year: "numeric",
-                        })}
-                      </dd>
-                    </div>
-                  )}
-                  {selected.fundedBy && (
-                    <div>
-                      <dt className="text-xs text-gray-400">Funded by</dt>
-                      <dd className="text-gray-700">{selected.fundedBy}</dd>
-                    </div>
-                  )}
-                  {selected.partners && (
-                    <div>
-                      <dt className="text-xs text-gray-400">Partners</dt>
-                      <dd className="text-gray-700">{selected.partners}</dd>
-                    </div>
-                  )}
-                </dl>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

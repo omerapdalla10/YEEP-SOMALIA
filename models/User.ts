@@ -30,6 +30,8 @@ export interface UserAttrs {
   emailVerified: boolean;
   verifyTokenHash?: string;
   verifyTokenExpires?: Date;
+  /** Staff/admin: last time they cleared the notifications feed. */
+  notificationsSeenAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -75,6 +77,7 @@ const userSchema = new Schema<UserAttrs, UserModel, UserMethods>(
     emailVerified: { type: Boolean, default: false },
     verifyTokenHash: { type: String, select: false },
     verifyTokenExpires: { type: Date, select: false },
+    notificationsSeenAt: { type: Date },
   },
   { timestamps: true },
 );

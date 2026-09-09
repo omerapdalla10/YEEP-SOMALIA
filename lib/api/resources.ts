@@ -31,12 +31,14 @@ export const programs = defineResource(Program, {
   bodySchema: programSchema,
   filterable: ["category", "status", "featured", "region"],
   searchable: ["title", "summary", "description"],
+  slug: true,
 });
 
 export const projects = defineResource(Project, {
   bodySchema: projectSchema,
   filterable: ["status", "category", "featured", "region"],
   searchable: ["title", "description", "location"],
+  slug: true,
 });
 
 export const events = defineResource(Event, {
@@ -44,6 +46,7 @@ export const events = defineResource(Event, {
   filterable: ["type", "published", "featured", "month", "region"],
   searchable: ["title", "description", "location"],
   defaultSort: "startDate",
+  slug: true,
 });
 
 export const news = defineResource(Article, {
@@ -51,6 +54,7 @@ export const news = defineResource(Article, {
   filterable: ["category", "published", "featured"],
   searchable: ["title", "excerpt", "content"],
   defaultSort: "-publishedAt",
+  slug: true,
 });
 
 export const gallery = defineResource(GalleryItem, {

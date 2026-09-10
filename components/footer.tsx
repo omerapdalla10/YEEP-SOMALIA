@@ -10,6 +10,7 @@ import {
   Briefcase,
   Globe,
   Mail,
+  Phone,
   MapPin,
   Heart,
   Check,
@@ -22,7 +23,8 @@ import type { SiteContent } from "@/lib/types";
 export default function Footer() {
   const t = useT();
   const { data: site } = useResource<SiteContent>("/site-content");
-  const contactEmail = site?.contactEmail || "yeepsomalia@gmail.com";
+  const contactEmail = site?.contactEmail || "info@yeep.org.so";
+  const contactPhone = site?.contactPhone || "+252 611 676 253";
   const officeAddress = site?.officeAddress || "Mogadishu, Somalia";
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
@@ -61,7 +63,7 @@ export default function Footer() {
               <div>
                 <div className="font-bold text-xl text-white">YEEP Somalia</div>
                 <div className="text-[10px] text-gray-400 tracking-wide">
-                  Youth Engagement &amp; Empowerment Programme
+                  Youth Engagement &amp; Empowerment Platform
                 </div>
               </div>
             </div>
@@ -162,6 +164,15 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin size={15} className="text-[#2D8FCE] mt-0.5 shrink-0" />
                 <span className="text-sm text-gray-400">{officeAddress}</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone size={15} className="text-[#2D8FCE] shrink-0" />
+                <a
+                  href={`tel:${contactPhone.replace(/\s+/g, "")}`}
+                  className="text-sm text-gray-400 hover:text-[#D4E6F4] transition-colors"
+                >
+                  {contactPhone}
+                </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={15} className="text-[#2D8FCE] shrink-0" />

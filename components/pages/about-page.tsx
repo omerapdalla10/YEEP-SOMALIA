@@ -25,17 +25,16 @@ import Link from "next/link";
 import { useCollection, useResource } from "@/lib/client/hooks";
 import { img } from "@/lib/client/img";
 import { CountUp } from "@/components/count-up";
+import { Avatar } from "@/components/avatar";
 import { QueryBoundary } from "@/components/data-states";
 import { useT } from "@/lib/i18n/context";
 import type { TeamMember, Milestone, SiteStats, Partner, Report, SiteContent } from "@/lib/types";
 
-const REGIONS = [
-  "Banadir",
-  "South West",
-  "Jubaland",
-  "Galmudug",
-  "Hirshabelle",
-  "Puntland",
+const PARTNER_TYPES = [
+  "Government",
+  "Local organisations",
+  "International agencies",
+  "Private sector",
 ];
 
 export default function AboutPage() {
@@ -56,11 +55,11 @@ export default function AboutPage() {
   }, [bio]);
 
   const values = [
-    { icon: Users, title: "Youth Leadership & Ownership", desc: "Young people lead the work — as decision-makers, facilitators, and advocates, not just beneficiaries." },
-    { icon: ShieldCheck, title: "Peacebuilding & P/CVE", desc: "We work non-violently to reduce conflict and to prevent and counter violent extremism." },
-    { icon: Scale, title: "Gender Inclusion", desc: "We invest in young women leaders and make space for voices too often left out of peace and security." },
-    { icon: HeartHandshake, title: "Community Resilience & Dialogue", desc: "We bring youth, elders, women, and authorities together to build trust and solve problems locally." },
-    { icon: Handshake, title: "Partnership & Collaboration", desc: "We work with government, civil society, and international partners to reach further together." },
+    { icon: Handshake, title: "Collaboration & Partnerships", desc: "Working with various organisations to enhance youth initiatives." },
+    { icon: Scale, title: "Inclusivity & Diversity", desc: "Ensuring equal opportunities and diverse voices in decision-making." },
+    { icon: Sprout, title: "Sustainability", desc: "Focusing on long-term solutions with lasting benefits." },
+    { icon: HeartHandshake, title: "Empowerment", desc: "Equipping youth with skills and resources for positive change." },
+    { icon: ShieldCheck, title: "Peace & Resilience", desc: "Promoting unity and peaceful conflict resolution." },
   ];
 
   const approach = [
@@ -77,12 +76,12 @@ export default function AboutPage() {
   ];
 
   const facts = [
-    { label: t("about.statFounded"), value: stats?.foundedYear ? String(stats.foundedYear) : "2024" },
+    { label: t("about.statFounded"), value: "Youth-led NGO" },
     { label: t("about.statBase"), value: "Mogadishu" },
-    { label: t("about.statFocus"), value: "YPS" },
+    { label: t("about.statFocus"), value: "PCVE & Youth" },
     {
       label: t("about.statPartners"),
-      value: `${partners.data.length || stats?.partners || 10}+`,
+      value: team.data.length ? String(team.data.length) : "—",
     },
   ];
 
@@ -113,18 +112,19 @@ export default function AboutPage() {
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-5">{t("about.whoTitle")}</h2>
               <p className="text-gray-500 leading-relaxed mb-4">
-                YEEP Somalia — the Youth Engagement and Empowerment Programme — was founded in 2024
-                by young Somali peacebuilders in Mogadishu. It began as a national initiative to
-                strengthen youth leadership in peacebuilding and to prevent violent extremism,
-                giving young people a real seat at the table on the issues that shape their
-                communities.
+                YEEP Somalia was founded by Somali youth as a registered youth-led organization.
+                While some UN and international organisations implement PCVE work, there was a gap in
+                youth direct engagement — YEEP was created to bridge that gap by giving young people
+                a platform to share experience, learn, and educate each other through the knowledge
+                of PCVE.
               </p>
               <p className="text-gray-500 leading-relaxed mb-6">
-                Today we work across Banadir and several federal member states on Youth, Peace and
-                Security (YPS), youth leadership, civic engagement, and community resilience —
-                alongside more than ten partner organisations in government and civil society. Our
-                work is shaped by the young people we serve: their priorities, their resilience, and
-                their determination drive everything we do.
+                We are a youth-led, non-governmental organization (NGO) dedicated to empowering
+                Somali youth to lead, innovate, and build peaceful, inclusive, and resilient
+                communities. The founders were trained and engaged through the United Nations Office
+                of Counter-Terrorism (UNOCT) Youth Engagement and Empowerment Program (YEEP). Our
+                programs focus on leadership training, civic education, economic empowerment and
+                social impact initiatives.
               </p>
               <div className="grid grid-cols-2 gap-4">
                 {facts.map((s) => (
@@ -186,8 +186,9 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">{t("about.visionTitle")}</h3>
               <p className="text-gray-500 leading-relaxed">
-                &ldquo;Youth are not just beneficiaries of change — we are the leaders of change.
-                Youth are not the leaders of tomorrow — we are the leaders of today.&rdquo;
+                A Somalia where young people lead the way in sustainable development, peacebuilding,
+                and innovation, creating a society that values collaboration, inclusivity, and
+                progress.
               </p>
             </div>
             <div className="bg-[#2D8FCE] rounded-2xl p-8 shadow-sm">
@@ -196,8 +197,9 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-bold text-white mb-3">{t("about.missionTitle")}</h3>
               <p className="text-white/80 leading-relaxed">
-                To equip young leaders with the skills, knowledge, and opportunities to drive
-                positive change, counter violent extremism, and build resilient communities.
+                To equip Somali youth with leadership skills, civic awareness, and economic
+                opportunities, enabling them to become active citizens and architects of a stronger
+                Somalia.
               </p>
             </div>
           </div>
@@ -209,12 +211,13 @@ export default function AboutPage() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
-                "Build the leadership and peacebuilding capacity of young Somalis",
-                "Create safe spaces for youth to address community challenges",
-                "Advance the Youth, Peace and Security (YPS) agenda nationally",
-                "Support youth-led initiatives that prevent violent extremism",
-                "Integrate youth voices into peace and security policy",
-                "Strengthen partnerships across government and civil society",
+                "Preventing Violent Extremism",
+                "Leadership Development",
+                "Sustainability & Environmental Stewardship",
+                "Networking & Partnerships",
+                "Civic Engagement & Advocacy",
+                "Social Cohesion & Peacebuilding",
+                "Capacity Building & Economic Empowerment",
               ].map((obj) => (
                 <div key={obj} className="flex items-start gap-3 bg-white rounded-xl p-4 shadow-sm">
                   <CheckCircle size={18} className="text-[#2D8FCE] shrink-0 mt-0.5" />
@@ -291,13 +294,17 @@ export default function AboutPage() {
           </span>
           <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-3">{t("about.whereTitle")}</h2>
           <p className="text-gray-500 max-w-2xl mx-auto mb-8">{t("about.whereDesc")}</p>
+          <div className="mb-6 inline-flex items-center gap-1.5 px-4 py-2 bg-[#f8fafc] border border-gray-100 rounded-full text-sm font-medium text-gray-600">
+            <MapPin size={13} className="text-[#2D8FCE]" />
+            Mogadishu, Somalia
+          </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            {REGIONS.map((r) => (
+            {PARTNER_TYPES.map((r) => (
               <span
                 key={r}
                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#f8fafc] border border-gray-100 rounded-full text-sm font-medium text-gray-600"
               >
-                <MapPin size={13} className="text-[#2D8FCE]" />
+                <Handshake size={13} className="text-[#2D8FCE]" />
                 {r}
               </span>
             ))}
@@ -371,12 +378,8 @@ export default function AboutPage() {
                     onClick={() => hasBio && setBio(member)}
                     className={`group text-center ${hasBio ? "cursor-pointer" : "cursor-default"}`}
                   >
-                    <div className="relative w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden bg-gray-100 ring-2 ring-white ring-offset-2 group-hover:ring-[#2D8FCE] transition-all shadow-md">
-                      <img
-                        src={img(member.image, "w=200&h=200&fit=crop&auto=format")}
-                        alt={member.name}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="w-24 h-24 mx-auto mb-3 rounded-full ring-2 ring-white ring-offset-2 group-hover:ring-[#2D8FCE] transition-all shadow-md">
+                      <Avatar src={member.image} name={member.name} size={96} />
                     </div>
                     <h4 className="font-semibold text-gray-900 text-sm">{member.name}</h4>
                     <p className="text-xs text-gray-400 mt-0.5">{member.role}</p>
@@ -563,11 +566,7 @@ export default function AboutPage() {
               <X size={20} />
             </button>
             <div className="flex items-center gap-4 mb-4">
-              <img
-                src={img(bio.image, "w=160&h=160&fit=crop&auto=format")}
-                alt={bio.name}
-                className="w-16 h-16 rounded-full object-cover bg-gray-100"
-              />
+              <Avatar src={bio.image} name={bio.name} size={64} />
               <div>
                 <h3 className="font-bold text-gray-900">{bio.name}</h3>
                 <p className="text-sm text-[#2D8FCE]">{bio.role}</p>

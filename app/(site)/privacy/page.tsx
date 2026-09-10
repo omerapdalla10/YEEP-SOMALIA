@@ -17,7 +17,7 @@ export default function PrivacyPage() {
     <LegalDoc
       title="Privacy Policy"
       updated="9 September 2026"
-      intro="YEEP Somalia (the Youth Engagement and Empowerment Programme) is committed to protecting the privacy of the people who use this website and take part in our work. This policy explains what information we collect, why we collect it, and the choices you have."
+      intro="YEEP Somalia (the Youth Engagement and Empowerment Platform) is committed to protecting the privacy of the people who use this website and take part in our work. This policy explains what information we collect, why we collect it, and the choices you have."
     >
       <section>
         <h2>Information we collect</h2>

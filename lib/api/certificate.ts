@@ -45,7 +45,7 @@ export async function generateCertificatePdf(input: CertInput): Promise<Uint8Arr
   page.drawRectangle({ x: 0, y: 0, width, height: 12, color: BLUE });
 
   centre("YEEP SOMALIA", height - 96, 20, helvBold, BLUE_DARK);
-  centre("Youth Engagement and Empowerment Programme", height - 116, 10, helv, GREY);
+  centre("Youth Engagement and Empowerment Platform", height - 116, 10, helv, GREY);
 
   centre("CERTIFICATE OF APPRECIATION", height - 176, 30, helvBold, INK);
   centre("This certificate is proudly presented to", height - 214, 12, helv, GREY);

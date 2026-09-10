@@ -6,10 +6,10 @@ export const TINT = "#D4E6F4";
 export const INK = "#1f2937";
 export const SUB = "#6b7280";
 
-export const SUPPORT_EMAIL = "yeepsomalia@gmail.com";
+export const SUPPORT_EMAIL = "info@yeep.org.so";
 export const WEBSITE = "yeep.org.so";
 export const SIGNOFF_NAME = "The YEEP Somalia Team";
-export const SIGNOFF_TITLE = "Youth Engagement and Empowerment Programme";
+export const SIGNOFF_TITLE = "Youth Engagement and Empowerment Platform";
 
 export function escapeHtml(s: string): string {
   return s.replace(

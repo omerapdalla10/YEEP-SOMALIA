@@ -46,11 +46,11 @@ const en: Dict = {
   "common.viewDetails": "View Details",
 
   // home
-  "home.badge": "Youth, Peace & Security — led by young Somalis",
+  "home.badge": "A registered youth-led organization",
   "home.heroLine1": "Engage. Empower.",
   "home.heroLine2": "Transform.",
   "home.heroDesc":
-    "YEEP Somalia is a youth-led NGO advancing Youth, Peace and Security (YPS), youth leadership, civic engagement, and community resilience across Somalia.",
+    "YEEP Somalia is a youth-led, non-governmental organization empowering Somali youth to lead, innovate, and build peaceful, inclusive, and resilient communities.",
   "home.watchStory": "Watch Our Story",
   "home.whatWeDo": "What We Do",
   "home.featuredPrograms": "Featured Programs",
@@ -69,7 +69,7 @@ const en: Dict = {
   "home.volunteerToday": "Volunteer Today",
   "home.exploreProgram": "Explore Programs",
   "home.missionQuote":
-    "YEEP Somalia is a national initiative designed to strengthen youth leadership in peacebuilding and prevent violent extremism.",
+    "Young people should not only be beneficiaries of change, but the driving force behind it.",
   "home.getStarted": "Get Started",
   "home.howTitle": "Three Ways to Get Involved",
   "home.howDesc":
@@ -93,30 +93,30 @@ const en: Dict = {
   "home.faqTitle": "Frequently Asked Questions",
   "home.faq1Q": "Who can join YEEP Somalia?",
   "home.faq1A":
-    "Any young person in Somalia aged 15 to 35 who wants to contribute to peace and community development. No prior experience is needed.",
+    "Any young Somali who wants to contribute to peace, leadership and community development. No prior experience is needed.",
   "home.faq2Q": "Is volunteering paid?",
   "home.faq2A":
-    "Volunteering is unpaid, but we cover transport and meal costs for activities and provide certificates and training.",
+    "Volunteering is unpaid, but we provide training, mentorship and certificates, and cover activity costs where possible.",
   "home.faq3Q": "How do I register for an event?",
   "home.faq3A":
     "Create a free account, open the event you are interested in, and click Register. You will get a confirmation email with the details.",
   "home.faq4Q": "How can my organisation partner with you?",
   "home.faq4A":
-    "Reach out through our contact page. We work with government institutions, schools and civil society on Youth, Peace and Security.",
+    "Reach out through our contact page. We work with governments, local organisations, international agencies and the private sector.",
 
   // about
   "about.metaDesc":
-    "YEEP Somalia is a youth-led NGO in Mogadishu strengthening youth leadership in peacebuilding and preventing violent extremism across Somalia.",
+    "YEEP Somalia is a registered, youth-led NGO empowering Somali youth to lead, innovate, and build peaceful, inclusive and resilient communities.",
   "about.badge": "About Us",
   "about.heroTitle": "Our Story, Mission & Vision",
   "about.heroDesc":
-    "YEEP Somalia is a youth-led NGO in Mogadishu, strengthening youth leadership in peacebuilding and preventing violent extremism across Somalia.",
+    "YEEP Somalia is a registered, youth-led NGO empowering Somali youth to lead, innovate, and build peaceful, inclusive and resilient communities.",
   "about.whoKicker": "Who We Are",
   "about.whoTitle": "A Youth-Led Movement for Peace",
-  "about.statFounded": "Founded",
+  "about.statFounded": "Type",
   "about.statBase": "Base",
   "about.statFocus": "Focus",
-  "about.statPartners": "Partners",
+  "about.statPartners": "Team",
   "about.visionTitle": "Our Vision",
   "about.missionTitle": "Our Mission",
   "about.objectivesTitle": "Strategic Objectives",
@@ -139,7 +139,7 @@ const en: Dict = {
   "about.whereKicker": "Our Reach",
   "about.whereTitle": "Where We Work",
   "about.whereDesc":
-    "Headquartered in Mogadishu, we deliver programmes across Banadir and several federal member states.",
+    "Based in Mogadishu, Somalia, working with and for young people through partnerships with governments, local organisations, international agencies and the private sector.",
   "about.timelineKicker": "Our Journey",
   "about.timelineTitle": "Timeline of Achievements",
   "about.teamKicker": "The People",
@@ -148,16 +148,16 @@ const en: Dict = {
   "about.governanceKicker": "Governance",
   "about.governanceTitle": "How We Are Run",
   "about.governanceDesc":
-    "YEEP Somalia is governed by a volunteer board and run day to day by a young executive team, with a clear separation between oversight and delivery.",
-  "about.govBoardTitle": "Board of Directors",
+    "YEEP Somalia is led by an Executive Director and a young executive team covering programmes, finance, grants, HR, MEAL and communications.",
+  "about.govBoardTitle": "Executive Leadership",
   "about.govBoardDesc":
-    "Sets strategy, approves budgets, and holds the organisation accountable to its mission.",
-  "about.govStaffTitle": "Executive Team",
+    "The Executive Director and Vice Executive Director set direction and represent the organisation.",
+  "about.govStaffTitle": "Programme & Operations",
   "about.govStaffDesc":
-    "Leads programmes, partnerships and operations, and reports to the board.",
+    "Teams for programmes and partnerships, case management, grants, administration and finance.",
   "about.govAccountTitle": "Accountability",
   "about.govAccountDesc":
-    "We keep financial records and safeguarding policies, and report on results to our partners and the communities we serve.",
+    "Dedicated MEAL and finance functions keep records and report on results to our partners and the communities we serve.",
   "about.reportsKicker": "Transparency",
   "about.reportsTitle": "Reports & Resources",
   "about.reportsDesc":
@@ -166,13 +166,13 @@ const en: Dict = {
   "about.partnersKicker": "Collaboration",
   "about.partnersTitle": "Our Partners",
   "about.partnersDesc":
-    "We work alongside government institutions and civil society organisations advancing Youth, Peace and Security.",
+    "We work alongside governments, local organisations, international agencies and the private sector to expand opportunities for youth.",
   "about.letterKicker": "A Word From Us",
   "about.letterTitle": "Why This Work Matters",
   "about.letterP1":
-    "More than 70% of Somalis are under 30. Young people carry the heaviest cost of conflict — and hold the clearest path out of it.",
+    "While some UN and international organisations implement PCVE work, there was a gap in youth direct engagement. YEEP was created to bridge that gap.",
   "about.letterP2":
-    "YEEP Somalia exists so that young Somalis are in the room where decisions about peace are made — not waiting outside it. Every training, dialogue and partnership is a step toward that.",
+    "We give young people a platform to share experience, learn, and educate each other — because young people are the heartbeat of Somalia's future, and should have the tools, opportunities and voice to shape it.",
   "about.letterSign": "— YEEP Somalia Leadership",
   "about.ctaTitle": "Join Our Mission",
   "about.ctaDesc":
@@ -188,7 +188,7 @@ const en: Dict = {
   "footer.emailPlaceholder": "Your email",
   "footer.thanks": "Thanks for subscribing!",
   "footer.rights":
-    "© 2026 YEEP Somalia — Youth Engagement and Empowerment Programme. All rights reserved.",
+    "© 2026 YEEP Somalia — Youth Engagement and Empowerment Platform. All rights reserved.",
   "footer.madeWith": "Made with",
   "footer.byYoungSomalis": "by young Somalis",
   "footer.privacy": "Privacy",
@@ -229,11 +229,11 @@ const so: Dict = {
   "common.viewDetails": "Faahfaahin",
 
   // home
-  "home.badge": "Dhalinyarada, Nabadda & Amniga — hoggaan dhalinyaro Soomaali",
+  "home.badge": "Urur diiwaangashan oo dhalinyaro hoggaamiyaan",
   "home.heroLine1": "Ka Qeyb Qaado. Awood-siin.",
   "home.heroLine2": "Isbeddel.",
   "home.heroDesc":
-    "YEEP Somalia waa urur aan faa'iido doon ahayn oo ay hoggaamiyaan dhalinyaradu, kaas oo kobcinaya Dhalinyarada, Nabadda iyo Amniga (YPS), hoggaanka dhalinyarada, ka-qeyb-galka bulshada, iyo adkeysiga bulshada Soomaaliya oo dhan.",
+    "YEEP Somalia waa urur aan dawli ahayn oo dhalinyaro hoggaamiyaan, kaas oo awood siiya dhalinyarada Soomaaliyeed inay hoggaamiyaan, hal-abuuraan, kana dhisaan bulsho nabad, loo dhan yahay oo adkeysi leh.",
   "home.watchStory": "Daawo Sheekadeena",
   "home.whatWeDo": "Waxaan Qabano",
   "home.featuredPrograms": "Barnaamijyada Muhiimka ah",
@@ -252,7 +252,7 @@ const so: Dict = {
   "home.volunteerToday": "Maanta Iskaa Wax U Qabso",
   "home.exploreProgram": "Barnaamijyada Fiiri",
   "home.missionQuote":
-    "YEEP Somalia waa hindise qaran oo loogu talagalay xoojinta hoggaanka dhalinyarada ee dhismaha nabadda iyo ka hortagga argagixisada.",
+    "Dhalinyaradu waa inaysan ahaan kaliya kuwa faa'iidaysta isbeddelka, ee waa inay noqdaan xoogga kaxeeya.",
   "home.getStarted": "Bilow",
   "home.howTitle": "Saddex Sida oo aad uga Qeyb Qaadan Karto",
   "home.howDesc":
@@ -276,30 +276,30 @@ const so: Dict = {
   "home.faqTitle": "Su'aalaha Inta Badan La Weydiiyo",
   "home.faq1Q": "Yaa ku biiri kara YEEP Somalia?",
   "home.faq1A":
-    "Qof kasta oo dhalinyaro ah oo Soomaaliya jooga, da'da 15 ilaa 35, oo raba inuu wax ku daro nabadda iyo horumarka bulshada. Waayo-aragnimo hore looma baahna.",
+    "Dhalinyaro Soomaali ah oo kasta oo raba inuu wax ku daro nabadda, hoggaanka iyo horumarka bulshada. Waayo-aragnimo hore looma baahna.",
   "home.faq2Q": "Ma lacag baa la siiyaa iskaa-wax-u-qabsiga?",
   "home.faq2A":
-    "Iskaa-wax-u-qabso lacag ma leh, laakiin waxaan daboolnaa kharashka gaadiidka iyo cuntada howlaha, waxaana ku siinaa shahaado iyo tababar.",
+    "Iskaa-wax-u-qabso lacag ma leh, laakiin waxaan bixinnaa tababar, la-talin iyo shahaado, waxaana daboolnaa kharashka howlaha marka ay suurtogal tahay.",
   "home.faq3Q": "Sideen isugu diiwaan geliyaa munaasabad?",
   "home.faq3A":
     "Samee akoon bilaash ah, fur munaasabadda aad xiisaynayso, kadibna riix Isqor. Waxaad heli doontaa email xaqiijin ah oo faahfaahsan.",
   "home.faq4Q": "Sidee ururkaygu idinla shaqeyn karaa?",
   "home.faq4A":
-    "Nagala soo xiriir bogga xiriirka. Waxaan la shaqeynaa hay'adaha dowladda, dugsiyada iyo bulshada rayidka arrimaha Dhalinyarada, Nabadda iyo Amniga.",
+    "Nagala soo xiriir bogga xiriirka. Waxaan la shaqeynaa dowladaha, ururrada maxalliga ah, hay'adaha caalamiga ah iyo qeybta gaarka loo leeyahay.",
 
   // about
   "about.metaDesc":
-    "YEEP Somalia waa urur aan dawli ahayn oo dhalinyaro hoggaamiyaan, fadhigiisu Muqdisho yahay, kaasoo xoojiya hoggaanka dhalinyarada ee nabad-dhiska iyo ka hortagga argagixisada Soomaaliya oo dhan.",
+    "YEEP Somalia waa urur diiwaangashan oo dhalinyaro hoggaamiyaan, kaas oo awood siiya dhalinyarada Soomaaliyeed inay hoggaamiyaan, hal-abuuraan, kana dhisaan bulsho nabad iyo adkeysi leh.",
   "about.badge": "Nagu Saabsan",
   "about.heroTitle": "Sheekadeena, Hadafkeena & Aragtideena",
   "about.heroDesc":
-    "YEEP Somalia waa urur aan dawli ahayn oo dhalinyaro hoggaamiyaan oo Muqdisho fadhi ku leh, kaasoo xoojiya hoggaanka dhalinyarada nabad-dhiska kana hortagga argagixisada Soomaaliya oo dhan.",
+    "YEEP Somalia waa urur diiwaangashan oo dhalinyaro hoggaamiyaan, kaas oo awood siiya dhalinyarada Soomaaliyeed inay hoggaamiyaan, hal-abuuraan, kana dhisaan bulsho nabad, loo dhan yahay oo adkeysi leh.",
   "about.whoKicker": "Yaan Nahay",
   "about.whoTitle": "Dhaqdhaqaaq Dhalinyaro Hoggaamiyaan oo Nabad Doon ah",
-  "about.statFounded": "La Aasaasay",
+  "about.statFounded": "Nooca",
   "about.statBase": "Fadhi",
   "about.statFocus": "Diirad",
-  "about.statPartners": "Shuraako",
+  "about.statPartners": "Kooxda",
   "about.visionTitle": "Aragtideena",
   "about.missionTitle": "Hadafkeena",
   "about.objectivesTitle": "Yoolalka Istiraatijiga ah",
@@ -324,7 +324,7 @@ const so: Dict = {
   "about.whereKicker": "Baaxadeena",
   "about.whereTitle": "Meelaha Aan Ka Shaqeyno",
   "about.whereDesc":
-    "Xaruntayadu waa Muqdisho, waxaanan barnaamijyo ka fulinnaa Banaadir iyo dhowr dowlad-goboleed.",
+    "Fadhigayagu waa Muqdisho, Soomaaliya. Waxaan la shaqeynaa dhalinyarada annagoo iskaashi la yeelanayna dowladaha, ururrada maxalliga ah, hay'adaha caalamiga ah iyo qeybta gaarka loo leeyahay.",
   "about.timelineKicker": "Safarkeena",
   "about.timelineTitle": "Jadwalka Guulaha",
   "about.teamKicker": "Dadka",
@@ -333,16 +333,16 @@ const so: Dict = {
   "about.governanceKicker": "Maamulka",
   "about.governanceTitle": "Sida Loo Maamulo",
   "about.governanceDesc":
-    "YEEP Somalia waxaa maamula guddi mutadawiciin ah, maalin kastana waxaa wada koox fulineed oo dhalinyaro ah, iyadoo si cad loo kala saaray kormeerka iyo fulinta.",
-  "about.govBoardTitle": "Guddiga Agaasimayaasha",
+    "YEEP Somalia waxaa hoggaamiya Agaasime Fulineed iyo koox fulineed oo dhalinyaro ah oo daboolaya barnaamijyada, maaliyadda, deeqaha, shaqaalaha, MEAL iyo isgaarsiinta.",
+  "about.govBoardTitle": "Hoggaanka Fulinta",
   "about.govBoardDesc":
-    "Wuxuu dejiyaa istiraatijiyada, ansixiyaa miisaaniyadaha, isla xisaabtanna uga dhigaa ururka hadafkiisa.",
-  "about.govStaffTitle": "Kooxda Fulinta",
+    "Agaasimaha Fulineed iyo Ku-xigeenkiisu waxay dejiyaan jihada, ururkana matalaan.",
+  "about.govStaffTitle": "Barnaamij & Hawlgal",
   "about.govStaffDesc":
-    "Waxay hoggaamisaa barnaamijyada, iskaashiga iyo hawlgallada, waxayna warbixin u gudbisaa guddiga.",
+    "Kooxo u qaabilsan barnaamijyada iyo iskaashiga, maareynta kiisaska, deeqaha, maamulka iyo maaliyadda.",
   "about.govAccountTitle": "Isla-xisaabtan",
   "about.govAccountDesc":
-    "Waxaan haynaa diiwaanno maaliyadeed iyo siyaasado ilaalin, waxaanan warbixin ka bixinnaa natiijooyinka shuraakada iyo bulshada aan u adeegno.",
+    "Qeybo gaar ah oo MEAL iyo maaliyad ah ayaa haya diiwaannada, warbixinna ka bixiya natiijooyinka shuraakada iyo bulshada aan u adeegno.",
   "about.reportsKicker": "Hufnaan",
   "about.reportsTitle": "Warbixinno & Kheyraad",
   "about.reportsDesc":
@@ -351,13 +351,13 @@ const so: Dict = {
   "about.partnersKicker": "Iskaashi",
   "about.partnersTitle": "Shuraakadeena",
   "about.partnersDesc":
-    "Waxaan la shaqeynaa hay'ado dowladeed iyo ururro bulsho rayid ah oo horumariya Dhalinyarada, Nabadda iyo Amniga.",
+    "Waxaan la shaqeynaa dowladaha, ururrada maxalliga ah, hay'adaha caalamiga ah iyo qeybta gaarka loo leeyahay si aan u kordhinno fursadaha dhalinyarada.",
   "about.letterKicker": "Eray Naga Yimid",
   "about.letterTitle": "Sababta Shaqadani u Muhiim tahay",
   "about.letterP1":
-    "In ka badan 70% Soomaalida waa ka yar 30 jir. Dhalinyaradu waxay qaadaan qarashka ugu culus ee colaadda — waxayna hayaan jidka ugu cad ee laga baxo.",
+    "In kasta oo qaar ka mid ah ururrada QM iyo kuwa caalamiga ah ay fuliyaan shaqada PCVE, waxaa jiray farqi ku aaddan ka-qeyb-galka tooska ah ee dhalinyarada. YEEP waxaa la abuuray si loo buuxiyo farqigaas.",
   "about.letterP2":
-    "YEEP Somalia waxay u jirtaa in dhalinyarada Soomaaliyeed ay ku jiraan qolka lagu go'aamiyo nabadda — ee aysan dibadda ku sugin. Tababar, wada-hadal iyo iskaashi kastaa waa tallaabo xagaas u socota.",
+    "Waxaan dhalinyarada siinnaa goob ay ku wadaagaan waaya-aragnimo, wax ku bartaan, isna baraan — maxaa yeelay dhalinyaradu waa wadnaha mustaqbalka Soomaaliya, waana inay helaan qalabka, fursadaha iyo codka ay ku qaabeeyaan.",
   "about.letterSign": "— Hoggaanka YEEP Somalia",
   "about.ctaTitle": "Ku Biir Hadafkeena",
   "about.ctaDesc":
@@ -373,7 +373,7 @@ const so: Dict = {
   "footer.emailPlaceholder": "Emailkaaga",
   "footer.thanks": "Waad ku mahadsan tahay isdiiwaangelinta!",
   "footer.rights":
-    "© 2026 YEEP Somalia — Barnaamijka Ka-qeyb-galka iyo Awood-siinta Dhalinyarada. Dhammaan xuquuqda way dhowran tahay.",
+    "© 2026 YEEP Somalia — Madasha Ka-qeyb-galka iyo Awood-siinta Dhalinyarada. Dhammaan xuquuqda way dhowran tahay.",
   "footer.madeWith": "Waxaa sameeyay",
   "footer.byYoungSomalis": "dhalinyaro Soomaali ah",
   "footer.privacy": "Asturnaanta",

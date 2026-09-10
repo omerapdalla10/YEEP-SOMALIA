@@ -8,7 +8,8 @@ import { api, ApiError } from "@/lib/client/api";
 import type { SiteContent } from "@/lib/types";
 
 const FALLBACK = {
-  email: "yeepsomalia@gmail.com",
+  email: "info@yeep.org.so",
+  phone: "+252 611 676 253",
   address: "Mogadishu, Somalia",
   hours: "Sat – Thu: 8:00 AM – 4:00 PM\nFriday: Closed",
   website: "yeep.org.so",
@@ -30,7 +31,7 @@ export default function ContactPage() {
   const [error, setError] = useState<string | null>(null);
 
   const email = site?.contactEmail || FALLBACK.email;
-  const phone = site?.contactPhone;
+  const phone = site?.contactPhone || FALLBACK.phone;
   const whatsapp = site?.contactWhatsapp;
   const address = site?.officeAddress || FALLBACK.address;
   const hours = site?.officeHours || FALLBACK.hours;

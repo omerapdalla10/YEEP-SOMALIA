@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { useCollection, useResource } from "@/lib/client/hooks";
 import { CountUp } from "@/components/count-up";
+import { Reveal } from "@/components/reveal";
 import { img } from "@/lib/client/img";
 import { formatCountPlus, formatMoneyCompact, formatDate } from "@/lib/client/format";
 import { api, ApiError } from "@/lib/client/api";
@@ -65,7 +66,7 @@ function SectionHead({
   linkLabel?: string;
 }) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
+    <Reveal className="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
       <div>
         <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
           {kicker}
@@ -80,7 +81,18 @@ function SectionHead({
           {linkLabel} <ArrowRight size={16} />
         </Link>
       )}
-    </div>
+    </Reveal>
+  );
+}
+
+/** A centered kicker + title + optional lead, revealed on scroll. */
+function CenterHead({ kicker, title, lead }: { kicker: string; title: string; lead?: string }) {
+  return (
+    <Reveal className="text-center mb-12">
+      <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">{kicker}</span>
+      <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">{title}</h2>
+      {lead && <p className="text-gray-500 mt-3 max-w-2xl mx-auto">{lead}</p>}
+    </Reveal>
   );
 }
 
@@ -159,8 +171,6 @@ export default function HomePage() {
     { q: t("home.faq4Q"), a: t("home.faq4A") },
   ];
 
-  const partnerCount = partners.length || stats?.partners || 10;
-
   async function handleSubscribe(e: React.FormEvent) {
     e.preventDefault();
     if (!email) return;
@@ -184,23 +194,31 @@ export default function HomePage() {
           <img
             src={img(site?.heroImage, "w=1600&h=1000&fit=crop&auto=format") || "/hero.jpg"}
             alt="YEEP SOMALIA youth gathering"
-            className="w-full h-full object-cover"
+            className="yeep-kenburns w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0d1f1e]/90 via-[#0d1f1e]/70 to-transparent" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#2D8FCE]/20 text-[#2D8FCE] text-xs font-semibold rounded-full mb-6 border border-[#2D8FCE]/30">
-              <Star size={12} />
-              {t("home.badge")}
-            </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-              {t("home.heroLine1")}
-              <span className="block text-[#D4E6F4]">{t("home.heroLine2")}</span>
-            </h1>
-            <p className="text-lg text-gray-200 leading-relaxed mb-8 max-w-xl">{t("home.heroDesc")}</p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <Reveal delay={80}>
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#2D8FCE]/20 text-[#2D8FCE] text-xs font-semibold rounded-full mb-6 border border-[#2D8FCE]/30">
+                <Star size={12} />
+                {t("home.badge")}
+              </span>
+            </Reveal>
+            <Reveal delay={180}>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+                {t("home.heroLine1")}
+                <span className="block text-[#D4E6F4]">{t("home.heroLine2")}</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={300}>
+              <p className="text-lg text-gray-200 leading-relaxed mb-8 max-w-xl">
+                {t("home.heroDesc")}
+              </p>
+            </Reveal>
+            <Reveal delay={420} className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/volunteer"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
@@ -215,18 +233,20 @@ export default function HomePage() {
                 {t("home.exploreProgram")}
                 <ArrowRight size={18} />
               </Link>
-            </div>
+            </Reveal>
 
             {/* Story pill */}
-            <Link
-              href="/about"
-              className="mt-8 inline-flex items-center gap-3 text-white/80 hover:text-white transition-colors group"
-            >
-              <div className="w-11 h-11 rounded-full bg-white/20 border border-white/30 flex items-center justify-center group-hover:bg-white/30 transition-colors">
-                <Play size={16} className="ml-0.5" />
-              </div>
-              <span className="text-sm font-medium">{t("home.watchStory")}</span>
-            </Link>
+            <Reveal delay={540}>
+              <Link
+                href="/about"
+                className="mt-8 inline-flex items-center gap-3 text-white/80 hover:text-white transition-colors group"
+              >
+                <div className="w-11 h-11 rounded-full bg-white/20 border border-white/30 flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                  <Play size={16} className="ml-0.5" />
+                </div>
+                <span className="text-sm font-medium">{t("home.watchStory")}</span>
+              </Link>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -235,9 +255,10 @@ export default function HomePage() {
       <section className="py-14 bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {statCards.map((stat) => (
-              <div
+            {statCards.map((stat, i) => (
+              <Reveal
                 key={stat.label}
+                delay={i * 90}
                 className="text-center p-6 rounded-2xl bg-gray-50 hover:shadow-md transition-shadow"
               >
                 <div className="w-12 h-12 rounded-xl bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center mx-auto mb-3">
@@ -249,7 +270,7 @@ export default function HomePage() {
                   <div className="h-9 w-20 bg-gray-200 rounded animate-pulse mx-auto mb-1" />
                 )}
                 <div className="text-sm text-gray-500 font-medium">{stat.label}</div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -257,12 +278,12 @@ export default function HomePage() {
 
       {/* Mission Strip */}
       <section className="py-16 bg-[#2D8FCE]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <Reveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-xl lg:text-2xl text-white/90 font-medium leading-relaxed max-w-3xl mx-auto">
             &ldquo;{t("home.missionQuote")}&rdquo;
           </p>
           <div className="mt-4 text-[#D4E6F4] text-sm font-semibold">— YEEP Somalia</div>
-        </div>
+        </Reveal>
       </section>
 
       {/* Featured Programs */}
@@ -278,9 +299,10 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
               {programsLoading && programs.length === 0
                 ? [0, 1, 2].map((i) => <CardSkeleton key={i} />)
-                : programs.map((prog) => (
-                    <div
+                : programs.map((prog, i) => (
+                    <Reveal
                       key={prog._id}
+                      delay={i * 90}
                       className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                     >
                       <div className="relative h-52 overflow-hidden bg-gray-100">
@@ -311,7 +333,7 @@ export default function HomePage() {
                           </Link>
                         </div>
                       </div>
-                    </div>
+                    </Reveal>
                   ))}
             </div>
           </div>
@@ -322,26 +344,26 @@ export default function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
-            <div>
+            <Reveal direction="right">
               <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
                 {t("home.ourImpact")}
               </span>
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2 mb-5">
                 Young People at the
                 <br />
-                Centre of Peace
+                Heart of Change
               </h2>
               <p className="text-gray-500 leading-relaxed mb-7">
-                Our youth-led approach tackles the drivers of conflict and exclusion — combining
-                leadership training, community engagement, and policy advocacy so young people help
-                build lasting peace.
+                Our programs equip young Somalis with practical skills and opportunities to transform
+                their communities — through leadership, civic education, economic empowerment and
+                social impact initiatives.
               </p>
               <ul className="space-y-3">
                 {[
-                  "Youth-led approach to Youth, Peace and Security (YPS)",
-                  "Leadership and peacebuilding training for young Somalis",
-                  "Community dialogues that surface and address local drivers of conflict",
-                  `${partnerCount}+ partner organisations across government and civil society`,
+                  "Leadership training and mentorship with professionals",
+                  "Civic education, dialogue and community advocacy",
+                  "Entrepreneurship, vocational skills and access to funding",
+                  "Preventing violent extremism and psychosocial support",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <CheckCircle size={18} className="text-[#2D8FCE] shrink-0 mt-0.5" />
@@ -355,8 +377,8 @@ export default function HomePage() {
               >
                 Learn About Us <ArrowRight size={16} />
               </Link>
-            </div>
-            <div className="relative">
+            </Reveal>
+            <Reveal direction="left" delay={120} className="relative">
               <div className="rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
                 <img
                   src={
@@ -368,16 +390,18 @@ export default function HomePage() {
                 />
               </div>
               {/* Floating stat card */}
-              <div className="absolute -bottom-5 -left-5 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">
+              <div className="yeep-float absolute -bottom-5 -left-5 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#2D8FCE] flex items-center justify-center">
                   <TrendingUp size={18} className="text-white" />
                 </div>
                 <div>
-                  <div className="text-xl font-bold text-gray-900">{partnerCount}+</div>
-                  <div className="text-xs text-gray-400">Partner Orgs</div>
+                  <div className="text-xl font-bold text-gray-900">
+                    {stats ? stats.activePrograms : "—"}
+                  </div>
+                  <div className="text-xs text-gray-400">Active Programs</div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -385,19 +409,17 @@ export default function HomePage() {
       {/* How to get involved */}
       <section className="py-20 bg-[#f8fafc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
-              {t("home.getStarted")}
-            </span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">{t("home.howTitle")}</h2>
-            <p className="text-gray-500 mt-3 max-w-2xl mx-auto">{t("home.howDesc")}</p>
-          </div>
+          <CenterHead
+            kicker={t("home.getStarted")}
+            title={t("home.howTitle")}
+            lead={t("home.howDesc")}
+          />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
             {ways.map((w, i) => (
+              <Reveal key={w.title} delay={i * 90}>
               <Link
-                key={w.title}
                 href={w.href}
-                className="group bg-white rounded-2xl p-7 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100"
+                className="group block h-full bg-white rounded-2xl p-7 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100"
               >
                 <div className="flex items-center justify-between mb-5">
                   <div className="w-12 h-12 rounded-xl bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center">
@@ -413,6 +435,7 @@ export default function HomePage() {
                   {t("common.learnMore")} <ArrowRight size={14} />
                 </span>
               </Link>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -429,9 +452,10 @@ export default function HomePage() {
               linkLabel={t("home.allEvents")}
             />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {events.map((ev) => (
-                <div
+              {events.map((ev, i) => (
+                <Reveal
                   key={ev._id}
+                  delay={i * 90}
                   className="bg-[#f8fafc] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
                 >
                   <span className="text-xs font-semibold text-[#1F6BA0] bg-[#D4E6F4] px-2.5 py-1 rounded-full">
@@ -461,7 +485,7 @@ export default function HomePage() {
                   >
                     {t("common.viewDetails")}
                   </Link>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -481,11 +505,11 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
               {newsLoading && news.length === 0
                 ? [0, 1, 2].map((i) => <CardSkeleton key={i} />)
-                : news.map((article) => (
+                : news.map((article, i) => (
+                    <Reveal key={article._id} delay={i * 90}>
                     <Link
-                      key={article._id}
                       href={`/news/${article.slug}`}
-                      className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1"
+                      className="group block h-full bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1"
                     >
                       <div className="relative h-48 overflow-hidden bg-gray-100">
                         {article.image ? (
@@ -519,6 +543,7 @@ export default function HomePage() {
                         )}
                       </div>
                     </Link>
+                    </Reveal>
                   ))}
             </div>
           </div>
@@ -529,18 +554,12 @@ export default function HomePage() {
       {stories.length > 0 && (
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
-                {t("home.testimonials")}
-              </span>
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
-                {t("home.successStories")}
-              </h2>
-            </div>
+            <CenterHead kicker={t("home.testimonials")} title={t("home.successStories")} />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
-              {stories.map((story) => (
-                <div
+              {stories.map((story, i) => (
+                <Reveal
                   key={story._id}
+                  delay={i * 90}
                   className="bg-[#f8fafc] rounded-2xl p-6 hover:shadow-md transition-shadow"
                 >
                   <Quote size={28} className="text-[#2D8FCE]/20 mb-3" />
@@ -563,7 +582,7 @@ export default function HomePage() {
                       ))}
                     </div>
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -581,19 +600,21 @@ export default function HomePage() {
               linkLabel={t("home.viewGallery")}
             />
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-              {gallery.map((g) => (
-                <Link
-                  key={g._id}
-                  href="/gallery"
-                  className="group relative aspect-square rounded-xl overflow-hidden bg-gray-200"
-                >
-                  <img
-                    src={img(g.image, "w=300&h=300&fit=crop&auto=format")}
-                    alt={g.caption || "Gallery photo"}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-[#0d1f1e]/0 group-hover:bg-[#0d1f1e]/20 transition-colors" />
-                </Link>
+              {gallery.map((g, i) => (
+                <Reveal key={g._id} delay={i * 60}>
+                  <Link
+                    href="/gallery"
+                    className="group relative block aspect-square rounded-xl overflow-hidden bg-gray-200"
+                  >
+                    <img
+                      src={img(g.image, "w=300&h=300&fit=crop&auto=format")}
+                      alt={g.caption || "Gallery photo"}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-[#0d1f1e]/0 group-hover:bg-[#0d1f1e]/20 transition-colors" />
+                  </Link>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -603,7 +624,7 @@ export default function HomePage() {
       {/* Partners */}
       {partners.length > 0 && (
         <section className="py-14 bg-white border-y border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Reveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <p className="text-center text-sm text-gray-400 font-medium mb-8 uppercase tracking-wider">
               {t("home.trustedBy")}
             </p>
@@ -617,23 +638,19 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-          </div>
+          </Reveal>
         </section>
       )}
 
       {/* FAQ */}
       <section className="py-20 bg-[#f8fafc]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
-              {t("home.faqKicker")}
-            </span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">{t("home.faqTitle")}</h2>
-          </div>
+          <CenterHead kicker={t("home.faqKicker")} title={t("home.faqTitle")} />
           <div className="space-y-3">
             {faqs.map((f, i) => (
-              <div
+              <Reveal
                 key={f.q}
+                delay={i * 60}
                 className="bg-white rounded-2xl border border-gray-100 overflow-hidden"
               >
                 <button
@@ -652,7 +669,7 @@ export default function HomePage() {
                 {openFaq === i && (
                   <p className="px-5 pb-5 -mt-1 text-sm text-gray-500 leading-relaxed">{f.a}</p>
                 )}
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -660,7 +677,7 @@ export default function HomePage() {
 
       {/* CTA / Newsletter */}
       <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <Reveal className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
             {t("home.newsletterTitle")}
           </h2>
@@ -711,7 +728,7 @@ export default function HomePage() {
               {t("common.contactUs")}
             </Link>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* Sticky mobile CTA */}

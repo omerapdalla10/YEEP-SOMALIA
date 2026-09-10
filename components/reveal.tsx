@@ -5,10 +5,10 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 type Direction = "up" | "down" | "left" | "right" | "none";
 
 const OFFSET: Record<Direction, string> = {
-  up: "translate3d(0, 22px, 0)",
-  down: "translate3d(0, -22px, 0)",
-  left: "translate3d(28px, 0, 0)",
-  right: "translate3d(-28px, 0, 0)",
+  up: "translate3d(0, 12px, 0)",
+  down: "translate3d(0, -12px, 0)",
+  left: "translate3d(14px, 0, 0)",
+  right: "translate3d(-14px, 0, 0)",
   none: "translate3d(0, 0, 0)",
 };
 
@@ -69,7 +69,7 @@ export function Reveal({
         opacity: shown ? 1 : 0,
         transform: shown ? "translate3d(0,0,0)" : OFFSET[direction],
         transition:
-          "opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
+          "opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)",
         transitionDelay: `${delay}ms`,
         willChange: "opacity, transform",
       }}

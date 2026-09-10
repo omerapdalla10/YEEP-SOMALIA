@@ -78,7 +78,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
         </div>
 
         {article.image && (
-          <div className="rounded-2xl overflow-hidden bg-gray-100 mb-8">
+          <div className="rounded-xl overflow-hidden bg-gray-100 mb-8">
             <img
               src={img(article.image, "w=1000&h=560&fit=crop&auto=format")}
               alt={article.title}
@@ -121,13 +121,13 @@ export default async function ArticlePage({ params }: { params: Params }) {
                 <Link
                   key={a._id}
                   href={`/news/${a.slug}`}
-                  className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                  className="group bg-white rounded-xl overflow-hidden border border-gray-200 transition-colors hover:border-gray-300"
                 >
                   <div className="h-36 bg-gray-100 overflow-hidden">
                     <img
                       src={img(a.image, "w=500&h=300&fit=crop&auto=format")}
                       alt={a.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                     />
                   </div>
                   <div className="p-4">

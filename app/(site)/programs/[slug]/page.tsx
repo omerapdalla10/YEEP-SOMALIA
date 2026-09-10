@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Users, Clock, MapPin, TrendingUp } from "lucide-react";
+import { ArrowLeft, ArrowRight, Users, Clock, MapPin } from "lucide-react";
 import { getResource, getCollection } from "@/lib/server/resource";
 import { img } from "@/lib/client/img";
 import Prose from "@/components/prose";
@@ -36,7 +36,6 @@ export default async function ProgramPage({ params }: { params: Params }) {
 
   const stats = [
     { icon: Users, label: "Beneficiaries", value: (p.beneficiaries ?? 0).toLocaleString() },
-    { icon: TrendingUp, label: "Completion", value: `${p.progress ?? 0}%` },
     p.duration ? { icon: Clock, label: "Duration", value: p.duration } : null,
     p.region ? { icon: MapPin, label: "Region", value: p.region } : null,
   ].filter(Boolean) as { icon: typeof Users; label: string; value: string }[];
@@ -75,7 +74,7 @@ export default async function ProgramPage({ params }: { params: Params }) {
         {stats.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
             {stats.map((s) => (
-              <div key={s.label} className="rounded-2xl bg-[#f8fafc] p-4 text-center">
+              <div key={s.label} className="rounded-xl bg-[#f8fafc] p-4 text-center">
                 <s.icon size={18} className="text-[#2D8FCE] mx-auto mb-2" />
                 <div className="text-lg font-bold text-gray-900">{s.value}</div>
                 <div className="text-xs text-gray-400">{s.label}</div>
@@ -84,21 +83,9 @@ export default async function ProgramPage({ params }: { params: Params }) {
           </div>
         )}
 
-        {typeof p.progress === "number" && p.progress > 0 && (
-          <div className="mb-10">
-            <div className="flex justify-between text-xs text-gray-400 mb-1.5">
-              <span>Programme completion</span>
-              <span className="font-semibold text-[#2D8FCE]">{p.progress}%</span>
-            </div>
-            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-              <div className="h-full bg-[#2D8FCE] rounded-full" style={{ width: `${p.progress}%` }} />
-            </div>
-          </div>
-        )}
-
         <Prose text={p.description} />
 
-        <div className="mt-12 rounded-2xl bg-[#D4E6F4] p-8 text-center">
+        <div className="mt-12 rounded-xl bg-[#D4E6F4] p-8 text-center">
           <h2 className="text-xl font-bold text-[#1F6BA0] mb-2">Want to be part of this?</h2>
           <p className="text-sm text-[#1F6BA0]/80 mb-5">
             Apply to join, or volunteer your skills as a mentor.
@@ -106,13 +93,13 @@ export default async function ProgramPage({ params }: { params: Params }) {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/volunteer"
-              className="px-6 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-sm font-semibold rounded-xl transition-colors"
+              className="px-6 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-sm font-semibold rounded-lg transition-colors"
             >
               Get involved <ArrowRight size={14} className="inline ml-1" />
             </Link>
             <Link
               href="/contact"
-              className="px-6 py-3 bg-white text-[#1F6BA0] text-sm font-semibold rounded-xl hover:bg-white/80 transition-colors"
+              className="px-6 py-3 bg-white text-[#1F6BA0] text-sm font-semibold rounded-lg hover:bg-white/80 transition-colors"
             >
               Ask a question
             </Link>
@@ -129,13 +116,13 @@ export default async function ProgramPage({ params }: { params: Params }) {
                 <Link
                   key={x._id}
                   href={`/programs/${x.slug}`}
-                  className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                  className="group bg-white rounded-xl overflow-hidden border border-gray-200 transition-colors hover:border-gray-300"
                 >
                   <div className="h-36 bg-gray-100 overflow-hidden">
                     <img
                       src={img(x.image, "w=500&h=300&fit=crop&auto=format")}
                       alt={x.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                     />
                   </div>
                   <div className="p-4">

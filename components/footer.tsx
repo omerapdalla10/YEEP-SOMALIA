@@ -58,7 +58,7 @@ export default function Footer() {
                 width={40}
                 height={40}
                 unoptimized
-                className="w-10 h-10 object-contain rounded-xl bg-white p-1"
+                className="w-10 h-10 object-contain rounded-lg bg-white p-1"
               />
               <div>
                 <div className="font-bold text-xl text-white">YEEP Somalia</div>

@@ -21,7 +21,7 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
       {onRetry && (
         <button
           onClick={onRetry}
-          className="mt-1 px-4 py-2 text-sm font-semibold text-[#2D8FCE] border border-[#2D8FCE] rounded-xl hover:bg-[#D4E6F4] transition-colors"
+          className="mt-1 px-4 py-2 text-sm font-semibold text-[#2D8FCE] border border-[#2D8FCE] rounded-lg hover:bg-[#D4E6F4] transition-colors"
         >
           Try Again
         </button>

@@ -37,7 +37,7 @@ export default function ShareButtons({ title, path }: { title: string; path: str
           target="_blank"
           rel="noopener noreferrer"
           aria-label={label}
-          className="w-9 h-9 rounded-xl bg-gray-100 hover:bg-[#2D8FCE] hover:text-white text-gray-500 flex items-center justify-center transition-colors"
+          className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-[#2D8FCE] hover:text-white text-gray-500 flex items-center justify-center transition-colors"
         >
           <Icon size={15} />
         </a>
@@ -45,7 +45,7 @@ export default function ShareButtons({ title, path }: { title: string; path: str
       <button
         onClick={copy}
         aria-label="Copy link"
-        className="w-9 h-9 rounded-xl bg-gray-100 hover:bg-[#2D8FCE] hover:text-white text-gray-500 flex items-center justify-center transition-colors"
+        className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-[#2D8FCE] hover:text-white text-gray-500 flex items-center justify-center transition-colors"
       >
         {copied ? <Check size={15} /> : <Link2 size={15} />}
       </button>

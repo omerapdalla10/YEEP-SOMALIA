@@ -68,7 +68,7 @@ export default async function EventPage({ params }: { params: Params }) {
         </h1>
 
         {ev.image && (
-          <div className="rounded-2xl overflow-hidden bg-gray-100 mb-8">
+          <div className="rounded-xl overflow-hidden bg-gray-100 mb-8">
             <img
               src={img(ev.image, "w=1000&h=520&fit=crop&auto=format")}
               alt={ev.title}
@@ -82,7 +82,7 @@ export default async function EventPage({ params }: { params: Params }) {
             <Prose text={ev.description} />
           </div>
 
-          <aside className="rounded-2xl border border-gray-100 p-5 h-fit lg:sticky lg:top-28 space-y-4">
+          <aside className="rounded-xl border border-gray-100 p-5 h-fit lg:sticky lg:top-28 space-y-4">
             <ul className="space-y-3">
               {facts.map((f, i) => (
                 <li key={i} className="flex items-start gap-2.5 text-sm text-gray-600">

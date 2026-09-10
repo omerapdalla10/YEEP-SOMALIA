@@ -13,7 +13,7 @@ export function LegalDoc({
 }) {
   return (
     <div className="pt-16 lg:pt-20">
-      <section className="py-16 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
+      <section className="py-16 bg-[#1F6BA0]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl lg:text-4xl font-bold text-white mb-3">{title}</h1>
           <p className="text-white/70 text-sm">Last updated {updated}</p>

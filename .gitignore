@@ -38,3 +38,6 @@ yarn-debug.log*
 
 # Scaffold leftover
 gitignore.scaffold
+
+# Claude Code local skills/config
+.claude/

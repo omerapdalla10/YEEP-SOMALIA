@@ -53,10 +53,7 @@ export default function ProgramsPage() {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-white" />
-        </div>
+      <section className="py-20 bg-[#1F6BA0]">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
             Programs
@@ -90,9 +87,9 @@ export default function ProgramsPage() {
                 <button
                   key={cat}
                   onClick={() => setActive(cat)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     active === cat
-                      ? "bg-[#2D8FCE] text-white shadow-md"
+                      ? "bg-[#2D8FCE] text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-[#D4E6F4] hover:text-[#1F6BA0]"
                   }`}
                 >
@@ -102,7 +99,7 @@ export default function ProgramsPage() {
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value as Sort)}
-                className="ml-1 px-3 py-2 rounded-xl text-sm border border-gray-200 bg-white text-gray-600 focus:outline-none focus:border-[#2D8FCE]"
+                className="ml-1 px-3 py-2 rounded-lg text-sm border border-gray-200 bg-white text-gray-600 focus:outline-none focus:border-[#2D8FCE]"
               >
                 {SORTS.map((s) => (
                   <option key={s.value} value={s.value}>
@@ -130,14 +127,14 @@ export default function ProgramsPage() {
               {filtered.map((prog) => (
                 <div
                   key={prog._id}
-                  className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                  className="group bg-white rounded-xl overflow-hidden border border-gray-200 transition-colors hover:border-gray-300 flex flex-col"
                 >
                   <div className="relative h-48 overflow-hidden bg-gray-100">
                     <img
                       src={img(prog.image, "w=600&h=400&fit=crop&auto=format")}
                       alt={prog.title}
                       loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                     />
                     <div className="absolute top-3 left-3 flex gap-2">
                       <span className="px-2.5 py-1 bg-[#2D8FCE] text-white text-xs font-semibold rounded-full">
@@ -153,20 +150,6 @@ export default function ProgramsPage() {
                     <p className="text-sm text-gray-500 leading-relaxed mb-4 flex-1 line-clamp-3">
                       {prog.summary || prog.description}
                     </p>
-
-                    {/* Progress */}
-                    <div className="mb-4">
-                      <div className="flex justify-between text-xs text-gray-400 mb-1.5">
-                        <span>Program completion</span>
-                        <span className="font-semibold text-[#2D8FCE]">{prog.progress}%</span>
-                      </div>
-                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-[#2D8FCE] rounded-full transition-all"
-                          style={{ width: `${prog.progress}%` }}
-                        />
-                      </div>
-                    </div>
 
                     <div className="flex items-center justify-between text-xs text-gray-400 mb-4">
                       <span className="flex items-center gap-1">
@@ -185,7 +168,7 @@ export default function ProgramsPage() {
 
                     <Link
                       href={`/programs/${prog.slug}`}
-                      className="flex items-center justify-center gap-2 py-2.5 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-sm font-semibold rounded-xl transition-colors"
+                      className="flex items-center justify-center gap-2 py-2.5 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-sm font-semibold rounded-lg transition-colors"
                     >
                       Learn More <ChevronRight size={14} />
                     </Link>
@@ -207,13 +190,13 @@ export default function ProgramsPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
-              className="px-7 py-3 bg-white text-[#2D8FCE] font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+              className="px-7 py-3 bg-white text-[#2D8FCE] font-semibold rounded-lg hover:bg-gray-50 transition-colors"
             >
               Apply Now <ArrowRight className="inline ml-1" size={16} />
             </Link>
             <Link
               href="/volunteer"
-              className="px-7 py-3 bg-white/10 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors"
+              className="px-7 py-3 bg-white/10 border border-white/30 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors"
             >
               Volunteer as Mentor
             </Link>

@@ -34,7 +34,7 @@ export default async function VerifyCertificatePage({
 
   return (
     <div className="pt-16 lg:pt-20 min-h-screen bg-[#f8fafc] flex items-center justify-center px-6 py-16">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
+      <div className="w-full max-w-md bg-white rounded-xl border border-gray-200 p-8 text-center">
         {result.valid ? (
           <>
             <div className="w-14 h-14 rounded-full bg-[#D4E6F4] flex items-center justify-center mx-auto mb-5">
@@ -44,7 +44,7 @@ export default async function VerifyCertificatePage({
             <p className="text-sm text-gray-500 mb-6">
               This is a genuine YEEP Somalia certificate.
             </p>
-            <dl className="text-left text-sm space-y-2 bg-[#f8fafc] rounded-xl p-4">
+            <dl className="text-left text-sm space-y-2 bg-[#f8fafc] rounded-lg p-4">
               <div className="flex justify-between gap-4">
                 <dt className="text-gray-400">Name</dt>
                 <dd className="font-semibold text-gray-800">{result.name}</dd>

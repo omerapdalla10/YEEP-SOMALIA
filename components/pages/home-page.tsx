@@ -43,7 +43,7 @@ import type {
 
 function CardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
+    <div className="bg-white rounded-xl overflow-hidden border border-gray-200">
       <div className="h-52 bg-gray-200 animate-pulse" />
       <div className="p-6 space-y-3">
         <div className="h-5 w-2/3 bg-gray-200 rounded animate-pulse" />
@@ -68,7 +68,7 @@ function SectionHead({
   return (
     <Reveal className="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
       <div>
-        <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+        <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
           {kicker}
         </span>
         <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">{title}</h2>
@@ -76,7 +76,7 @@ function SectionHead({
       {href && linkLabel && (
         <Link
           href={href}
-          className="flex items-center gap-1.5 text-[#2D8FCE] font-semibold text-sm hover:gap-2.5 transition-all mt-4 sm:mt-0"
+          className="flex items-center gap-1.5 text-[#2D8FCE] font-semibold text-sm transition-colors mt-4 sm:mt-0"
         >
           {linkLabel} <ArrowRight size={16} />
         </Link>
@@ -89,7 +89,7 @@ function SectionHead({
 function CenterHead({ kicker, title, lead }: { kicker: string; title: string; lead?: string }) {
   return (
     <Reveal className="text-center mb-12">
-      <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">{kicker}</span>
+      <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">{kicker}</span>
       <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">{title}</h2>
       {lead && <p className="text-gray-500 mt-3 max-w-2xl mx-auto">{lead}</p>}
     </Reveal>
@@ -196,7 +196,7 @@ export default function HomePage() {
             alt="YEEP SOMALIA youth gathering"
             className="yeep-kenburns w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0d1f1e]/90 via-[#0d1f1e]/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0d1f1e]/85 via-[#0d1f1e]/55 to-[#0d1f1e]/20" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -221,14 +221,14 @@ export default function HomePage() {
             <Reveal delay={420} className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/volunteer"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-lg transition-colors"
               >
                 <Heart size={18} />
                 {t("common.getInvolved")}
               </Link>
               <Link
                 href="/programs"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/30 backdrop-blur-sm"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-colors border border-white/30 backdrop-blur-sm"
               >
                 {t("home.exploreProgram")}
                 <ArrowRight size={18} />
@@ -259,9 +259,9 @@ export default function HomePage() {
               <Reveal
                 key={stat.label}
                 delay={i * 90}
-                className="text-center p-6 rounded-2xl bg-gray-50 hover:shadow-md transition-shadow"
+                className="text-center p-6 rounded-xl bg-gray-50 transition-colors hover:border-gray-300"
               >
-                <div className="w-12 h-12 rounded-xl bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center mx-auto mb-3">
+                <div className="w-12 h-12 rounded-lg bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center mx-auto mb-3">
                   <stat.icon size={22} />
                 </div>
                 {stats ? (
@@ -303,13 +303,13 @@ export default function HomePage() {
                     <Reveal
                       key={prog._id}
                       delay={i * 90}
-                      className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                      className="group bg-white rounded-xl overflow-hidden border border-gray-200 transition-colors hover:border-gray-300"
                     >
                       <div className="relative h-52 overflow-hidden bg-gray-100">
                         <img
                           src={img(prog.image, "w=600&h=400&fit=crop&auto=format")}
                           alt={prog.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                         />
                         <span className="absolute top-3 left-3 px-2.5 py-1 bg-[#2D8FCE] text-white text-xs font-semibold rounded-full">
                           {prog.category}
@@ -345,7 +345,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             <Reveal direction="right">
-              <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+              <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
                 {t("home.ourImpact")}
               </span>
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2 mb-5">
@@ -373,13 +373,13 @@ export default function HomePage() {
               </ul>
               <Link
                 href="/about"
-                className="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-all shadow-md hover:shadow-lg"
+                className="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-lg transition-colors"
               >
                 Learn About Us <ArrowRight size={16} />
               </Link>
             </Reveal>
             <Reveal direction="left" delay={120} className="relative">
-              <div className="rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
+              <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-100">
                 <img
                   src={
                     img(site?.homeImpactImage, "w=700&h=500&fit=crop&auto=format") ||
@@ -390,8 +390,8 @@ export default function HomePage() {
                 />
               </div>
               {/* Floating stat card */}
-              <div className="yeep-float absolute -bottom-5 -left-5 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#2D8FCE] flex items-center justify-center">
+              <div className="absolute -bottom-6 left-6 bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-[#2D8FCE] flex items-center justify-center">
                   <TrendingUp size={18} className="text-white" />
                 </div>
                 <div>
@@ -416,22 +416,17 @@ export default function HomePage() {
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
             {ways.map((w, i) => (
-              <Reveal key={w.title} delay={i * 90}>
+              <Reveal key={w.title} delay={i * 60}>
               <Link
                 href={w.href}
-                className="group block h-full bg-white rounded-2xl p-7 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100"
+                className="group block h-full bg-white rounded-xl p-7 border border-gray-200 transition-colors hover:border-gray-300"
               >
-                <div className="flex items-center justify-between mb-5">
-                  <div className="w-12 h-12 rounded-xl bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center">
-                    <w.icon size={22} />
-                  </div>
-                  <span className="text-4xl font-bold text-gray-100 group-hover:text-[#D4E6F4] transition-colors">
-                    {i + 1}
-                  </span>
+                <div className="w-12 h-12 rounded-lg bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center mb-5">
+                  <w.icon size={22} />
                 </div>
                 <h3 className="font-bold text-lg text-gray-900 mb-2">{w.title}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed mb-4">{w.desc}</p>
-                <span className="text-sm font-semibold text-[#2D8FCE] flex items-center gap-1 group-hover:gap-2 transition-all">
+                <span className="text-sm font-semibold text-[#2D8FCE] flex items-center gap-1 transition-colors">
                   {t("common.learnMore")} <ArrowRight size={14} />
                 </span>
               </Link>
@@ -456,7 +451,7 @@ export default function HomePage() {
                 <Reveal
                   key={ev._id}
                   delay={i * 90}
-                  className="bg-[#f8fafc] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+                  className="bg-[#f8fafc] rounded-xl p-6 border border-gray-200 transition-colors hover:border-gray-300"
                 >
                   <span className="text-xs font-semibold text-[#1F6BA0] bg-[#D4E6F4] px-2.5 py-1 rounded-full">
                     {ev.type}
@@ -481,7 +476,7 @@ export default function HomePage() {
                   </div>
                   <Link
                     href={`/events/${ev.slug}`}
-                    className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 border border-[#2D8FCE] text-[#2D8FCE] text-sm font-semibold rounded-xl hover:bg-[#D4E6F4] transition-colors"
+                    className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 border border-[#2D8FCE] text-[#2D8FCE] text-sm font-semibold rounded-lg hover:bg-[#D4E6F4] transition-colors"
                   >
                     {t("common.viewDetails")}
                   </Link>
@@ -509,14 +504,14 @@ export default function HomePage() {
                     <Reveal key={article._id} delay={i * 90}>
                     <Link
                       href={`/news/${article.slug}`}
-                      className="group block h-full bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1"
+                      className="group block h-full bg-white rounded-xl overflow-hidden border border-gray-200 transition-colors hover:border-gray-300"
                     >
                       <div className="relative h-48 overflow-hidden bg-gray-100">
                         {article.image ? (
                           <img
                             src={img(article.image, "w=600&h=400&fit=crop&auto=format")}
                             alt={article.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-[#2D8FCE]/30">
@@ -560,7 +555,7 @@ export default function HomePage() {
                 <Reveal
                   key={story._id}
                   delay={i * 90}
-                  className="bg-[#f8fafc] rounded-2xl p-6 hover:shadow-md transition-shadow"
+                  className="bg-[#f8fafc] rounded-xl p-6 border border-gray-200"
                 >
                   <Quote size={28} className="text-[#2D8FCE]/20 mb-3" />
                   <p className="text-sm text-gray-600 leading-relaxed mb-5 italic">
@@ -604,13 +599,13 @@ export default function HomePage() {
                 <Reveal key={g._id} delay={i * 60}>
                   <Link
                     href="/gallery"
-                    className="group relative block aspect-square rounded-xl overflow-hidden bg-gray-200"
+                    className="group relative block aspect-square rounded-lg overflow-hidden bg-gray-200"
                   >
                     <img
                       src={img(g.image, "w=300&h=300&fit=crop&auto=format")}
                       alt={g.caption || "Gallery photo"}
                       loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-[#0d1f1e]/0 group-hover:bg-[#0d1f1e]/20 transition-colors" />
                   </Link>
@@ -625,14 +620,14 @@ export default function HomePage() {
       {partners.length > 0 && (
         <section className="py-14 bg-white border-y border-gray-100">
           <Reveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p className="text-center text-sm text-gray-400 font-medium mb-8 uppercase tracking-wider">
+            <p className="text-center text-sm text-gray-400 font-medium mb-8 tracking-wide">
               {t("home.trustedBy")}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-8">
               {partners.map((p) => (
                 <div
                   key={p._id}
-                  className="px-6 py-3 bg-[#f8fafc] rounded-xl shadow-sm text-gray-400 font-bold text-sm hover:text-[#2D8FCE] hover:shadow-md transition-all"
+                  className="px-6 py-3 bg-[#f8fafc] rounded-lg border border-gray-200 text-gray-400 font-bold text-sm hover:text-[#2D8FCE] transition-colors"
                 >
                   {p.name}
                 </div>
@@ -651,7 +646,7 @@ export default function HomePage() {
               <Reveal
                 key={f.q}
                 delay={i * 60}
-                className="bg-white rounded-2xl border border-gray-100 overflow-hidden"
+                className="bg-white rounded-xl border border-gray-100 overflow-hidden"
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
@@ -676,7 +671,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA / Newsletter */}
-      <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
+      <section className="py-20 bg-[#1F6BA0]">
         <Reveal className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
             {t("home.newsletterTitle")}
@@ -684,7 +679,7 @@ export default function HomePage() {
           <p className="text-white/80 mb-8">{t("home.newsletterDesc")}</p>
 
           {subscribed ? (
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white rounded-xl">
+            <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white rounded-lg">
               <CheckCircle size={18} />
               {t("footer.thanks")}
             </div>
@@ -699,13 +694,13 @@ export default function HomePage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t("home.emailPlaceholder")}
-                className="flex-1 px-4 py-3 rounded-xl bg-white text-gray-800 placeholder-gray-400 focus:outline-none text-sm"
+                className="flex-1 px-4 py-3 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:outline-none text-sm"
                 required
               />
               <button
                 type="submit"
                 disabled={subscribing}
-                className="px-6 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-colors whitespace-nowrap disabled:opacity-70 flex items-center justify-center gap-2"
+                className="px-6 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-lg transition-colors whitespace-nowrap disabled:opacity-70 flex items-center justify-center gap-2"
               >
                 {subscribing && <Loader2 size={15} className="animate-spin" />}
                 {t("common.subscribe")}
@@ -717,13 +712,13 @@ export default function HomePage() {
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/volunteer"
-              className="px-7 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-all shadow-lg"
+              className="px-7 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-lg transition-colors"
             >
               {t("home.volunteerToday")}
             </Link>
             <Link
               href="/contact"
-              className="px-7 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/30"
+              className="px-7 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-colors border border-white/30"
             >
               {t("common.contactUs")}
             </Link>
@@ -735,13 +730,13 @@ export default function HomePage() {
       <div className="fixed bottom-0 inset-x-0 z-40 sm:hidden bg-white/95 backdrop-blur border-t border-gray-200 px-3 py-2.5 flex gap-2">
         <Link
           href="/volunteer"
-          className="flex-1 text-center py-2.5 bg-[#2D8FCE] text-white text-sm font-semibold rounded-xl"
+          className="flex-1 text-center py-2.5 bg-[#2D8FCE] text-white text-sm font-semibold rounded-lg"
         >
           {t("common.getInvolved")}
         </Link>
         <Link
           href="/contact"
-          className="flex-1 text-center py-2.5 border border-[#2D8FCE] text-[#2D8FCE] text-sm font-semibold rounded-xl"
+          className="flex-1 text-center py-2.5 border border-[#2D8FCE] text-[#2D8FCE] text-sm font-semibold rounded-lg"
         >
           {t("common.contactUs")}
         </Link>

@@ -49,7 +49,7 @@ export default function EventRegisterButton({
     }
   };
 
-  const base = `inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-colors ${className}`;
+  const base = `inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-colors ${className}`;
 
   let button: React.ReactNode;
   if (!user) {

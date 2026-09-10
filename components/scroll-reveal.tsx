@@ -37,7 +37,7 @@ export default function ScrollReveal() {
     let onscreen = 0;
     for (const s of sections) {
       if (s.getBoundingClientRect().top < vh * 0.9) {
-        s.style.transitionDelay = `${Math.min(onscreen, 4) * 90}ms`;
+        s.style.transitionDelay = `${Math.min(onscreen, 3) * 60}ms`;
         onscreen += 1;
       }
     }

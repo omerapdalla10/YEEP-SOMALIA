@@ -55,7 +55,7 @@ export default function SearchPage() {
 
   return (
     <div className="pt-16 lg:pt-20 min-h-screen bg-[#f8fafc]">
-      <section className="py-14 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
+      <section className="py-14 bg-[#1F6BA0]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl lg:text-4xl font-bold text-white mb-5 text-center">
             {t("nav.search") /* falls back to "Search" */}
@@ -70,7 +70,7 @@ export default function SearchPage() {
               value={term}
               onChange={(e) => setTerm(e.target.value)}
               placeholder="Search programs, projects, news, events…"
-              className="w-full pl-11 pr-24 py-3.5 rounded-xl bg-white text-gray-800 placeholder-gray-400 focus:outline-none text-sm shadow-lg"
+              className="w-full pl-11 pr-24 py-3.5 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:outline-none text-sm border border-gray-200"
             />
             <button
               type="submit"
@@ -175,7 +175,7 @@ function ResultGroup({
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-[#2D8FCE]">
+        <h2 className="flex items-center gap-2 text-sm font-bold tracking-wide text-[#2D8FCE]">
           <Icon size={15} /> {label}
         </h2>
         <Link
@@ -190,7 +190,7 @@ function ResultGroup({
           <Link
             key={it.id}
             href={it.href}
-            className="flex gap-3 bg-white rounded-xl p-3 border border-gray-100 hover:shadow-md transition-shadow"
+            className="flex gap-3 bg-white rounded-lg p-3 border border-gray-100 transition-colors hover:border-gray-300"
           >
             <img
               src={img(it.image, "w=160&h=160&fit=crop&auto=format")}

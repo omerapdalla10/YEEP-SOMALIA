@@ -73,7 +73,7 @@ export default function NewsPage() {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
+      <section className="py-20 bg-[#1F6BA0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
             News &amp; Blog
@@ -113,7 +113,7 @@ export default function NewsPage() {
                   placeholder="Search articles..."
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
-                  className="pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-[#2D8FCE] w-56"
+                  className="pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-[#2D8FCE] w-56"
                 />
               </div>
               <a
@@ -163,12 +163,12 @@ export default function NewsPage() {
             loadingLabel="Loading articles…"
           >
             {featuredIsFeatured && featured && (
-              <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all mb-10 flex flex-col lg:flex-row">
+              <div className="group bg-white rounded-xl overflow-hidden border border-gray-200 mb-10 flex flex-col lg:flex-row">
                 <div className="relative lg:w-1/2 h-64 lg:h-auto overflow-hidden bg-gray-100">
                   <img
                     src={img(featured.image, "w=800&h=500&fit=crop&auto=format")}
                     alt={featured.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                   />
                   <span className="absolute top-4 left-4 px-3 py-1 bg-[#2D8FCE] text-white text-xs font-bold rounded-full">
                     Featured
@@ -199,7 +199,7 @@ export default function NewsPage() {
                   </div>
                   <Link
                     href={`/news/${featured.slug}`}
-                    className="self-start flex items-center gap-2 px-5 py-2.5 bg-[#2D8FCE] text-white text-sm font-semibold rounded-xl hover:bg-[#1F6BA0] transition-colors"
+                    className="self-start flex items-center gap-2 px-5 py-2.5 bg-[#2D8FCE] text-white text-sm font-semibold rounded-lg hover:bg-[#1F6BA0] transition-colors"
                   >
                     Read Article <ArrowRight size={14} />
                   </Link>
@@ -212,14 +212,14 @@ export default function NewsPage() {
                 <Link
                   key={article._id}
                   href={`/news/${article.slug}`}
-                  className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                  className="group bg-white rounded-xl overflow-hidden border border-gray-200 transition-colors hover:border-gray-300 flex flex-col"
                 >
                   <div className="relative h-44 overflow-hidden bg-gray-100">
                     <img
                       src={img(article.image, "w=600&h=400&fit=crop&auto=format")}
                       alt={article.title}
                       loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                     />
                     <span
                       className={`absolute top-3 left-3 px-2.5 py-1 text-xs font-semibold rounded-full ${catColor(article.category)}`}
@@ -254,7 +254,7 @@ export default function NewsPage() {
               <div className="text-center mt-10">
                 <button
                   onClick={() => setVisible((v) => v + PAGE)}
-                  className="px-6 py-3 bg-white border border-[#2D8FCE] text-[#2D8FCE] font-semibold rounded-xl hover:bg-[#D4E6F4] transition-colors"
+                  className="px-6 py-3 bg-white border border-[#2D8FCE] text-[#2D8FCE] font-semibold rounded-lg hover:bg-[#D4E6F4] transition-colors"
                 >
                   Load more articles
                 </button>

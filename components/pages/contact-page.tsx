@@ -69,7 +69,7 @@ export default function ContactPage() {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
+      <section className="py-20 bg-[#1F6BA0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
             Contact
@@ -89,9 +89,9 @@ export default function ContactPage() {
               {infoCards.map((item) => (
                 <div
                   key={item.title}
-                  className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex gap-4"
+                  className="bg-white rounded-xl p-5 border border-gray-200 flex gap-4"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#D4E6F4] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-[#D4E6F4] flex items-center justify-center shrink-0">
                     <item.icon size={18} className="text-[#2D8FCE]" />
                   </div>
                   <div>
@@ -113,7 +113,7 @@ export default function ContactPage() {
               ))}
 
               {/* Departments */}
-              <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+              <div className="bg-white rounded-xl p-5 border border-gray-200">
                 <h4 className="font-semibold text-gray-900 text-sm mb-3">Who to contact</h4>
                 <ul className="space-y-2">
                   {departments.map((d) => (
@@ -126,7 +126,7 @@ export default function ContactPage() {
               </div>
 
               {/* Social */}
-              <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+              <div className="bg-white rounded-xl p-5 border border-gray-200">
                 <h4 className="font-semibold text-gray-900 text-sm mb-3">Follow Us</h4>
                 <div className="flex gap-2">
                   {[
@@ -142,7 +142,7 @@ export default function ContactPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={label}
-                      className="w-9 h-9 rounded-xl bg-gray-50 hover:bg-[#2D8FCE] flex items-center justify-center transition-colors group"
+                      className="w-9 h-9 rounded-lg bg-gray-50 hover:bg-[#2D8FCE] flex items-center justify-center transition-colors group"
                     >
                       <Icon size={16} className="text-gray-500 group-hover:text-white transition-colors" />
                     </a>
@@ -154,7 +154,7 @@ export default function ContactPage() {
             {/* Form */}
             <div className="lg:col-span-2">
               {sent ? (
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-12 text-center">
+                <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
                   <div className="w-20 h-20 rounded-full bg-[#D4E6F4] flex items-center justify-center mx-auto mb-4">
                     <CheckCircle size={36} className="text-[#2D8FCE]" />
                   </div>
@@ -166,7 +166,7 @@ export default function ContactPage() {
               ) : (
                 <form
                   onSubmit={handleSubmit}
-                  className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 space-y-5"
+                  className="bg-white rounded-xl border border-gray-200 p-8 space-y-5"
                 >
                   <h2 className="text-xl font-bold text-gray-900 mb-2">Send a Message</h2>
 
@@ -189,7 +189,7 @@ export default function ContactPage() {
                         required
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE]"
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#2D8FCE]"
                         placeholder="Your name"
                       />
                     </div>
@@ -201,7 +201,7 @@ export default function ContactPage() {
                         required
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE]"
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#2D8FCE]"
                         placeholder="you@email.com"
                       />
                     </div>
@@ -212,7 +212,7 @@ export default function ContactPage() {
                       required
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] bg-white"
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#2D8FCE] bg-white"
                     >
                       <option value="">Select a subject</option>
                       <option>General Inquiry</option>
@@ -229,7 +229,7 @@ export default function ContactPage() {
                       rows={5}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] resize-none"
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#2D8FCE] resize-none"
                       placeholder="Tell us how we can help..."
                     />
                   </div>
@@ -237,7 +237,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={sending}
-                    className="w-full py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-colors shadow-md hover:shadow-lg disabled:opacity-70 flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-lg transition-colors disabled:opacity-70 flex items-center justify-center gap-2"
                   >
                     {sending && <Loader2 size={16} className="animate-spin" />}
                     Send Message
@@ -246,7 +246,7 @@ export default function ContactPage() {
               )}
 
               {/* Map */}
-              <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden h-64">
+              <div className="mt-6 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden h-64">
                 <iframe
                   title="YEEP Somalia office location"
                   src={mapSrc}

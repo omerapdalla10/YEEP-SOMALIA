@@ -88,12 +88,8 @@ export default function AboutPage() {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="relative py-24 bg-[#2D8FCE] overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-white translate-x-1/3 -translate-y-1/3" />
-          <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-white -translate-x-1/3 translate-y-1/3" />
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-24 bg-[#1F6BA0]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
             {t("about.badge")}
           </span>
@@ -107,7 +103,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             <div>
-              <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+              <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
                 {t("about.whoKicker")}
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-5">{t("about.whoTitle")}</h2>
@@ -128,14 +124,14 @@ export default function AboutPage() {
               </p>
               <div className="grid grid-cols-2 gap-4">
                 {facts.map((s) => (
-                  <div key={s.label} className="bg-[#f8fafc] rounded-xl p-4">
+                  <div key={s.label} className="bg-[#f8fafc] rounded-lg p-4">
                     <div className="text-2xl font-bold text-[#2D8FCE]">{s.value}</div>
                     <div className="text-xs text-gray-400 mt-0.5">{s.label}</div>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="rounded-2xl overflow-hidden shadow-xl bg-gray-100">
+            <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-100">
               <img
                 src={
                   img(site?.aboutImage, "w=700&h=500&fit=crop&auto=format") ||
@@ -180,8 +176,8 @@ export default function AboutPage() {
       <section className="py-20 bg-[#f8fafc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-              <div className="w-12 h-12 rounded-xl bg-[#2D8FCE] flex items-center justify-center mb-4">
+            <div className="bg-white rounded-xl p-8 border border-gray-200">
+              <div className="w-12 h-12 rounded-lg bg-[#2D8FCE] flex items-center justify-center mb-4">
                 <Eye size={22} className="text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">{t("about.visionTitle")}</h3>
@@ -191,8 +187,8 @@ export default function AboutPage() {
                 progress.
               </p>
             </div>
-            <div className="bg-[#2D8FCE] rounded-2xl p-8 shadow-sm">
-              <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-4">
+            <div className="bg-[#1F6BA0] rounded-xl p-8">
+              <div className="w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center mb-4">
                 <Target size={22} className="text-white" />
               </div>
               <h3 className="text-xl font-bold text-white mb-3">{t("about.missionTitle")}</h3>
@@ -219,7 +215,7 @@ export default function AboutPage() {
                 "Social Cohesion & Peacebuilding",
                 "Capacity Building & Economic Empowerment",
               ].map((obj) => (
-                <div key={obj} className="flex items-start gap-3 bg-white rounded-xl p-4 shadow-sm">
+                <div key={obj} className="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
                   <CheckCircle size={18} className="text-[#2D8FCE] shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-600">{obj}</span>
                 </div>
@@ -233,20 +229,17 @@ export default function AboutPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
               {t("about.approachKicker")}
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">{t("about.approachTitle")}</h2>
             <p className="text-gray-500 mt-3 max-w-2xl mx-auto">{t("about.approachDesc")}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {approach.map((a, i) => (
-              <div key={a.title} className="relative bg-[#f8fafc] rounded-2xl p-6 border border-gray-100">
-                <div className="w-12 h-12 rounded-xl bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center mb-4">
+            {approach.map((a) => (
+              <div key={a.title} className="bg-white rounded-xl p-6 border border-gray-200">
+                <div className="w-12 h-12 rounded-lg bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center mb-4">
                   <a.icon size={22} />
-                </div>
-                <div className="absolute top-6 right-6 text-3xl font-bold text-gray-200">
-                  {i + 1}
                 </div>
                 <h4 className="font-bold text-gray-900 mb-2">{a.title}</h4>
                 <p className="text-sm text-gray-500 leading-relaxed">{a.desc}</p>
@@ -260,7 +253,7 @@ export default function AboutPage() {
       <section className="py-20 bg-[#f8fafc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
               {t("about.valuesKicker")}
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">{t("about.valuesTitle")}</h2>
@@ -269,17 +262,13 @@ export default function AboutPage() {
             {values.map((v) => (
               <div
                 key={v.title}
-                className="group text-center p-7 rounded-2xl bg-white hover:bg-[#2D8FCE] transition-all duration-300 border border-gray-100 hover:border-[#2D8FCE] hover:shadow-xl"
+                className="group text-center p-7 rounded-xl bg-white border border-gray-200 transition-colors hover:border-[#2D8FCE]"
               >
-                <div className="w-14 h-14 rounded-2xl bg-[#D4E6F4] group-hover:bg-white/20 flex items-center justify-center mx-auto mb-4 transition-colors">
-                  <v.icon size={24} className="text-[#2D8FCE] group-hover:text-white transition-colors" />
+                <div className="w-14 h-14 rounded-xl bg-[#D4E6F4] flex items-center justify-center mx-auto mb-4">
+                  <v.icon size={24} className="text-[#2D8FCE]" />
                 </div>
-                <h4 className="font-bold text-gray-900 group-hover:text-white mb-2 transition-colors">
-                  {v.title}
-                </h4>
-                <p className="text-sm text-gray-500 group-hover:text-white/80 leading-relaxed transition-colors">
-                  {v.desc}
-                </p>
+                <h4 className="font-bold text-gray-900 mb-2">{v.title}</h4>
+                <p className="text-sm text-gray-500 leading-relaxed">{v.desc}</p>
               </div>
             ))}
           </div>
@@ -289,7 +278,7 @@ export default function AboutPage() {
       {/* Where We Work */}
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+          <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
             {t("about.whereKicker")}
           </span>
           <h2 className="text-3xl font-bold text-gray-900 mt-2 mb-3">{t("about.whereTitle")}</h2>
@@ -316,7 +305,7 @@ export default function AboutPage() {
       <section className="py-20 bg-[#f8fafc]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
               {t("about.timelineKicker")}
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">{t("about.timelineTitle")}</h2>
@@ -338,12 +327,12 @@ export default function AboutPage() {
                     }`}
                   >
                     <div className={`flex-1 ${i % 2 === 0 ? "sm:text-right" : "sm:text-left"}`}>
-                      <div className="bg-white rounded-xl p-5 shadow-sm inline-block sm:max-w-xs">
+                      <div className="bg-white rounded-lg p-5 border border-gray-200 inline-block sm:max-w-xs">
                         <div className="text-[#2D8FCE] font-bold mb-1">{item.year}</div>
                         <p className="text-sm text-gray-600">{item.event}</p>
                       </div>
                     </div>
-                    <div className="relative z-10 w-4 h-4 rounded-full bg-[#2D8FCE] border-4 border-white shadow-md shrink-0" />
+                    <div className="relative z-10 w-4 h-4 rounded-full bg-[#2D8FCE] ring-4 ring-white shrink-0" />
                     <div className="hidden sm:block flex-1" />
                   </div>
                 ))}
@@ -357,7 +346,7 @@ export default function AboutPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
               {t("about.teamKicker")}
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">{t("about.teamTitle")}</h2>
@@ -378,7 +367,7 @@ export default function AboutPage() {
                     onClick={() => hasBio && setBio(member)}
                     className={`group text-center ${hasBio ? "cursor-pointer" : "cursor-default"}`}
                   >
-                    <div className="w-24 h-24 mx-auto mb-3 rounded-full ring-2 ring-white ring-offset-2 group-hover:ring-[#2D8FCE] transition-all shadow-md">
+                    <div className="w-24 h-24 mx-auto mb-3 rounded-full ring-1 ring-gray-200 ring-offset-2 group-hover:ring-[#2D8FCE] transition-all">
                       <Avatar src={member.image} name={member.name} size={96} />
                     </div>
                     <h4 className="font-semibold text-gray-900 text-sm">{member.name}</h4>
@@ -400,7 +389,7 @@ export default function AboutPage() {
       <section className="py-20 bg-[#f8fafc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
               {t("about.governanceKicker")}
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">{t("about.governanceTitle")}</h2>
@@ -408,8 +397,8 @@ export default function AboutPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {governance.map((g) => (
-              <div key={g.title} className="bg-white rounded-2xl p-7 shadow-sm border border-gray-100">
-                <div className="w-12 h-12 rounded-xl bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center mb-4">
+              <div key={g.title} className="bg-white rounded-xl p-7 border border-gray-200">
+                <div className="w-12 h-12 rounded-lg bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center mb-4">
                   <g.icon size={22} />
                 </div>
                 <h4 className="font-bold text-gray-900 mb-2">{g.title}</h4>
@@ -425,7 +414,7 @@ export default function AboutPage() {
         <section className="py-20 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+              <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
                 {t("about.reportsKicker")}
               </span>
               <h2 className="text-3xl font-bold text-gray-900 mt-2">{t("about.reportsTitle")}</h2>
@@ -438,9 +427,9 @@ export default function AboutPage() {
                   href={r.fileUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="group flex items-center gap-4 bg-[#f8fafc] hover:bg-white border border-gray-100 hover:border-[#2D8FCE] hover:shadow-md rounded-2xl p-5 transition-all"
+                  className="group flex items-center gap-4 bg-[#f8fafc] hover:bg-white border border-gray-100 hover:border-[#2D8FCE] rounded-xl p-5 transition-colors"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center shrink-0">
+                  <div className="w-11 h-11 rounded-lg bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center shrink-0">
                     <FileText size={20} />
                   </div>
                   <div className="min-w-0 flex-1">
@@ -470,7 +459,7 @@ export default function AboutPage() {
         <section className="py-16 bg-white border-y border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-8">
-              <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+              <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
                 {t("about.partnersKicker")}
               </span>
               <h2 className="text-2xl font-bold text-gray-900 mt-2">{t("about.partnersTitle")}</h2>
@@ -497,7 +486,7 @@ export default function AboutPage() {
                 ) : (
                   <span
                     key={p._id}
-                    className="px-5 py-2.5 bg-[#f8fafc] rounded-xl text-gray-400 font-bold text-sm"
+                    className="px-5 py-2.5 bg-[#f8fafc] rounded-lg text-gray-400 font-bold text-sm"
                   >
                     {p.name}
                   </span>
@@ -511,8 +500,8 @@ export default function AboutPage() {
       {/* Leadership message */}
       <section className="py-20 bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-[#f8fafc] rounded-2xl p-8 lg:p-12 border border-gray-100">
-            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+          <div className="bg-[#f8fafc] rounded-xl p-8 lg:p-12 border border-gray-100">
+            <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
               {t("about.letterKicker")}
             </span>
             <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mt-2 mb-5">
@@ -534,13 +523,13 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/volunteer"
-              className="px-7 py-3 bg-white text-[#2D8FCE] font-semibold rounded-xl hover:bg-gray-50 transition-colors shadow-lg"
+              className="px-7 py-3 bg-white text-[#2D8FCE] font-semibold rounded-lg hover:bg-gray-50 transition-colors"
             >
               {t("home.volunteerToday")}
             </Link>
             <Link
               href="/contact"
-              className="px-7 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-colors border border-white/30"
+              className="px-7 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-colors border border-white/30"
             >
               {t("about.ctaPartner")}
             </Link>
@@ -555,7 +544,7 @@ export default function AboutPage() {
           onClick={() => setBio(null)}
         >
           <div
-            className="bg-white rounded-2xl max-w-md w-full p-6 relative"
+            className="bg-white rounded-xl max-w-md w-full p-6 relative"
             onClick={(e) => e.stopPropagation()}
           >
             <button

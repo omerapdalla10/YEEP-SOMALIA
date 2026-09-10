@@ -65,7 +65,7 @@ export default function GalleryPage() {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
+      <section className="py-20 bg-[#1F6BA0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
             Gallery
@@ -86,9 +86,9 @@ export default function GalleryPage() {
               <button
                 key={c}
                 onClick={() => setActiveCategory(c)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeCategory === c
-                    ? "bg-[#2D8FCE] text-white shadow-md"
+                    ? "bg-[#2D8FCE] text-white"
                     : "bg-gray-100 text-gray-600 hover:bg-[#D4E6F4] hover:text-[#1F6BA0]"
                 }`}
               >
@@ -116,14 +116,14 @@ export default function GalleryPage() {
                   key={item._id}
                   type="button"
                   aria-label={item.caption || "Open media"}
-                  className={`relative group overflow-hidden rounded-2xl bg-gray-200 ${SPAN[(item.span ?? "").trim()] ?? ""}`}
+                  className={`relative group overflow-hidden rounded-xl bg-gray-200 ${SPAN[(item.span ?? "").trim()] ?? ""}`}
                   onClick={() => setLightbox(i)}
                 >
                   <img
                     src={img(item.image, "w=600&h=600&fit=crop&auto=format")}
                     alt={item.caption || ""}
                     loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex flex-col items-center justify-center gap-2">
                     {item.type === "video" ? (
@@ -187,7 +187,7 @@ export default function GalleryPage() {
           )}
           <div className="max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
             {embed ? (
-              <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
+              <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-md">
                 <iframe
                   src={embed}
                   title={current.caption || "Video"}
@@ -197,12 +197,12 @@ export default function GalleryPage() {
                 />
               </div>
             ) : current.type === "video" && current.videoUrl ? (
-              <video src={current.videoUrl} controls className="w-full rounded-2xl shadow-2xl" />
+              <video src={current.videoUrl} controls className="w-full rounded-xl shadow-md" />
             ) : (
               <img
                 src={img(current.image, "w=1200&h=800&fit=clip&auto=format")}
                 alt={current.caption || ""}
-                className="w-full rounded-2xl shadow-2xl"
+                className="w-full rounded-xl shadow-md"
               />
             )}
             {current.caption && (

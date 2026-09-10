@@ -134,7 +134,7 @@ export default function VolunteerPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
               Why Volunteer
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">What You Gain by Giving</h2>
@@ -143,9 +143,9 @@ export default function VolunteerPage() {
             {benefits.map((b) => (
               <div
                 key={b.title}
-                className="group text-center p-7 rounded-2xl border border-gray-100 hover:border-[#2D8FCE] hover:bg-[#D4E6F4] transition-all"
+                className="group text-center p-7 rounded-xl border border-gray-100 hover:border-[#2D8FCE] hover:bg-[#D4E6F4] transition-all"
               >
-                <div className="w-14 h-14 rounded-2xl bg-[#D4E6F4] group-hover:bg-[#2D8FCE] flex items-center justify-center mx-auto mb-4 transition-colors">
+                <div className="w-14 h-14 rounded-xl bg-[#D4E6F4] group-hover:bg-[#2D8FCE] flex items-center justify-center mx-auto mb-4 transition-colors">
                   <b.icon size={24} className="text-[#2D8FCE] group-hover:text-white transition-colors" />
                 </div>
                 <h4 className="font-bold text-gray-900 mb-2">{b.title}</h4>
@@ -160,15 +160,15 @@ export default function VolunteerPage() {
       <section className="py-20 bg-[#f8fafc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
               The Process
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">What Happens Next</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {steps.map((s, i) => (
-              <div key={s.title} className="relative bg-white rounded-2xl p-6 border border-gray-100">
-                <div className="w-11 h-11 rounded-xl bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center mb-4">
+              <div key={s.title} className="relative bg-white rounded-xl p-6 border border-gray-100">
+                <div className="w-11 h-11 rounded-lg bg-[#D4E6F4] text-[#1F6BA0] flex items-center justify-center mb-4">
                   <s.icon size={20} />
                 </div>
                 <span className="absolute top-6 right-6 text-3xl font-bold text-gray-100">
@@ -186,7 +186,7 @@ export default function VolunteerPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">
+            <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
               Opportunities
             </span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">Current Volunteer Roles</h2>
@@ -202,9 +202,9 @@ export default function VolunteerPage() {
               {opportunities.map((opp) => (
                 <div
                   key={opp._id}
-                  className="bg-[#f8fafc] rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+                  className="bg-[#f8fafc] rounded-xl p-6 border border-gray-200 transition-colors hover:border-gray-300"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#D4E6F4] flex items-center justify-center mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#D4E6F4] flex items-center justify-center mb-3">
                     <Users size={18} className="text-[#2D8FCE]" />
                   </div>
                   <h3 className="font-bold text-gray-900 mb-3">{opp.role}</h3>
@@ -230,7 +230,7 @@ export default function VolunteerPage() {
                       setForm((f) => ({ ...f, role: opp.role }));
                       document.getElementById("volunteer-form")?.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="w-full py-2 text-sm font-semibold border border-[#2D8FCE] text-[#2D8FCE] rounded-xl hover:bg-[#D4E6F4] transition-colors"
+                    className="w-full py-2 text-sm font-semibold border border-[#2D8FCE] text-[#2D8FCE] rounded-lg hover:bg-[#D4E6F4] transition-colors"
                   >
                     Apply for this Role
                   </button>
@@ -245,7 +245,7 @@ export default function VolunteerPage() {
       <section id="volunteer-form" className="py-20 bg-[#f8fafc]">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <span className="text-[#2D8FCE] text-sm font-semibold uppercase tracking-wider">Apply</span>
+            <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">Apply</span>
             <h2 className="text-3xl font-bold text-gray-900 mt-2">Volunteer Application</h2>
           </div>
 
@@ -263,7 +263,7 @@ export default function VolunteerPage() {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 space-y-5"
+              className="bg-white rounded-xl border border-gray-200 p-8 space-y-5"
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
@@ -273,7 +273,7 @@ export default function VolunteerPage() {
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors"
                     placeholder="Your full name"
                   />
                 </div>
@@ -285,7 +285,7 @@ export default function VolunteerPage() {
                     required
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors"
                     placeholder="you@email.com"
                   />
                 </div>
@@ -298,7 +298,7 @@ export default function VolunteerPage() {
                     suppressHydrationWarning
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors"
                     placeholder="+252 61 000 0000"
                   />
                 </div>
@@ -308,7 +308,7 @@ export default function VolunteerPage() {
                     required
                     value={form.role}
                     onChange={(e) => setForm({ ...form, role: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors bg-white"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors bg-white"
                   >
                     <option value="">Select a role</option>
                     {opportunities.map((o) => (
@@ -327,7 +327,7 @@ export default function VolunteerPage() {
                   required
                   value={form.availability}
                   onChange={(e) => setForm({ ...form, availability: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors bg-white"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors bg-white"
                 >
                   <option value="">Select availability</option>
                   <option>One-time events</option>
@@ -347,7 +347,7 @@ export default function VolunteerPage() {
                   rows={4}
                   value={form.motivation}
                   onChange={(e) => setForm({ ...form, motivation: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors resize-none"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#2D8FCE] transition-colors resize-none"
                   placeholder="Tell us what motivates you..."
                 />
               </div>
@@ -355,7 +355,7 @@ export default function VolunteerPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-colors shadow-md hover:shadow-lg disabled:opacity-70 flex items-center justify-center gap-2"
+                className="w-full py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-lg transition-colors disabled:opacity-70 flex items-center justify-center gap-2"
               >
                 {submitting && <Loader2 size={16} className="animate-spin" />}
                 Submit Application
@@ -371,7 +371,7 @@ export default function VolunteerPage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Volunteer FAQ</h2>
           <div className="space-y-3">
             {faqs.map((f, i) => (
-              <div key={f.q} className="bg-[#f8fafc] rounded-2xl border border-gray-100 overflow-hidden">
+              <div key={f.q} className="bg-[#f8fafc] rounded-xl border border-gray-100 overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full flex items-center justify-between gap-4 p-5 text-left"
@@ -401,7 +401,7 @@ export default function VolunteerPage() {
               {stories.map((s) => (
                 <div
                   key={s._id}
-                  className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-white rounded-xl p-6 border border-gray-200 transition-colors hover:border-gray-300"
                 >
                   <Quote size={28} className="text-[#2D8FCE]/20 mb-3" />
                   <p className="text-sm text-gray-600 leading-relaxed italic mb-5">

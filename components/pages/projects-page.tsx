@@ -5,7 +5,6 @@ import Link from "next/link";
 import { MapPin, Users, ArrowRight, Landmark } from "lucide-react";
 import { useCollection } from "@/lib/client/hooks";
 import { img } from "@/lib/client/img";
-import { formatMoneyCompact } from "@/lib/client/format";
 import { QueryBoundary } from "@/components/data-states";
 import type { Project } from "@/lib/types";
 
@@ -51,8 +50,8 @@ export default function ProjectsPage() {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-[#1F6BA0] to-[#2D8FCE] relative overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-20 bg-[#1F6BA0]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
             Projects
           </span>
@@ -86,9 +85,9 @@ export default function ProjectsPage() {
                 <button
                   key={s}
                   onClick={() => setStatus(s)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     status === s
-                      ? "bg-[#2D8FCE] text-white shadow-md"
+                      ? "bg-[#2D8FCE] text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-[#D4E6F4] hover:text-[#1F6BA0]"
                   }`}
                 >
@@ -99,7 +98,7 @@ export default function ProjectsPage() {
                 <select
                   value={region}
                   onChange={(e) => setRegion(e.target.value)}
-                  className="ml-1 px-3 py-2 rounded-xl text-sm border border-gray-200 bg-white text-gray-600 focus:outline-none focus:border-[#2D8FCE]"
+                  className="ml-1 px-3 py-2 rounded-lg text-sm border border-gray-200 bg-white text-gray-600 focus:outline-none focus:border-[#2D8FCE]"
                 >
                   {regions.map((r) => (
                     <option key={r} value={r}>
@@ -125,20 +124,17 @@ export default function ProjectsPage() {
             loadingLabel="Loading projects…"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-              {filtered.map((proj) => {
-                const funded =
-                  proj.budget > 0 ? Math.min(100, Math.round((proj.raised / proj.budget) * 100)) : 0;
-                return (
+              {filtered.map((proj) => (
                   <div
                     key={proj._id}
-                    className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                    className="group bg-white rounded-xl overflow-hidden border border-gray-200 transition-colors hover:border-gray-300 flex flex-col"
                   >
                     <div className="relative h-48 overflow-hidden bg-gray-100">
                       <img
                         src={img(proj.image, "w=600&h=400&fit=crop&auto=format")}
                         alt={proj.title}
                         loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                       />
                       <span
                         className={`absolute top-3 right-3 px-2.5 py-1 text-xs font-bold rounded-full ${statusColor[proj.status]}`}
@@ -167,49 +163,15 @@ export default function ProjectsPage() {
                         {proj.description}
                       </p>
 
-                      {/* Delivery progress */}
-                      <div className="mb-3">
-                        <div className="flex justify-between text-xs mb-1.5">
-                          <span className="text-gray-400">Delivery</span>
-                          <span className="font-semibold text-[#2D8FCE]">{proj.progress}%</span>
-                        </div>
-                        <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-[#2D8FCE] rounded-full"
-                            style={{ width: `${proj.progress}%` }}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Funding */}
-                      {proj.budget > 0 && (
-                        <div className="mb-4">
-                          <div className="flex justify-between text-xs mb-1.5">
-                            <span className="text-gray-400">
-                              Funding · {formatMoneyCompact(proj.raised)} of{" "}
-                              {formatMoneyCompact(proj.budget)}
-                            </span>
-                            <span className="font-semibold text-emerald-600">{funded}%</span>
-                          </div>
-                          <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-emerald-500 rounded-full"
-                              style={{ width: `${funded}%` }}
-                            />
-                          </div>
-                        </div>
-                      )}
-
                       <Link
                         href={`/projects/${proj.slug}`}
-                        className="flex items-center justify-center gap-2 py-2.5 border border-[#2D8FCE] text-[#2D8FCE] text-sm font-semibold rounded-xl hover:bg-[#D4E6F4] transition-colors"
+                        className="flex items-center justify-center gap-2 py-2.5 border border-[#2D8FCE] text-[#2D8FCE] text-sm font-semibold rounded-lg hover:bg-[#D4E6F4] transition-colors"
                       >
                         Read More <ArrowRight size={14} />
                       </Link>
                     </div>
                   </div>
-                );
-              })}
+              ))}
             </div>
           </QueryBoundary>
         </div>

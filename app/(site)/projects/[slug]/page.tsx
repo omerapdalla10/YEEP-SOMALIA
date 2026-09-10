@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, MapPin, Users, Calendar, Handshake } from "lucide-react";
 import { getResource, getCollection } from "@/lib/server/resource";
 import { img } from "@/lib/client/img";
-import { formatDate, formatMoneyCompact } from "@/lib/client/format";
+import { formatDate } from "@/lib/client/format";
 import Prose from "@/components/prose";
 import type { Project } from "@/lib/types";
 
@@ -35,7 +35,6 @@ export default async function ProjectPage({ params }: { params: Params }) {
     .filter((x) => x._id !== p._id)
     .slice(0, 3);
 
-  const fundingPct = p.budget > 0 ? Math.min(100, Math.round((p.raised / p.budget) * 100)) : 0;
   const dates = [p.startDate, p.endDate].filter(Boolean).map((d) => formatDate(d)).join(" – ");
 
   return (
@@ -81,26 +80,12 @@ export default async function ProjectPage({ params }: { params: Params }) {
         </div>
 
         {p.image && (
-          <div className="rounded-2xl overflow-hidden bg-gray-100 mb-8">
+          <div className="rounded-xl overflow-hidden bg-gray-100 mb-8">
             <img
               src={img(p.image, "w=1000&h=520&fit=crop&auto=format")}
               alt={p.title}
               className="w-full h-auto object-cover"
             />
-          </div>
-        )}
-
-        {p.budget > 0 && (
-          <div className="rounded-2xl border border-gray-100 p-5 mb-8">
-            <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-500">Funding</span>
-              <span className="font-semibold text-gray-900">
-                {formatMoneyCompact(p.raised)} of {formatMoneyCompact(p.budget)}
-              </span>
-            </div>
-            <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
-              <div className="h-full bg-[#2D8FCE] rounded-full" style={{ width: `${fundingPct}%` }} />
-            </div>
           </div>
         )}
 
@@ -133,13 +118,13 @@ export default async function ProjectPage({ params }: { params: Params }) {
                 <Link
                   key={x._id}
                   href={`/projects/${x.slug}`}
-                  className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                  className="group bg-white rounded-xl overflow-hidden border border-gray-200 transition-colors hover:border-gray-300"
                 >
                   <div className="h-36 bg-gray-100 overflow-hidden">
                     <img
                       src={img(x.image, "w=500&h=300&fit=crop&auto=format")}
                       alt={x.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                     />
                   </div>
                   <div className="p-4">

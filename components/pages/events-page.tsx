@@ -102,7 +102,7 @@ export default function EventsPage() {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-[#2D8FCE] to-[#1F6BA0]">
+      <section className="py-20 bg-[#1F6BA0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-semibold rounded-full mb-4">
             Events
@@ -118,7 +118,7 @@ export default function EventsPage() {
       {/* Tabs + month filter */}
       <section className="py-6 bg-white border-b border-gray-100 sticky top-16 lg:top-20 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
-          <div className="inline-flex rounded-xl bg-gray-100 p-1">
+          <div className="inline-flex rounded-lg bg-gray-100 p-1">
             {(["upcoming", "past"] as const).map((t) => (
               <button
                 key={t}
@@ -140,9 +140,9 @@ export default function EventsPage() {
                 <button
                   key={m}
                   onClick={() => setActiveMonth(m)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     activeMonth === m
-                      ? "bg-[#2D8FCE] text-white shadow-md"
+                      ? "bg-[#2D8FCE] text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-[#D4E6F4] hover:text-[#1F6BA0]"
                   }`}
                 >
@@ -185,14 +185,14 @@ export default function EventsPage() {
                 return (
                   <div
                     key={event._id}
-                    className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row"
+                    className="group bg-white rounded-xl overflow-hidden border border-gray-200 transition-colors hover:border-gray-300 flex flex-col sm:flex-row"
                   >
                     <div className="relative sm:w-44 h-44 sm:h-auto overflow-hidden bg-gray-100 shrink-0">
                       <img
                         src={img(event.image, "w=400&h=300&fit=crop&auto=format")}
                         alt={event.title}
                         loading="lazy"
-                        className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${
+                        className={`w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500 ${
                           isPast ? "grayscale" : ""
                         }`}
                       />
@@ -255,14 +255,14 @@ export default function EventsPage() {
                         {isPast ? (
                           <Link
                             href={`/events/${event.slug}`}
-                            className="flex-1 flex items-center justify-center gap-1.5 py-2 border border-gray-200 text-gray-600 text-xs font-semibold rounded-xl hover:border-[#2D8FCE] hover:text-[#2D8FCE] transition-colors"
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2 border border-gray-200 text-gray-600 text-xs font-semibold rounded-lg hover:border-[#2D8FCE] hover:text-[#2D8FCE] transition-colors"
                           >
                             View details <ArrowRight size={12} />
                           </Link>
                         ) : !user ? (
                           <Link
                             href="/login"
-                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-semibold rounded-xl transition-colors"
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-semibold rounded-lg transition-colors"
                           >
                             Sign in to register <ArrowRight size={12} />
                           </Link>
@@ -270,7 +270,7 @@ export default function EventsPage() {
                           <button
                             onClick={() => toggleRegistration(event, true)}
                             disabled={busy}
-                            className="flex-1 flex items-center justify-center gap-1.5 py-2 border border-gray-200 text-gray-600 hover:border-red-300 hover:text-red-600 text-xs font-semibold rounded-xl transition-colors disabled:opacity-60"
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2 border border-gray-200 text-gray-600 hover:border-red-300 hover:text-red-600 text-xs font-semibold rounded-lg transition-colors disabled:opacity-60"
                           >
                             {busy ? <Loader2 size={12} className="animate-spin" /> : <X size={12} />}
                             Cancel registration
@@ -278,14 +278,14 @@ export default function EventsPage() {
                         ) : isClosed ? (
                           <button
                             disabled
-                            className="flex-1 py-2 bg-gray-100 text-gray-400 text-xs font-semibold rounded-xl cursor-not-allowed"
+                            className="flex-1 py-2 bg-gray-100 text-gray-400 text-xs font-semibold rounded-lg cursor-not-allowed"
                           >
                             Registration closed
                           </button>
                         ) : isFull ? (
                           <button
                             disabled
-                            className="flex-1 py-2 bg-gray-100 text-gray-400 text-xs font-semibold rounded-xl cursor-not-allowed"
+                            className="flex-1 py-2 bg-gray-100 text-gray-400 text-xs font-semibold rounded-lg cursor-not-allowed"
                           >
                             Event full
                           </button>
@@ -293,7 +293,7 @@ export default function EventsPage() {
                           <button
                             onClick={() => toggleRegistration(event, false)}
                             disabled={busy}
-                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-semibold rounded-xl transition-colors disabled:opacity-60"
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-60"
                           >
                             {busy ? (
                               <Loader2 size={12} className="animate-spin" />
@@ -319,7 +319,7 @@ export default function EventsPage() {
                             }
                             title="Add to calendar"
                             aria-label="Add to calendar"
-                            className="shrink-0 px-2.5 py-2 border border-gray-200 text-gray-500 rounded-xl hover:border-[#2D8FCE] hover:text-[#2D8FCE] transition-colors"
+                            className="shrink-0 px-2.5 py-2 border border-gray-200 text-gray-500 rounded-lg hover:border-[#2D8FCE] hover:text-[#2D8FCE] transition-colors"
                           >
                             <CalendarPlus size={14} />
                           </button>

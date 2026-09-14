@@ -1,4 +1,3 @@
-import { appUrl } from "@/lib/env";
 import {
   SUPPORT_EMAIL,
   WEBSITE,
@@ -10,7 +9,6 @@ import {
   heading,
   paragraph,
   stepsBox,
-  button,
   signoff,
   escapeHtml,
 } from "./layout";
@@ -39,7 +37,6 @@ export function volunteerApprovedEmail(
   role?: string,
 ): { subject: string; html: string; text: string } {
   const fullName = name.trim() || "there";
-  const dashboardUrl = `${appUrl}/dashboard`;
   const roleLine = role ? ` for the role of ${role}` : "";
   const subject = "Congratulations — You're Now a YEEP Somalia Volunteer! \u{1F389}";
 
@@ -78,7 +75,6 @@ export function volunteerApprovedEmail(
         "&mdash; people like you are what make our work possible.",
     ),
     stepsBox("Here's what happens next", NEXT_STEPS),
-    button("Open my dashboard", dashboardUrl),
     paragraph(
       "If you have any questions before then, feel free to reach out to us anytime at " +
         `<a href="mailto:${SUPPORT_EMAIL}" style="color:${BLUE_DARK};text-decoration:none;">${SUPPORT_EMAIL}</a>.`,

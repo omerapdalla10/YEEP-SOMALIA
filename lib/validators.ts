@@ -5,6 +5,7 @@ import { PROJECT_STATUSES } from "@/models/Project";
 import { EVENT_TYPES } from "@/models/Event";
 import { GALLERY_CATEGORIES } from "@/models/GalleryItem";
 import { VOLUNTEER_STATUSES } from "@/models/Volunteer";
+import { GENDERS } from "@/models/EventRegistration";
 import { CONTACT_STATUSES } from "@/models/ContactMessage";
 import { TESTIMONIAL_PLACEMENTS } from "@/models/Testimonial";
 import { REPORT_KINDS } from "@/models/Report";
@@ -45,13 +46,6 @@ const num = z.coerce.number();
 
 /* ------------------------------- Auth ------------------------------- */
 
-export const registerSchema = z.object({
-  name: str.min(2).max(120),
-  email: str.email().toLowerCase(),
-  password: z.string().min(8).max(128),
-  phone: str.max(40).optional(),
-});
-
 export const loginSchema = z.object({
   email: str.email().toLowerCase(),
   password: z.string().min(1),
@@ -75,10 +69,6 @@ export const forgotPasswordSchema = z.object({
 export const resetPasswordSchema = z.object({
   token: z.string().min(20).max(200),
   password: z.string().min(8).max(128),
-});
-
-export const tokenSchema = z.object({
-  token: z.string().min(20).max(200),
 });
 
 /* ----------------------------- Resources ---------------------------- */
@@ -245,16 +235,17 @@ export const volunteerStatusSchema = z.object({
   reviewNote: str.max(1000).optional(),
 });
 
-export const volunteerHoursSchema = z.object({
-  activity: str.min(3).max(300),
-  hours: num.min(0.5).max(24),
-  date: isoDate,
-  event: str.regex(/^[a-f\d]{24}$/i, "Invalid event id").optional(),
-});
-
-export const volunteerHoursStatusSchema = z.object({
-  status: z.enum(["Approved", "Rejected"]),
-  reviewNote: str.max(500).optional(),
+export const eventRsvpSchema = z.object({
+  name: str.min(2).max(120),
+  email: str.email().toLowerCase(),
+  whatsapp: str.min(6).max(40),
+  gender: z.enum(GENDERS),
+  educationLevel: str.min(1).max(60),
+  organization: str.min(1).max(160),
+  position: str.min(1).max(120),
+  district: str.min(1).max(60),
+  confirmAvailability: z.coerce.boolean(),
+  wantsUpdates: z.coerce.boolean().optional(),
 });
 
 export const contactMessageSchema = z.object({
@@ -278,7 +269,7 @@ export const adminCreateUserSchema = z.object({
   email: str.email().toLowerCase(),
   password: z.string().min(8).max(128),
   phone: str.max(40).optional(),
-  role: z.enum(ROLES).default("volunteer"),
+  role: z.enum(ROLES),
   isActive: z.coerce.boolean().default(true),
 });
 

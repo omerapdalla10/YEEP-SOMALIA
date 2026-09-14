@@ -182,7 +182,6 @@ async function seed() {
     password: seedAdmin.password,
     role: "admin",
     avatar: "photo-1531123897727-8f129e1688ce",
-    emailVerified: true,
   });
 
   // Public site content only — no fake users, applications, messages or subscribers.

@@ -1,12 +1,12 @@
 /**
- * Send the welcome email to one address, to check your SMTP settings.
+ * Send a sample email to one address, to check your SMTP settings.
  *
  *   npm run test:email -- you@example.com "Your Name"
  *
  * Reads SMTP_* from .env.local (via the --env-file flag in the npm script).
  */
 import { sendMail } from "../lib/api/mailer";
-import { welcomeEmail } from "../lib/api/emails/welcome";
+import { volunteerApprovedEmail } from "../lib/api/emails/volunteer-approved";
 import { emailEnabled, smtp } from "../lib/env";
 
 async function main() {
@@ -23,11 +23,11 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`Sending welcome email as ${smtp.from}`);
+  console.log(`Sending test email as ${smtp.from}`);
   console.log(`  host: ${smtp.host}:${smtp.port} (secure: ${smtp.secure})`);
   console.log(`  to:   ${to}`);
 
-  const mail = welcomeEmail(name);
+  const mail = volunteerApprovedEmail(name);
   const okSent = await sendMail({ to, ...mail });
 
   if (okSent) {

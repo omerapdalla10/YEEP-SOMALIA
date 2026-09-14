@@ -7,7 +7,6 @@ import { sendMail } from "@/lib/api/mailer";
 import { eventReminderEmail } from "@/lib/api/emails/event-reminder";
 import { Event } from "@/models/Event";
 import { EventRegistration } from "@/models/EventRegistration";
-import { User } from "@/models/User";
 
 /** Hours before an event that the reminder goes out. */
 const LEAD_HOURS = Number(process.env.REMINDER_LEAD_HOURS ?? 48);
@@ -42,20 +41,18 @@ export const GET = route(async (req: NextRequest) => {
   for (const ev of events) {
     const regs = await EventRegistration.find({
       event: ev._id,
-      status: "Registered",
       reminderSentAt: { $exists: false },
-    }).populate({ path: "user", select: "name email", model: User });
+    });
 
     for (const reg of regs) {
-      const u = reg.user as unknown as { name?: string; email?: string } | null;
-      if (!u?.email) continue;
-      const mail = eventReminderEmail(u.name ?? "there", {
+      if (!reg.email) continue;
+      const mail = eventReminderEmail(reg.name || "there", {
         title: ev.title,
         dateLabel: ev.dateLabel ?? undefined,
         timeLabel: ev.timeLabel ?? undefined,
         location: ev.location ?? undefined,
       });
-      await sendMail({ to: u.email, ...mail });
+      await sendMail({ to: reg.email, ...mail });
       reg.reminderSentAt = new Date();
       await reg.save();
       sent++;

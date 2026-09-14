@@ -8,7 +8,6 @@ import { Project } from "@/models/Project";
 import { Event } from "@/models/Event";
 import { Article } from "@/models/Article";
 import { Volunteer } from "@/models/Volunteer";
-import { VolunteerHours } from "@/models/VolunteerHours";
 import { ContactMessage } from "@/models/ContactMessage";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -36,11 +35,10 @@ export const GET = route(async (req: NextRequest) => {
     totalUsers,
     activePrograms,
     totalEvents,
-    activeVolunteers,
+    approvedVolunteers,
     pendingApplications,
     newMessages,
     upcomingEvents,
-    volunteerHoursAgg,
     programByCategory,
     userGrowthAgg,
     recentApplication,
@@ -51,14 +49,10 @@ export const GET = route(async (req: NextRequest) => {
     User.countDocuments(),
     Program.countDocuments({ status: { $in: ["Active", "Enrolling"] } }),
     Event.countDocuments(),
-    User.countDocuments({ role: "volunteer", isActive: true }),
+    Volunteer.countDocuments({ status: "Approved" }),
     Volunteer.countDocuments({ status: { $in: ["Pending", "Under Review"] } }),
     ContactMessage.countDocuments({ status: "New" }),
     Event.countDocuments({ startDate: { $gte: now } }),
-    VolunteerHours.aggregate<{ hours: number }>([
-      { $match: { status: "Approved" } },
-      { $group: { _id: null, hours: { $sum: "$hours" } } },
-    ]),
     Program.aggregate<{ _id: string; value: number }>([
       { $group: { _id: "$category", value: { $sum: 1 } } },
       { $sort: { value: -1 } },
@@ -125,9 +119,8 @@ export const GET = route(async (req: NextRequest) => {
     kpis: {
       totalUsers,
       activePrograms,
-      volunteerHours: volunteerHoursAgg[0]?.hours ?? 0,
       events: totalEvents,
-      activeVolunteers,
+      approvedVolunteers,
       pendingApplications,
       newMessages,
       upcomingEvents,

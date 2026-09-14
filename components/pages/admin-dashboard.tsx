@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import {
   Activity,
   AlertCircle,
-  Award,
   Bell,
   BookOpen,
   Calendar,
@@ -68,7 +67,6 @@ import type {
   NotificationItem,
   Report,
   SiteContent,
-  VolunteerHoursEntry,
 } from "@/lib/types";
 
 /* ------------------------------- constants ------------------------------- */
@@ -78,7 +76,6 @@ const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", id: "dashboard" },
   { icon: Users, label: "Users", id: "users", adminOnly: true },
   { icon: UserCheck, label: "Volunteers", id: "volunteers" },
-  { icon: Clock, label: "Hours", id: "hours" },
   { icon: Inbox, label: "Messages", id: "messages" },
   { icon: FolderOpen, label: "Projects", id: "projects" },
   { icon: BookOpen, label: "Programs", id: "programs" },
@@ -739,10 +736,10 @@ function StatModal({
     { title: string; sub: string; bars: { label: string; value: number }[]; note: string }
   > = {
     users: {
-      title: "Total Users",
-      sub: `${k.totalUsers.toLocaleString()} accounts · ${k.activeVolunteers} active volunteers`,
+      title: "Staff Accounts",
+      sub: `${k.totalUsers.toLocaleString()} staff & admin accounts`,
       bars: data.userGrowth.map((g) => ({ label: g.month, value: g.users })),
-      note: "Cumulative registrations by month.",
+      note: "Cumulative account creation by month.",
     },
     programs: {
       title: "Active Programs",
@@ -750,14 +747,14 @@ function StatModal({
       bars: data.programDist.map((p) => ({ label: p.name, value: p.value })),
       note: "Share of programs by focus area.",
     },
-    hours: {
-      title: "Volunteer Hours",
-      sub: `${k.volunteerHours.toLocaleString()} hours logged (estimated)`,
+    volunteers: {
+      title: "Approved Volunteers",
+      sub: `${k.approvedVolunteers.toLocaleString()} approved applications`,
       bars: [
-        { label: "Active vols", value: k.activeVolunteers },
+        { label: "Approved", value: k.approvedVolunteers },
         { label: "Pending", value: k.pendingApplications },
       ],
-      note: "Estimated from active volunteers and their average commitment.",
+      note: "Volunteer applications by review status.",
     },
     events: {
       title: "Events",
@@ -805,11 +802,30 @@ function StatModal({
 
 function registrantsCsv(data: EventRegistrationList): string {
   const rows = [
-    ["Name", "Email", "Phone", "Registered"],
+    [
+      "Name",
+      "Email",
+      "WhatsApp",
+      "Gender",
+      "Education Level",
+      "Organization",
+      "Position",
+      "District",
+      "Confirmed Availability",
+      "Wants Updates",
+      "Registered",
+    ],
     ...data.registrations.map((r) => [
-      r.user.name,
-      r.user.email,
-      r.user.phone ?? "",
+      r.name,
+      r.email,
+      r.whatsapp,
+      r.gender,
+      r.educationLevel,
+      r.organization,
+      r.position,
+      r.district,
+      r.confirmAvailability ? "Yes" : "No",
+      r.wantsUpdates ? "Yes" : "No",
       new Date(r.registeredAt).toISOString(),
     ]),
   ];
@@ -859,20 +875,21 @@ function RegistrantsModal({ eventId, onClose }: { eventId: string; onClose: () =
                   <div style={{ display: "flex", flexDirection: "column" }}>
                     {data.registrations.map((r) => (
                       <div key={r._id} className="adm-activity">
-                        {r.user.avatar ? (
-                          <img
-                            className="adm-thumb round"
-                            src={img(r.user.avatar, "w=68&h=68&fit=crop&auto=format")}
-                            alt=""
-                          />
-                        ) : (
-                          <span className="adm-thumb-ph">{initials(r.user.name)}</span>
-                        )}
+                        <span className="adm-thumb-ph">{initials(r.name)}</span>
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div className="txt">{r.user.name}</div>
+                          <div className="txt">
+                            {r.name}
+                            {!r.confirmAvailability && (
+                              <span className="adm-badge adm-badge-amber" style={{ marginLeft: 6 }}>
+                                Tentative
+                              </span>
+                            )}
+                          </div>
                           <div className="time">
-                            {r.user.email}
-                            {r.user.phone ? ` · ${r.user.phone}` : ""}
+                            {r.email} · {r.whatsapp}
+                          </div>
+                          <div className="time">
+                            {r.organization} — {r.position} · {r.district}
                           </div>
                         </div>
                         <span className="time" style={{ flexShrink: 0 }}>
@@ -1060,10 +1077,6 @@ export default function AdminDashboard() {
   const messages = useCollection<ContactMessage>(active === "messages" ? "/contact" : null, {
     limit: 100,
   });
-  const hours = useCollection<VolunteerHoursEntry>(
-    active === "hours" ? "/volunteer-hours" : null,
-    { limit: 200 },
-  );
   // Sidebar badge counts — kept loaded regardless of the active tab.
   const unreadMessages = useCollection<ContactMessage>("/contact", {
     status: "New",
@@ -1212,7 +1225,7 @@ export default function AdminDashboard() {
     email: "",
     password: "",
     phone: "",
-    role: "volunteer",
+    role: "staff",
     isActive: true,
   });
 
@@ -1673,7 +1686,7 @@ export default function AdminDashboard() {
         email: "",
         password: "",
         phone: "",
-        role: "volunteer",
+        role: "staff",
         isActive: true,
       });
     }, users.refetch);
@@ -1703,6 +1716,9 @@ export default function AdminDashboard() {
 
   /* --------------------------- derived: dashboard ------------------------ */
 
+  const adminCount = users.data.filter((u) => u.role === "admin").length;
+  const staffCount = users.data.filter((u) => u.role === "staff").length;
+
   const k = dashboard.data?.kpis;
   const statCards = k
     ? [
@@ -1712,8 +1728,8 @@ export default function AdminDashboard() {
           tint: "var(--teal-tint)",
           fg: "var(--teal-deep)",
           value: k.totalUsers.toLocaleString(),
-          label: "Total Users",
-          tag: `${k.activeVolunteers} volunteers`,
+          label: "Staff Accounts",
+          tag: "staff & admin",
         },
         {
           key: "programs",
@@ -1725,13 +1741,13 @@ export default function AdminDashboard() {
           tag: "live",
         },
         {
-          key: "hours",
-          icon: Clock,
+          key: "volunteers",
+          icon: UserCheck,
           tint: "var(--amber-tint)",
           fg: "var(--amber)",
-          value: k.volunteerHours.toLocaleString(),
-          label: "Volunteer Hours",
-          tag: "est.",
+          value: k.approvedVolunteers.toLocaleString(),
+          label: "Approved Volunteers",
+          tag: `${k.pendingApplications} pending`,
         },
         {
           key: "events",
@@ -1758,9 +1774,6 @@ export default function AdminDashboard() {
     if (notifUnreadCount === 0) return;
     void api.patch("/notifications").then(() => notifFeed.refetch());
   };
-
-  const adminCount = users.data.filter((u) => u.role === "admin").length;
-  const staffCount = users.data.filter((u) => u.role === "staff").length;
 
   /* -------------------------------- sections ---------------------------- */
 
@@ -2005,7 +2018,6 @@ export default function AdminDashboard() {
                           value={u.role}
                           onChange={(e) => patchUser(u._id, { role: e.target.value })}
                         >
-                          <option value="volunteer">Volunteer</option>
                           <option value="staff">Staff</option>
                           <option value="admin">Administrator</option>
                         </select>
@@ -2103,15 +2115,6 @@ export default function AdminDashboard() {
                       >
                         Reject
                       </button>
-                      {v.status === "Approved" && (
-                        <a
-                          className="adm-iact"
-                          href={`/api/volunteers/${v._id}/certificate`}
-                          title="Download certificate"
-                        >
-                          <Award size={14} />
-                        </a>
-                      )}
                       <button
                         className="adm-iact danger"
                         onClick={() =>
@@ -2135,96 +2138,6 @@ export default function AdminDashboard() {
       )}
     </div>
   );
-
-  const renderHours = () => {
-    const total = hours.data
-      .filter((h) => h.status === "Approved")
-      .reduce((s, h) => s + h.hours, 0);
-    const setStatus = (id: string, status: "Approved" | "Rejected") =>
-      api
-        .patch(`/volunteer-hours/${id}/status`, { status })
-        .then(hours.refetch)
-        .catch(() => {});
-    return (
-      <div className="adm-panel">
-        <div className="adm-panel-p" style={{ borderBottom: "1px solid var(--line)" }}>
-          <h3 style={{ fontSize: 15.5 }}>Volunteer Hours</h3>
-          <div className="sub" style={{ fontSize: 12, color: "var(--sub)", marginTop: 3 }}>
-            {total} approved hour{total === 1 ? "" : "s"} logged across all members
-          </div>
-        </div>
-        {hours.loading ? (
-          <Loading label="Loading time log…" />
-        ) : hours.error ? (
-          <ErrorBox message={hours.error} onRetry={hours.refetch} />
-        ) : (
-          <div className="adm-table-wrap">
-            <table className="adm-table">
-              <thead>
-                <tr>
-                  <th>Member</th>
-                  <th>Activity</th>
-                  <th>Date</th>
-                  <th>Hours</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {hours.data.map((h) => (
-                  <tr key={h._id}>
-                    <td>
-                      <div className="adm-t-name">
-                        {h.user?.name ?? "—"}
-                        <div className="em">{h.user?.email}</div>
-                      </div>
-                    </td>
-                    <td style={{ maxWidth: 260 }}>
-                      {h.activity}
-                      {h.event && <div className="em">{h.event.title}</div>}
-                    </td>
-                    <td style={{ color: "var(--sub)" }}>{formatDateShort(h.date)}</td>
-                    <td>{h.hours}</td>
-                    <td>
-                      <StatusBadge status={h.status} />
-                    </td>
-                    <td>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <button
-                          className="adm-chipbtn ok"
-                          disabled={h.status === "Approved"}
-                          onClick={() => setStatus(h._id, "Approved")}
-                        >
-                          Approve
-                        </button>
-                        <button
-                          className="adm-chipbtn no"
-                          disabled={h.status === "Rejected"}
-                          onClick={() => setStatus(h._id, "Rejected")}
-                        >
-                          Reject
-                        </button>
-                        <button
-                          className="adm-iact danger"
-                          onClick={() => remove(`/volunteer-hours/${h._id}`, hours.refetch)}
-                          title="Delete"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {hours.data.length === 0 && (
-              <div className="adm-empty">No volunteer hours logged yet.</div>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  };
 
   const renderMessages = () => (
     <div className="adm-panel">
@@ -3350,7 +3263,6 @@ export default function AdminDashboard() {
           {active === "dashboard" && renderDashboard()}
           {active === "users" && isAdmin && renderUsers()}
           {active === "volunteers" && renderVolunteers()}
-          {active === "hours" && renderHours()}
           {active === "messages" && renderMessages()}
           {active === "projects" && renderProjects()}
           {active === "programs" && renderPrograms()}
@@ -3949,7 +3861,6 @@ export default function AdminDashboard() {
                     value={userForm.role}
                     onChange={(e) => setUserForm({ ...userForm, role: e.target.value })}
                   >
-                    <option value="volunteer">Volunteer</option>
                     <option value="staff">Staff — content &amp; applications</option>
                     <option value="admin">Administrator — full control</option>
                   </select>

@@ -1,4 +1,3 @@
-import { appUrl } from "@/lib/env";
 import {
   SUPPORT_EMAIL,
   INK,
@@ -7,7 +6,6 @@ import {
   emailShell,
   heading,
   paragraph,
-  button,
   signoff,
   escapeHtml,
 } from "./layout";
@@ -36,10 +34,8 @@ export function eventReminderEmail(
     when ? `When:  ${when}` : "",
     ev.location ? `Where: ${ev.location}` : "",
     "",
-    "If you can no longer make it, please cancel from your dashboard so someone",
-    "on the waiting list can take your place.",
-    "",
-    `Dashboard: ${appUrl}/dashboard`,
+    `If you can no longer make it, reply to this email or contact ${SUPPORT_EMAIL} so`,
+    "someone on the waiting list can take your place.",
     "",
     `— The YEEP Somalia Team · ${SUPPORT_EMAIL}`,
   ]
@@ -60,10 +56,9 @@ export function eventReminderEmail(
       </td></tr>
     </table>`,
     paragraph(
-      `<span style="color:${SUB};">Can't make it any more? Please cancel from your ` +
-        "dashboard so we can offer your place to someone else.</span>",
+      `<span style="color:${SUB};">Can't make it any more? Reply to this email or contact ` +
+        `<a href="mailto:${SUPPORT_EMAIL}" style="color:${SUB};">${SUPPORT_EMAIL}</a> so we can offer your place to someone else.</span>`,
     ),
-    button("Open my dashboard", `${appUrl}/dashboard`),
     signoff(),
   ].join("\n");
 

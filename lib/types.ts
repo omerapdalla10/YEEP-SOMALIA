@@ -196,12 +196,13 @@ export interface ContactMessage {
   createdAt: string;
 }
 
+/** A staff/admin account — the only kind of account this site has. */
 export interface AdminUser {
   _id: string;
   name: string;
   email: string;
   phone?: string;
-  role: "volunteer" | "staff" | "admin";
+  role: "staff" | "admin";
   avatar?: string;
   isActive: boolean;
   createdAt: string;
@@ -221,9 +222,8 @@ export interface AdminDashboardData {
   kpis: {
     totalUsers: number;
     activePrograms: number;
-    volunteerHours: number;
     events: number;
-    activeVolunteers: number;
+    approvedVolunteers: number;
     pendingApplications: number;
     newMessages: number;
     upcomingEvents: number;
@@ -233,47 +233,22 @@ export interface AdminDashboardData {
   recentActivity: { text: string; time: string; type: string }[];
 }
 
-export interface MyDashboardData {
-  profile: AdminUser;
-  applications: VolunteerApplication[];
-  counts: { total: number; approved: number; pending: number; programsJoined: number };
-  upcomingEvents: EventItem[];
-  /** Event ids the member has an active RSVP for. */
-  registeredEventIds: string[];
-}
-
-export interface EventRegistration {
-  _id: string;
-  event: EventItem;
-  status: "Registered" | "Cancelled";
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface EventRegistrant {
   _id: string;
   registeredAt: string;
-  user: { _id: string; name: string; email: string; phone?: string; avatar?: string };
+  name: string;
+  email: string;
+  whatsapp: string;
+  gender: "Male" | "Female";
+  educationLevel: string;
+  organization: string;
+  position: string;
+  district: string;
+  confirmAvailability: boolean;
+  wantsUpdates: boolean;
 }
 
 export interface EventRegistrationList {
   event: { _id: string; title: string; dateLabel: string; capacity: number; registered: number };
   registrations: EventRegistrant[];
-}
-
-export interface VolunteerHoursEntry {
-  _id: string;
-  user?: { _id: string; name: string; email: string; avatar?: string };
-  event?: { _id: string; title: string } | null;
-  activity: string;
-  hours: number;
-  date: string;
-  status: "Pending" | "Approved" | "Rejected";
-  reviewNote?: string;
-  createdAt: string;
-}
-
-export interface MyHoursData {
-  entries: VolunteerHoursEntry[];
-  totals: { approved: number; pending: number };
 }

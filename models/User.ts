@@ -6,31 +6,26 @@ import {
   type Model,
 } from "mongoose";
 import { hash as bcryptHash, compare as bcryptCompare } from "bcryptjs";
-import { ROLES, DEFAULT_ROLE, type Role } from "@/lib/roles";
+import { ROLES, type Role } from "@/lib/roles";
 
 export type UserRole = Role;
-export type AuthProvider = "local" | "google";
 
+/**
+ * Staff/admin accounts only — created by an admin from the console (see
+ * `POST /api/users`). There is no public sign-up.
+ */
 export interface UserAttrs {
   name: string;
   email: string;
-  /** Optional: Google-only accounts have no password. */
   password?: string;
   phone?: string;
   role: UserRole;
   avatar?: string;
   isActive: boolean;
-  authProvider: AuthProvider;
-  /** Google's stable account id (`sub` claim), when linked. */
-  googleId?: string;
   /** SHA-256 of the active password-reset token; cleared once used. */
   resetTokenHash?: string;
   resetTokenExpires?: Date;
-  /** Email ownership confirmed (true for Google accounts). */
-  emailVerified: boolean;
-  verifyTokenHash?: string;
-  verifyTokenExpires?: Date;
-  /** Staff/admin: last time they cleared the notifications feed. */
+  /** Last time they cleared the admin console notifications feed. */
   notificationsSeenAt?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -54,29 +49,13 @@ const userSchema = new Schema<UserAttrs, UserModel, UserMethods>(
       trim: true,
       match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address"],
     },
-    password: {
-      type: String,
-      minlength: 8,
-      select: false,
-      // Required for local sign-ups; Google accounts authenticate via OAuth.
-      required: [
-        function (this: UserAttrs) {
-          return this.authProvider !== "google";
-        },
-        "Password is required",
-      ],
-    },
+    password: { type: String, required: true, minlength: 8, select: false },
     phone: { type: String, trim: true },
-    role: { type: String, enum: ROLES, default: DEFAULT_ROLE },
+    role: { type: String, enum: ROLES, required: true },
     avatar: { type: String },
     isActive: { type: Boolean, default: true },
-    authProvider: { type: String, enum: ["local", "google"], default: "local" },
-    googleId: { type: String, unique: true, sparse: true },
     resetTokenHash: { type: String, select: false },
     resetTokenExpires: { type: Date, select: false },
-    emailVerified: { type: Boolean, default: false },
-    verifyTokenHash: { type: String, select: false },
-    verifyTokenExpires: { type: Date, select: false },
     notificationsSeenAt: { type: Date },
   },
   { timestamps: true },
@@ -99,11 +78,8 @@ userSchema.set("toJSON", {
   transform(_doc, ret) {
     const r = ret as unknown as Record<string, unknown>;
     delete r.password;
-    delete r.googleId;
     delete r.resetTokenHash;
     delete r.resetTokenExpires;
-    delete r.verifyTokenHash;
-    delete r.verifyTokenExpires;
     return ret;
   },
 });

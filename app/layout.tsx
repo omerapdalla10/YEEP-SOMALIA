@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "@/styles/globals.css";
 import { AuthProvider } from "@/components/auth-context";
-import GoogleSignInPrompt from "@/components/google-sign-in-prompt";
 import Analytics from "@/components/analytics";
 import { LocaleProvider } from "@/lib/i18n/context";
 import { ThemeProvider, themeInitScript } from "@/lib/theme/context";
@@ -10,7 +9,7 @@ import { ThemeProvider, themeInitScript } from "@/lib/theme/context";
 /** Hides public-site sections before first paint so the scroll-reveal has no
  *  flash of content. Home ("/") and reduced-motion are left untouched. See
  *  components/scroll-reveal.tsx and the `sr-on` rules in styles/globals.css. */
-const revealInitScript = `try{var p=location.pathname;if(p!=="/"&&p.indexOf("/admin")!==0&&p.indexOf("/dashboard")!==0&&!matchMedia("(prefers-reduced-motion:reduce)").matches)document.documentElement.classList.add("sr-on")}catch(e){}`;
+const revealInitScript = `try{var p=location.pathname;if(p!=="/"&&p.indexOf("/admin")!==0&&!matchMedia("(prefers-reduced-motion:reduce)").matches)document.documentElement.classList.add("sr-on")}catch(e){}`;
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -46,10 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: revealInitScript }} />
         <ThemeProvider>
           <LocaleProvider>
-            <AuthProvider>
-              <GoogleSignInPrompt />
-              {children}
-            </AuthProvider>
+            <AuthProvider>{children}</AuthProvider>
           </LocaleProvider>
         </ThemeProvider>
         <Analytics />

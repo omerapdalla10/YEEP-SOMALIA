@@ -3,49 +3,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, ChevronDown, LayoutDashboard, LogOut, Search } from "lucide-react";
-import { useAuth } from "@/components/auth-context";
+import { usePathname } from "next/navigation";
+import { Menu, X, ChevronDown, Search } from "lucide-react";
 import { useT } from "@/lib/i18n/context";
 import LanguageToggle from "@/components/language-toggle";
 import ThemeToggle from "@/components/theme-toggle";
 import SearchModal from "@/components/search-modal";
-import { img } from "@/lib/client/img";
-import { roleLabel } from "@/lib/roles";
-
-function initials(name?: string): string {
-  if (!name) return "?";
-  return name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase() ?? "")
-    .join("");
-}
-
-/** Avatar image with an initials fallback if the src is missing or fails. */
-function Avatar({ src, name, size }: { src?: string; name?: string; size: number }) {
-  const [broken, setBroken] = useState(false);
-  const fallback = (
-    <span
-      className="rounded-lg bg-[#2D8FCE] text-white font-semibold flex items-center justify-center shrink-0"
-      style={{ width: size, height: size, fontSize: Math.round(size * 0.4) }}
-    >
-      {initials(name)}
-    </span>
-  );
-  if (!src || broken) return fallback;
-  return (
-    <img
-      src={img(src, "w=96&h=96&fit=crop&auto=format")}
-      alt=""
-      referrerPolicy="no-referrer"
-      onError={() => setBroken(true)}
-      className="rounded-lg object-cover bg-[#D4E6F4] shrink-0"
-      style={{ width: size, height: size }}
-    />
-  );
-}
 
 const navLinks = [
   { key: "nav.about", href: "/about" },
@@ -67,22 +30,9 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [dropdown, setDropdown] = useState<string | null>(null);
-  const [accountOpen, setAccountOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
-  const { user, logout } = useAuth();
   const t = useT();
-  const isStaff = Boolean(user && user.role !== "volunteer");
-  const dashboardHref = isStaff ? "/admin" : "/dashboard";
-  const dashboardLabel = isStaff ? t("nav.adminConsole") : t("nav.myDashboard");
-
-  const handleLogout = () => {
-    setAccountOpen(false);
-    setOpen(false);
-    logout();
-    router.push("/");
-  };
 
   // Jump to top even when the link points at the page we're already on.
   const scrollTop = () => window.scrollTo(0, 0);
@@ -109,7 +59,6 @@ export default function Navbar() {
     /* eslint-disable react-hooks/set-state-in-effect */
     setOpen(false);
     setDropdown(null);
-    setAccountOpen(false);
     /* eslint-enable react-hooks/set-state-in-effect */
   }, [pathname]);
 
@@ -196,7 +145,7 @@ export default function Navbar() {
             )}
           </nav>
 
-          {/* CTA buttons */}
+          {/* Utility buttons */}
           <div className="hidden lg:flex items-center gap-2.5">
             <button
               onClick={() => setSearchOpen(true)}
@@ -211,75 +160,6 @@ export default function Navbar() {
             </button>
             <ThemeToggle />
             <LanguageToggle />
-            {user ? (
-              <div className="relative">
-                <button
-                  onClick={() => {
-                    setDropdown(null);
-                    setAccountOpen((o) => !o);
-                  }}
-                  className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-[#D4E6F4] transition-colors"
-                >
-                  <Avatar src={user.avatar} name={user.name} size={30} />
-                  <span className="text-sm font-semibold text-gray-800 max-w-[130px] truncate">
-                    {user.name}
-                  </span>
-                  <ChevronDown
-                    size={14}
-                    className={`text-gray-400 transition-transform ${accountOpen ? "rotate-180" : ""}`}
-                  />
-                </button>
-                {accountOpen && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-40"
-                      onClick={() => setAccountOpen(false)}
-                    />
-                    <div className="absolute right-0 top-full mt-2 w-60 bg-white rounded-lg border border-gray-200 shadow-sm py-1.5 overflow-hidden z-50">
-                      <div className="px-4 py-2.5 border-b border-gray-100">
-                        <div className="text-sm font-semibold text-gray-800 truncate">
-                          {user.name}
-                        </div>
-                        <div className="text-xs text-gray-400 truncate">{user.email}</div>
-                        <div className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-[#1F6BA0]">
-                          {roleLabel(user.role)}
-                        </div>
-                      </div>
-                      <Link
-                        href={dashboardHref}
-                        onClick={() => setAccountOpen(false)}
-                        className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-[#D4E6F4] hover:text-[#1F6BA0] transition-colors"
-                      >
-                        <LayoutDashboard size={15} />
-                        {dashboardLabel}
-                      </Link>
-                      <button
-                        onClick={handleLogout}
-                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                      >
-                        <LogOut size={15} />
-                        {t("nav.signOut")}
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="text-sm font-medium text-gray-600 hover:text-[#2D8FCE] transition-colors"
-                >
-                  {t("nav.signIn")}
-                </Link>
-                <Link
-                  href="/register"
-                  className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-[#2D8FCE] hover:bg-[#1F6BA0] rounded-lg transition-colors"
-                >
-                  {t("nav.signUp")}
-                </Link>
-              </>
-            )}
           </div>
 
           {/* Mobile toggle */}
@@ -339,50 +219,6 @@ export default function Navbar() {
           <div className="pt-3 flex justify-center items-center gap-3 border-t border-gray-100">
             <ThemeToggle />
             <LanguageToggle />
-          </div>
-          <div className="pt-3 border-t border-gray-100">
-            {user ? (
-              <div className="space-y-2">
-                <div className="flex items-center gap-2.5 px-3 py-2">
-                  <Avatar src={user.avatar} name={user.name} size={38} />
-                  <div className="min-w-0">
-                    <div className="text-sm font-semibold text-gray-800 truncate">
-                      {user.name}
-                    </div>
-                    <div className="text-xs text-gray-400 truncate">{user.email}</div>
-                  </div>
-                </div>
-                <Link
-                  href={dashboardHref}
-                  className="flex items-center justify-center gap-2 py-2 text-sm font-semibold text-white bg-[#2D8FCE] rounded-lg hover:bg-[#1F6BA0] transition-colors"
-                >
-                  <LayoutDashboard size={15} />
-                  {dashboardLabel}
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center justify-center gap-2 py-2 text-sm font-medium text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition-colors"
-                >
-                  <LogOut size={15} />
-                  {t("nav.signOut")}
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                <Link
-                  href="/register"
-                  className="block text-center py-2 text-sm font-semibold text-white bg-[#2D8FCE] rounded-lg hover:bg-[#1F6BA0] transition-colors"
-                >
-                  {t("nav.signUp")}
-                </Link>
-                <Link
-                  href="/login"
-                  className="block text-center py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:border-[#2D8FCE] hover:text-[#2D8FCE] transition-colors"
-                >
-                  {t("nav.signIn")}
-                </Link>
-              </div>
-            )}
           </div>
         </div>
       )}

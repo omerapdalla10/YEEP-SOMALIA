@@ -16,11 +16,11 @@ const GENERIC =
 export const POST = route(async (req: NextRequest) => {
   const { email } = await parseBody(req, forgotPasswordSchema);
 
-  const user = await User.findOne({ email }).select("+password name email authProvider");
+  const user = await User.findOne({ email }).select("+password name email");
 
-  // Only local accounts with a password can reset. Never reveal which case we
-  // hit — the response is identical whether or not the account exists.
-  if (user && user.authProvider !== "google" && user.password) {
+  // Never reveal whether the account exists — the response is identical
+  // either way.
+  if (user && user.password) {
     const { token, hash, expires } = createResetToken();
     user.resetTokenHash = hash;
     user.resetTokenExpires = expires;

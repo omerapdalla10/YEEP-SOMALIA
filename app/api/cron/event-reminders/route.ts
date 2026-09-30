@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { route } from "@/lib/api/route";
 import { ok } from "@/lib/api/response";
@@ -11,11 +12,20 @@ import { EventRegistration } from "@/models/EventRegistration";
 /** Hours before an event that the reminder goes out. */
 const LEAD_HOURS = Number(process.env.REMINDER_LEAD_HOURS ?? 48);
 
+/** Constant-time string compare so a bad guess can't be timed against the real secret. */
+function secretsMatch(a: string, b: string): boolean {
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  if (bufA.length !== bufB.length) return false;
+  return timingSafeEqual(bufA, bufB);
+}
+
 function authorized(req: NextRequest): boolean {
   if (!cronSecret) return false;
   const bearer = req.headers.get("authorization");
-  if (bearer === `Bearer ${cronSecret}`) return true;
-  return req.nextUrl.searchParams.get("key") === cronSecret;
+  if (bearer && secretsMatch(bearer, `Bearer ${cronSecret}`)) return true;
+  const key = req.nextUrl.searchParams.get("key");
+  return key !== null && secretsMatch(key, cronSecret);
 }
 
 /**

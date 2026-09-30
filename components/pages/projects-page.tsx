@@ -57,7 +57,7 @@ export default function ProjectsPage() {
           </span>
           <h1 className="text-4xl lg:text-5xl font-bold text-white mb-5">Our Projects</h1>
           <p className="text-xl text-white/80 max-w-2xl mx-auto">
-            From leadership academies to community dialogues — every project is a step toward
+            From leadership academies to community dialogues, every project is a step toward
             lasting peace.
           </p>
         </div>

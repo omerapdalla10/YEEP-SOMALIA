@@ -38,7 +38,7 @@ export function volunteerApprovedEmail(
 ): { subject: string; html: string; text: string } {
   const fullName = name.trim() || "there";
   const roleLine = role ? ` for the role of ${role}` : "";
-  const subject = "Congratulations — You're Now a YEEP Somalia Volunteer! \u{1F389}";
+  const subject = "Congratulations, you're now a YEEP Somalia volunteer!";
 
   const text = [
     `Dear ${fullName},`,
@@ -46,8 +46,8 @@ export function volunteerApprovedEmail(
     `Congratulations! We're thrilled to let you know that your application to volunteer with`,
     `YEEP Somalia${roleLine} has been approved.`,
     "",
-    "Thank you for stepping up and offering your time and skills to support our mission —",
-    "people like you are what make our work possible.",
+    "Thank you for stepping up and offering your time and skills to support our mission.",
+    "People like you are what make our work possible.",
     "",
     "Here's what happens next:",
     ...NEXT_STEPS.map((s) => `  - ${s.title}: ${s.desc}`),
@@ -64,7 +64,7 @@ export function volunteerApprovedEmail(
   ].join("\n");
 
   const body = [
-    heading("Congratulations — you're now a YEEP Somalia volunteer! \u{1F389}"),
+    heading("Congratulations, you're now a YEEP Somalia volunteer!"),
     paragraph(`Dear <strong style="color:${INK};">${escapeHtml(fullName)}</strong>,`),
     paragraph(
       "Congratulations! We're thrilled to let you know that your application to volunteer with " +
@@ -88,7 +88,7 @@ export function volunteerApprovedEmail(
     text,
     html: emailShell({
       title: subject,
-      preheader: "Your volunteer application has been approved — welcome to the team.",
+      preheader: "Your volunteer application has been approved. Welcome to the team.",
       body,
     }),
   };

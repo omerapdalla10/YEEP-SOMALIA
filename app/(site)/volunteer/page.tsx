@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Volunteer",
   description,
   alternates: { canonical: `${appUrl}/volunteer` },
-  openGraph: { title: "Volunteer — YEEP Somalia", description, url: `${appUrl}/volunteer` },
+  openGraph: { title: "Volunteer | YEEP Somalia", description, url: `${appUrl}/volunteer` },
 };
 
 export default function Page() {

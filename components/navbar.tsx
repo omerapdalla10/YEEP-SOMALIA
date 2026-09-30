@@ -1,26 +1,36 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown, Search } from "lucide-react";
 import { useT } from "@/lib/i18n/context";
+import { PILLAR_PROGRAMS, type PillarProgram } from "@/lib/data/pillar-programs";
 import LanguageToggle from "@/components/language-toggle";
 import ThemeToggle from "@/components/theme-toggle";
 import SearchModal from "@/components/search-modal";
 
-const navLinks = [
+type NavLink = {
+  key: string;
+  href: string;
+  programs?: PillarProgram[];
+  children?: { key: string; href: string }[];
+};
+
+const navLinks: NavLink[] = [
   { key: "nav.about", href: "/about" },
-  {
-    key: "nav.ourWork",
-    children: [
-      { key: "nav.programs", href: "/programs" },
-      { key: "nav.projects", href: "/projects" },
-      { key: "nav.events", href: "/events" },
-    ],
-  },
-  { key: "nav.gallery", href: "/gallery" },
+  { key: "nav.programs", href: "/programs", programs: PILLAR_PROGRAMS },
+  // Hidden for now — re-add when asked to unhide.
+  // {
+  //   key: "nav.ourWork",
+  //   href: "/projects",
+  //   children: [
+  //     { key: "nav.projects", href: "/projects" },
+  //     { key: "nav.events", href: "/events" },
+  //   ],
+  // },
+  // { key: "nav.gallery", href: "/gallery" },
   { key: "nav.news", href: "/news" },
   { key: "nav.volunteer", href: "/volunteer" },
   { key: "nav.contact", href: "/contact" },
@@ -33,6 +43,23 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const pathname = usePathname();
   const t = useT();
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openOnHover = (key: string) => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setDropdown(key);
+  };
+  const closeOnLeave = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setDropdown(null), 150);
+  };
+
+  useEffect(
+    () => () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    },
+    [],
+  );
 
   // Jump to top even when the link points at the page we're already on.
   const scrollTop = () => window.scrollTo(0, 0);
@@ -94,7 +121,57 @@ export default function Navbar() {
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) =>
-              link.children ? (
+              link.programs ? (
+                <div
+                  key={link.key}
+                  className="relative"
+                  onMouseEnter={() => openOnHover(link.key)}
+                  onMouseLeave={closeOnLeave}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={() => {
+                      setDropdown(null);
+                      scrollTop();
+                    }}
+                    aria-expanded={dropdown === link.key}
+                    className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                      pathname === link.href
+                        ? "text-[#1F6BA0] bg-[#D4E6F4]"
+                        : "text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4]"
+                    }`}
+                  >
+                    {t(link.key)}
+                    <ChevronDown
+                      size={14}
+                      className={`transition-transform ${dropdown === link.key ? "rotate-180" : ""}`}
+                    />
+                  </Link>
+                  {dropdown === link.key && (
+                    <>
+                      <div className="fixed inset-0 z-40" onClick={() => setDropdown(null)} />
+                      <div className="absolute top-full left-0 mt-1 w-80 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden z-50">
+                        {link.programs.map((prog) => (
+                          <Link
+                            key={prog.slug}
+                            href={`/programs/${prog.slug}`}
+                            onClick={() => {
+                              setDropdown(null);
+                              scrollTop();
+                            }}
+                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4] transition-colors"
+                          >
+                            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#D4E6F4] text-[#1F6BA0] shrink-0">
+                              <prog.icon size={15} />
+                            </span>
+                            {prog.title}
+                          </Link>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+              ) : link.children ? (
                 <div key={link.key} className="relative">
                   <button
                     onClick={() => setDropdown((d) => (d === link.key ? null : link.key))}
@@ -176,7 +253,32 @@ export default function Navbar() {
       {open && (
         <div className="lg:hidden bg-white dark:bg-[#0e1512] border-t border-gray-100 px-4 py-4 space-y-1">
           {navLinks.map((link) =>
-            link.children ? (
+            link.programs ? (
+              <div key={link.key}>
+                <Link
+                  href={link.href}
+                  onClick={scrollTop}
+                  className={`block px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
+                    pathname === link.href
+                      ? "text-[#1F6BA0] bg-[#D4E6F4]"
+                      : "text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4]"
+                  }`}
+                >
+                  {t(link.key)}
+                </Link>
+                {link.programs.map((prog) => (
+                  <Link
+                    key={prog.slug}
+                    href={`/programs/${prog.slug}`}
+                    onClick={scrollTop}
+                    className="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:text-[#1F6BA0] hover:bg-[#D4E6F4] rounded-lg transition-colors ml-2"
+                  >
+                    <prog.icon size={14} className="text-[#2D8FCE] shrink-0" />
+                    {prog.title}
+                  </Link>
+                ))}
+              </div>
+            ) : link.children ? (
               <div key={link.key}>
                 <div className="px-3 py-2 text-xs font-semibold text-gray-400 tracking-wide">
                   {t(link.key)}

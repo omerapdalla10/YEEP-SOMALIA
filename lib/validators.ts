@@ -12,6 +12,8 @@ import { REPORT_KINDS } from "@/models/Report";
 
 const str = z.string().trim();
 const optStr = str.max(2000).optional();
+/** Long-form body text (article content, full descriptions) — effectively unbounded. */
+const longText = str.max(200_000).optional();
 
 /**
  * An image reference: an http(s) URL, a bare Unsplash photo id (e.g.
@@ -83,6 +85,7 @@ export const programSchema = z.object({
   beneficiaries: num.min(0).optional(),
   progress: num.min(0).max(100).optional(),
   duration: str.max(60).optional(),
+  country: str.max(80).optional(),
   region: str.max(80).optional(),
   district: str.max(80).optional(),
   featured: z.coerce.boolean().optional(),
@@ -94,6 +97,7 @@ export const projectSchema = z.object({
   status: z.enum(PROJECT_STATUSES).optional(),
   category: str.max(60).optional(),
   location: str.max(120).optional(),
+  country: str.max(80).optional(),
   region: str.max(80).optional(),
   district: str.max(80).optional(),
   image,
@@ -117,6 +121,7 @@ export const eventSchema = z.object({
   timeLabel: str.max(80).optional(),
   month: str.max(40).optional(),
   location: str.max(160).optional(),
+  country: str.max(80).optional(),
   region: str.max(80).optional(),
   type: z.enum(EVENT_TYPES).optional(),
   image,
@@ -131,7 +136,7 @@ export const eventSchema = z.object({
 export const articleSchema = z.object({
   title: str.min(2).max(220),
   excerpt: str.max(400).optional(),
-  content: optStr,
+  content: longText,
   category: str.max(60).optional(),
   image,
   author: str.max(120).optional(),

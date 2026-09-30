@@ -27,20 +27,20 @@ const benefits = [
   { icon: Heart, title: "Make Real Impact", desc: "Directly contribute to peacebuilding and youth leadership in communities across Somalia." },
   { icon: Award, title: "Build Your Skills", desc: "Gain hands-on experience in facilitation, community engagement, advocacy, and research." },
   { icon: Globe, title: "Expand Your Network", desc: "Connect with young changemakers, mentors, and partner organisations in Somalia and beyond." },
-  { icon: Clock, title: "Flexible Commitment", desc: "Choose from one-time events, part-time, or ongoing volunteering — whatever fits your life." },
+  { icon: Clock, title: "Flexible Commitment", desc: "Choose from one-time events, part-time, or ongoing volunteering, whatever fits your life." },
 ];
 
 const steps = [
-  { icon: Send, title: "Apply", desc: "Submit the form below — it takes about 5 minutes." },
+  { icon: Send, title: "Apply", desc: "Submit the form below. It takes about 5 minutes." },
   { icon: Search, title: "Review", desc: "Our team reviews your application within 3 business days." },
   { icon: MessageSquare, title: "Conversation", desc: "A short call to match you to the right role and team." },
   { icon: PartyPopper, title: "Onboard", desc: "Orientation, a first assignment, and you're part of the team." },
 ];
 
 const faqs = [
-  { q: "Do I need experience?", a: "No. Many of our volunteers start with no prior experience — we provide orientation and on-the-job training." },
+  { q: "Do I need experience?", a: "No. Many of our volunteers start with no prior experience. We provide orientation and on-the-job training." },
   { q: "Is volunteering paid?", a: "Volunteering is unpaid, but we cover transport and meal costs for activities and provide certificates and references." },
-  { q: "How much time does it take?", a: "It depends on the role — from one-time event support to a few hours a week. You choose your availability in the form." },
+  { q: "How much time does it take?", a: "It depends on the role, from one-time event support to a few hours a week. You choose your availability in the form." },
   { q: "Can I volunteer remotely?", a: "Some roles (research, communications, design) can be done remotely. Others are field-based in Mogadishu and partner regions." },
 ];
 
@@ -196,7 +196,7 @@ export default function VolunteerPage() {
             error={error}
             empty={opportunities.length === 0}
             onRetry={refetch}
-            emptyLabel="No open volunteer roles right now — check back soon."
+            emptyLabel="No open volunteer roles right now. Check back soon."
           >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {opportunities.map((opp) => (

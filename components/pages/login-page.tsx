@@ -73,7 +73,7 @@ export default function LoginPage() {
 
           <h1 className="text-2xl font-bold text-gray-900 mb-1">Staff &amp; Admin Sign In</h1>
           <p className="text-gray-400 text-sm mb-8">
-            Accounts are created by an administrator — this sign-in is not for the public.
+            Accounts are created by an administrator. This sign-in is not for the public.
           </p>
 
           <form className="space-y-4" onSubmit={handleSubmit}>

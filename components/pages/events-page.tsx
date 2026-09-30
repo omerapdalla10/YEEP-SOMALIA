@@ -67,7 +67,7 @@ export default function EventsPage() {
           </span>
           <h1 className="text-4xl lg:text-5xl font-bold text-white mb-5">Events</h1>
           <p className="text-xl text-white/80 max-w-2xl mx-auto">
-            Join us at forums, workshops, dialogues, and roundtables — every event is a chance to
+            Join us at forums, workshops, dialogues, and roundtables. Every event is a chance to
             connect and build peace.
           </p>
         </div>
@@ -122,7 +122,7 @@ export default function EventsPage() {
             onRetry={refetch}
             emptyLabel={
               tab === "upcoming"
-                ? "No upcoming events right now — check back soon."
+                ? "No upcoming events right now. Check back soon."
                 : "No past events to show yet."
             }
             loadingLabel="Loading events…"

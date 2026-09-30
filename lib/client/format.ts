@@ -15,6 +15,13 @@ export function formatCountPlus(n: number | undefined | null): string {
   return `${(n ?? 0).toLocaleString()}+`;
 }
 
+/** 10000 → "10K+", 800 → "800+" */
+export function formatCountCompactPlus(n: number | undefined | null): string {
+  const v = n ?? 0;
+  if (v >= 1_000) return `${(v / 1_000).toFixed(1).replace(/\.0$/, "")}K+`;
+  return `${v}+`;
+}
+
 /** 2400000 → "$2.4M", 500000 → "$500K", 800 → "$800" */
 export function formatMoneyCompact(n: number | undefined | null): string {
   const v = n ?? 0;

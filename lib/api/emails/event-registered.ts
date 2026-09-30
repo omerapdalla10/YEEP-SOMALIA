@@ -35,17 +35,17 @@ export function eventRegisteredEmail(
     when ? `When:  ${when}` : "",
     ev.location ? `Where: ${ev.location}` : "",
     "",
-    "We've attached a calendar invite (.ics) — open it to add the event to your",
+    "We've attached a calendar invite (.ics). Open it to add the event to your",
     `calendar. Need to change or cancel your registration? Reply to this email or contact ${SUPPORT_EMAIL}.`,
     "",
     "See you there!",
-    `— The YEEP Somalia Team · ${SUPPORT_EMAIL}`,
+    "The YEEP Somalia Team",
   ]
     .filter(Boolean)
     .join("\n");
 
   const body = [
-    heading("You're registered! \u{1F389}"),
+    heading("You're registered!"),
     paragraph(`Hi <strong style="color:${INK};">${escapeHtml(firstName)}</strong>,`),
     paragraph(
       `Your spot at <strong style="color:${INK};">${escapeHtml(ev.title)}</strong> is confirmed.`,

@@ -33,6 +33,9 @@ export class ApiError extends Error {
   static conflict(message = "That already exists.", details?: unknown) {
     return new ApiError(409, message, details);
   }
+  static tooManyRequests(message = "Too many requests. Please try again shortly.") {
+    return new ApiError(429, message);
+  }
 }
 
 /** Build an ApiError that carries per-field form messages. */

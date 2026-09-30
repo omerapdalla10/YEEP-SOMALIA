@@ -7,6 +7,7 @@ import { createResetToken } from "@/lib/api/reset-token";
 import { sendMail } from "@/lib/api/mailer";
 import { passwordResetEmail } from "@/lib/api/emails/password-reset";
 import { appUrl } from "@/lib/env";
+import { rateLimit } from "@/lib/api/rate-limit";
 import { User } from "@/models/User";
 
 const GENERIC =
@@ -14,6 +15,7 @@ const GENERIC =
 
 /** POST /api/auth/forgot-password — start the reset flow. */
 export const POST = route(async (req: NextRequest) => {
+  rateLimit(req, "forgot-password", { limit: 5, windowMs: 15 * 60 * 1000 });
   const { email } = await parseBody(req, forgotPasswordSchema);
 
   const user = await User.findOne({ email }).select("+password name email");

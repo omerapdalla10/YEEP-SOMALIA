@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Terms of Service",
   description,
   alternates: { canonical: `${appUrl}/terms` },
-  openGraph: { title: "Terms of Service — YEEP Somalia", description, url: `${appUrl}/terms` },
+  openGraph: { title: "Terms of Service | YEEP Somalia", description, url: `${appUrl}/terms` },
 };
 
 export default function TermsPage() {
@@ -20,7 +20,7 @@ export default function TermsPage() {
     >
       <section>
         <h2>Using the site</h2>
-        <p>You may use this site for lawful purposes only. You agree not to misuse it — for example by attempting to disrupt the service, access data that is not yours, submit false information, or upload harmful content.</p>
+        <p>You may use this site for lawful purposes only. You agree not to misuse it, for example by attempting to disrupt the service, access data that is not yours, submit false information, or upload harmful content.</p>
       </section>
 
       <section>

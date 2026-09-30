@@ -9,12 +9,14 @@ import { sendMail } from "@/lib/api/mailer";
 import { contactNotificationEmail, contactAckEmail } from "@/lib/api/emails/contact";
 import { SUPPORT_EMAIL } from "@/lib/api/emails/layout";
 import { notify } from "@/lib/api/notify";
+import { rateLimit } from "@/lib/api/rate-limit";
 import { ContactMessage } from "@/models/ContactMessage";
 
 const INBOX = process.env.CONTACT_INBOX || SUPPORT_EMAIL;
 
 /** POST /api/contact — public contact form. */
 export const POST = route(async (req: NextRequest) => {
+  rateLimit(req, "contact", { limit: 5, windowMs: 10 * 60 * 1000 });
   const body = await parseBody(req, contactMessageSchema);
   const message = await ContactMessage.create(body);
 

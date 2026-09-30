@@ -15,6 +15,7 @@ export interface Program {
   beneficiaries: number;
   progress: number;
   duration?: string;
+  country?: string;
   region?: string;
   district?: string;
   featured: boolean;
@@ -28,6 +29,7 @@ export interface Project {
   status: "Ongoing" | "Completed" | "Planned";
   category?: string;
   location?: string;
+  country?: string;
   region?: string;
   district?: string;
   image?: string;
@@ -62,6 +64,7 @@ export interface EventItem {
   timeLabel?: string;
   month?: string;
   location?: string;
+  country?: string;
   region?: string;
   type: "Conference" | "Community" | "Fundraiser" | "Workshop" | "Forum" | "Networking";
   image?: string;

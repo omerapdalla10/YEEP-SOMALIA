@@ -46,6 +46,7 @@ import { api, ApiError } from "@/lib/client/api";
 import { img } from "@/lib/client/img";
 import { formatDateShort } from "@/lib/client/format";
 import { roleLabel } from "@/lib/roles";
+import { COUNTRIES } from "@/lib/countries";
 import { uploadImage } from "@/lib/client/upload";
 import { useAdminTheme } from "@/components/admin/use-admin-theme";
 import { GrowthChart, Donut } from "@/components/admin/charts";
@@ -113,14 +114,21 @@ const regions = [
   "Woqooyi Galbeed",
 ];
 const programCategories = [
-  "Education",
-  "Skills",
-  "Leadership",
-  "Health",
-  "Arts",
-  "Vocational",
-  "Digital Literacy",
-  "Entrepreneurship",
+  "Youth, Peace & Security (YPS)",
+  "Peacebuilding & Conflict Prevention",
+  "Preventing & Countering Violent Extremism (PCVE)",
+  "Youth Leadership & Empowerment",
+  "Civic Engagement & Participation",
+  "Humanitarian Action",
+  "Child Protection",
+  "Gender & Inclusion",
+  "Climate, Peace & Security",
+  "Community Resilience",
+  "Mental Health & Psychosocial Support",
+  "Education & Awareness",
+  "Policy, Advocacy & Research",
+  "Partnerships & Networking",
+  "International & Global Commemorations",
 ];
 const newsCategories = [
   "Events",
@@ -248,6 +256,52 @@ function Field({
       </span>
       {children}
     </div>
+  );
+}
+
+/**
+ * Country + Region pair used on Programs/Projects/Events. Region is a fixed
+ * dropdown of Somalia's 18 federal member states when the country is Somalia
+ * (the common case), and a free-text field for anywhere else in the world.
+ */
+function CountryRegionFields({
+  country,
+  region,
+  onCountry,
+  onRegion,
+}: {
+  country: string;
+  region: string;
+  onCountry: (v: string) => void;
+  onRegion: (v: string) => void;
+}) {
+  return (
+    <>
+      <Field label="Country">
+        <select className="adm-select" value={country} onChange={(e) => onCountry(e.target.value)}>
+          {COUNTRIES.map((c) => (
+            <option key={c}>{c}</option>
+          ))}
+        </select>
+      </Field>
+      <Field label="Region">
+        {country === "Somalia" ? (
+          <select className="adm-select" value={region} onChange={(e) => onRegion(e.target.value)}>
+            <option value="">Select region</option>
+            {regions.map((r) => (
+              <option key={r}>{r}</option>
+            ))}
+          </select>
+        ) : (
+          <input
+            className="adm-input"
+            placeholder="Region / State / Province"
+            value={region}
+            onChange={(e) => onRegion(e.target.value)}
+          />
+        )}
+      </Field>
+    </>
   );
 }
 
@@ -608,22 +662,22 @@ function SiteImagesCard() {
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <ImageField
-            label="Home — hero background"
+            label="Home · hero background"
             value={form.heroImage ?? ""}
             onChange={set("heroImage")}
           />
           <ImageField
-            label="Home — “Our Impact” photo"
+            label="Home · “Our Impact” photo"
             value={form.homeImpactImage ?? ""}
             onChange={set("homeImpactImage")}
           />
           <ImageField
-            label="About — “Who We Are” photo"
+            label="About · “Who We Are” photo"
             value={form.aboutImage ?? ""}
             onChange={set("aboutImage")}
           />
           <ImageField
-            label="Volunteer — hero background"
+            label="Volunteer · hero background"
             value={form.volunteerImage ?? ""}
             onChange={set("volunteerImage")}
           />
@@ -852,7 +906,7 @@ function RegistrantsModal({ eventId, onClose }: { eventId: string; onClose: () =
     <div className="adm-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="adm-modal" role="dialog" aria-label="Event registrations">
         <div className="adm-modal-head">
-          <h3>{data ? `${data.event.title} — Registrations` : "Registrations"}</h3>
+          <h3>{data ? `${data.event.title} · Registrations` : "Registrations"}</h3>
           <button className="adm-iact" onClick={onClose} aria-label="Close">
             <X size={16} />
           </button>
@@ -889,7 +943,7 @@ function RegistrantsModal({ eventId, onClose }: { eventId: string; onClose: () =
                             {r.email} · {r.whatsapp}
                           </div>
                           <div className="time">
-                            {r.organization} — {r.position} · {r.district}
+                            {r.organization} · {r.position} · {r.district}
                           </div>
                         </div>
                         <span className="time" style={{ flexShrink: 0 }}>
@@ -1133,6 +1187,7 @@ export default function AdminDashboard() {
   const emptyProjForm = {
     title: "",
     description: "",
+    country: "Somalia",
     region: "",
     district: "",
     budget: "",
@@ -1148,6 +1203,7 @@ export default function AdminDashboard() {
     title: "",
     description: "",
     category: "",
+    country: "Somalia",
     region: "",
     status: "Active",
     targetBeneficiaries: "",
@@ -1164,6 +1220,7 @@ export default function AdminDashboard() {
     date: "",
     endDate: "",
     location: "",
+    country: "Somalia",
     region: "",
     capacity: "",
     registrationDeadline: "",
@@ -1291,6 +1348,7 @@ export default function AdminDashboard() {
         ? {
             title: p.title,
             description: p.description ?? "",
+            country: p.country ?? "Somalia",
             region: p.region ?? "",
             district: p.district ?? "",
             budget: p.budget ? String(p.budget) : "",
@@ -1316,6 +1374,7 @@ export default function AdminDashboard() {
             title: p.title,
             description: p.description ?? "",
             category: p.category ?? "",
+            country: p.country ?? "Somalia",
             region: p.region ?? "",
             status: p.status ?? "Active",
             targetBeneficiaries: p.beneficiaries ? String(p.beneficiaries) : "",
@@ -1342,6 +1401,7 @@ export default function AdminDashboard() {
             date: ev.startDate ? ev.startDate.slice(0, 10) : "",
             endDate: ev.endDate ? ev.endDate.slice(0, 10) : "",
             location: ev.location ?? "",
+            country: ev.country ?? "Somalia",
             region: ev.region ?? "",
             capacity: ev.capacity ? String(ev.capacity) : "",
             registrationDeadline: ev.registrationDeadline
@@ -1504,6 +1564,7 @@ export default function AdminDashboard() {
       const payload = {
         title: projForm.title,
         description: projForm.description || undefined,
+        country: projForm.country || undefined,
         region: projForm.region || undefined,
         district: projForm.district || undefined,
         budget: projForm.budget ? Number(projForm.budget) : undefined,
@@ -1530,6 +1591,7 @@ export default function AdminDashboard() {
         title: progForm.title,
         description: progForm.description || undefined,
         category: progForm.category,
+        country: progForm.country || undefined,
         region: progForm.region || undefined,
         status: progForm.status,
         beneficiaries: progForm.targetBeneficiaries
@@ -1565,6 +1627,7 @@ export default function AdminDashboard() {
           ? new Date(evtForm.date).toLocaleDateString("en-US", { month: "long", year: "numeric" })
           : undefined,
         location: evtForm.location || undefined,
+        country: evtForm.country || undefined,
         region: evtForm.region || undefined,
         capacity: evtForm.capacity ? Number(evtForm.capacity) : undefined,
         registrationDeadline: evtForm.registrationDeadline || undefined,
@@ -3330,7 +3393,7 @@ export default function AdminDashboard() {
                 <Field label="Project Title" required>
                   <input
                     className="adm-input"
-                    placeholder="Youth Leadership Academy — Banadir"
+                    placeholder="Youth Leadership Academy, Banadir"
                     value={projForm.title}
                     onChange={(e) => setProjForm({ ...projForm, title: e.target.value })}
                   />
@@ -3356,18 +3419,14 @@ export default function AdminDashboard() {
                 />
               </Field>
               <div className="adm-modal-grid">
-                <Field label="Region">
-                  <select
-                    className="adm-select"
-                    value={projForm.region}
-                    onChange={(e) => setProjForm({ ...projForm, region: e.target.value })}
-                  >
-                    <option value="">Select region</option>
-                    {regions.map((r) => (
-                      <option key={r}>{r}</option>
-                    ))}
-                  </select>
-                </Field>
+                <CountryRegionFields
+                  country={projForm.country}
+                  region={projForm.region}
+                  onCountry={(v) => setProjForm({ ...projForm, country: v })}
+                  onRegion={(v) => setProjForm({ ...projForm, region: v })}
+                />
+              </div>
+              <div className="adm-modal-grid">
                 <Field label="District">
                   <input
                     className="adm-input"
@@ -3398,7 +3457,7 @@ export default function AdminDashboard() {
                   />
                 </Field>
               </div>
-              <Field label={`Progress — ${projForm.progress || 0}%`}>
+              <Field label={`Progress: ${projForm.progress || 0}%`}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <input
                     type="range"
@@ -3497,18 +3556,14 @@ export default function AdminDashboard() {
                 />
               </Field>
               <div className="adm-modal-grid">
-                <Field label="Region">
-                  <select
-                    className="adm-select"
-                    value={progForm.region}
-                    onChange={(e) => setProgForm({ ...progForm, region: e.target.value })}
-                  >
-                    <option value="">Select region</option>
-                    {regions.map((r) => (
-                      <option key={r}>{r}</option>
-                    ))}
-                  </select>
-                </Field>
+                <CountryRegionFields
+                  country={progForm.country}
+                  region={progForm.region}
+                  onCountry={(v) => setProgForm({ ...progForm, country: v })}
+                  onRegion={(v) => setProgForm({ ...progForm, region: v })}
+                />
+              </div>
+              <div className="adm-modal-grid">
                 <Field label="Status">
                   <select
                     className="adm-select"
@@ -3573,7 +3628,7 @@ export default function AdminDashboard() {
                   />
                 </Field>
               </div>
-              <Field label={`Progress — ${progForm.progress || 0}%`}>
+              <Field label={`Progress: ${progForm.progress || 0}%`}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <input
                     type="range"
@@ -3627,18 +3682,12 @@ export default function AdminDashboard() {
                     onChange={(e) => setEvtForm({ ...evtForm, title: e.target.value })}
                   />
                 </Field>
-                <Field label="Region">
-                  <select
-                    className="adm-select"
-                    value={evtForm.region}
-                    onChange={(e) => setEvtForm({ ...evtForm, region: e.target.value })}
-                  >
-                    <option value="">Select region</option>
-                    {regions.map((r) => (
-                      <option key={r}>{r}</option>
-                    ))}
-                  </select>
-                </Field>
+                <CountryRegionFields
+                  country={evtForm.country}
+                  region={evtForm.region}
+                  onCountry={(v) => setEvtForm({ ...evtForm, country: v })}
+                  onRegion={(v) => setEvtForm({ ...evtForm, region: v })}
+                />
               </div>
               <Field label="Description">
                 <textarea
@@ -3861,8 +3910,8 @@ export default function AdminDashboard() {
                     value={userForm.role}
                     onChange={(e) => setUserForm({ ...userForm, role: e.target.value })}
                   >
-                    <option value="staff">Staff — content &amp; applications</option>
-                    <option value="admin">Administrator — full control</option>
+                    <option value="staff">Staff: content &amp; applications</option>
+                    <option value="admin">Administrator: full control</option>
                   </select>
                 </Field>
                 <Field label="Active">
@@ -4122,8 +4171,8 @@ export default function AdminDashboard() {
                       })
                     }
                   >
-                    <option value="home">Home — success stories</option>
-                    <option value="volunteer">Volunteer — voices</option>
+                    <option value="home">Home: success stories</option>
+                    <option value="volunteer">Volunteer: voices</option>
                   </select>
                 </Field>
                 <Field label="Order">

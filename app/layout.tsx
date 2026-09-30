@@ -26,11 +26,24 @@ export const metadata: Metadata = {
   },
   description:
     "YEEP Somalia is a registered, youth-led NGO empowering Somali youth to lead, innovate, and build peaceful, inclusive and resilient communities.",
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
   openGraph: {
     title: "YEEP Somalia",
     description:
       "A registered, youth-led NGO empowering Somali youth to lead, innovate, and build peaceful, inclusive and resilient communities.",
     type: "website",
+    images: [{ url: "/hero.jpg", width: 1600, height: 1000, alt: "YEEP Somalia" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "YEEP Somalia",
+    description:
+      "A registered, youth-led NGO empowering Somali youth to lead, innovate, and build peaceful, inclusive and resilient communities.",
+    images: ["/hero.jpg"],
   },
 };
 

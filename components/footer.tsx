@@ -3,18 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import NextImage from "next/image";
-import {
-  Share2,
-  Image,
-  MessageCircle,
-  Briefcase,
-  Globe,
-  Mail,
-  Phone,
-  MapPin,
-  Heart,
-  Check,
-} from "lucide-react";
+import { Globe, Mail, Phone, MapPin, Heart, Check } from "lucide-react";
+import { FacebookIcon, InstagramIcon, XIcon, LinkedinIcon } from "@/components/brand-icons";
 import { api } from "@/lib/client/api";
 import { useResource } from "@/lib/client/hooks";
 import { useT } from "@/lib/i18n/context";
@@ -74,22 +64,22 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               {[
                 {
-                  icon: Share2,
+                  icon: FacebookIcon,
                   href: "https://www.facebook.com/profile.php?id=61565617627973",
                   label: "Facebook",
                 },
                 {
-                  icon: Image,
+                  icon: InstagramIcon,
                   href: "https://instagram.com/yeepsomalia",
                   label: "Instagram",
                 },
                 {
-                  icon: MessageCircle,
+                  icon: XIcon,
                   href: "https://x.com/yeepsomalia",
                   label: "X (Twitter)",
                 },
                 {
-                  icon: Briefcase,
+                  icon: LinkedinIcon,
                   href: "https://www.linkedin.com/search/results/all/?keywords=YEEP%20Somalia",
                   label: "LinkedIn",
                 },

@@ -5,11 +5,14 @@ import { ok } from "@/lib/api/response";
 import { ApiError } from "@/lib/api/errors";
 import { signToken } from "@/lib/api/token";
 import { setAuthCookie } from "@/lib/api/auth";
+import { rateLimit } from "@/lib/api/rate-limit";
 import { loginSchema } from "@/lib/validators";
 import { User } from "@/models/User";
 
 /** POST /api/auth/login — email + password sign-in. */
 export const POST = route(async (req: NextRequest) => {
+  // 10 attempts / 5 min / IP — slows down brute-forcing a password.
+  rateLimit(req, "login", { limit: 10, windowMs: 5 * 60 * 1000 });
   const { email, password } = await parseBody(req, loginSchema);
 
   const user = await User.findOne({ email }).select("+password");

@@ -37,13 +37,13 @@ export function eventReminderEmail(
     `If you can no longer make it, reply to this email or contact ${SUPPORT_EMAIL} so`,
     "someone on the waiting list can take your place.",
     "",
-    `— The YEEP Somalia Team · ${SUPPORT_EMAIL}`,
+    "The YEEP Somalia Team",
   ]
     .filter(Boolean)
     .join("\n");
 
   const body = [
-    heading("See you soon \u{1F44B}"),
+    heading("See you soon"),
     paragraph(`Hi <strong style="color:${INK};">${escapeHtml(firstName)}</strong>,`),
     paragraph(
       `A quick reminder that you're registered for ` +
@@ -67,7 +67,7 @@ export function eventReminderEmail(
     text,
     html: emailShell({
       title: subject,
-      preheader: `${ev.title} is coming up${when ? ` — ${when}` : ""}.`,
+      preheader: `${ev.title} is coming up${when ? ` (${when})` : ""}.`,
       body,
     }),
   };

@@ -7,11 +7,13 @@ import { eventRegisteredEmail } from "@/lib/api/emails/event-registered";
 import { eventRsvpSchema } from "@/lib/validators";
 import { eventToIcs } from "@/lib/api/ics";
 import { notify } from "@/lib/api/notify";
+import { rateLimit } from "@/lib/api/rate-limit";
 import { Event } from "@/models/Event";
 import { EventRegistration } from "@/models/EventRegistration";
 
 /** POST /api/events/:id/register — public RSVP form submission. No account needed. */
 export const POST = route<IdContext>(async (req, ctx) => {
+  rateLimit(req, "event-register", { limit: 10, windowMs: 10 * 60 * 1000 });
   const { id } = await ctx.params;
   const body = await parseBody(req, eventRsvpSchema);
 

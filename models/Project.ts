@@ -11,6 +11,7 @@ const projectSchema = new Schema(
     status: { type: String, enum: PROJECT_STATUSES, default: "Planned" },
     category: { type: String, trim: true },
     location: { type: String, trim: true },
+    country: { type: String, trim: true },
     region: { type: String, trim: true },
     district: { type: String, trim: true },
     /** Unsplash photo id or full image URL. */

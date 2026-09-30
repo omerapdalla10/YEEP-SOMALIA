@@ -25,10 +25,11 @@ import Link from "next/link";
 import { useCollection, useResource } from "@/lib/client/hooks";
 import { img } from "@/lib/client/img";
 import { CountUp } from "@/components/count-up";
+import { formatCountCompactPlus } from "@/lib/client/format";
 import { Avatar } from "@/components/avatar";
 import { QueryBoundary } from "@/components/data-states";
 import { useT } from "@/lib/i18n/context";
-import type { TeamMember, Milestone, SiteStats, Partner, Report, SiteContent } from "@/lib/types";
+import type { TeamMember, SiteStats, Partner, Report, SiteContent } from "@/lib/types";
 
 const PARTNER_TYPES = [
   "Government",
@@ -40,7 +41,8 @@ const PARTNER_TYPES = [
 export default function AboutPage() {
   const t = useT();
   const team = useCollection<TeamMember>("/team", { limit: 100 });
-  const timeline = useCollection<Milestone>("/milestones", { limit: 100 });
+  // Timeline section is hidden for now — re-enable alongside it when asked.
+  // const timeline = useCollection<Milestone>("/milestones", { limit: 100 });
   const partners = useCollection<Partner>("/partners", { limit: 100 });
   const reports = useCollection<Report>("/reports", { published: true, limit: 100 });
   const { data: stats } = useResource<SiteStats>("/stats");
@@ -110,7 +112,7 @@ export default function AboutPage() {
               <p className="text-gray-500 leading-relaxed mb-4">
                 YEEP Somalia was founded by Somali youth as a registered youth-led organization.
                 While some UN and international organisations implement PCVE work, there was a gap in
-                youth direct engagement — YEEP was created to bridge that gap by giving young people
+                youth direct engagement. YEEP was created to bridge that gap by giving young people
                 a platform to share experience, learn, and educate each other through the knowledge
                 of PCVE.
               </p>
@@ -145,21 +147,75 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Team */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
+              {t("about.teamKicker")}
+            </span>
+            <h2 className="text-3xl font-bold text-gray-900 mt-2">{t("about.teamTitle")}</h2>
+          </div>
+          <QueryBoundary
+            loading={team.loading}
+            error={team.error}
+            empty={team.data.length === 0}
+            onRetry={team.refetch}
+          >
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+              {team.data.map((member) => {
+                const hasBio = Boolean(member.bio);
+                return (
+                  <button
+                    key={member._id}
+                    type="button"
+                    onClick={() => hasBio && setBio(member)}
+                    className={`group text-center ${hasBio ? "cursor-pointer" : "cursor-default"}`}
+                  >
+                    <div className="w-24 h-24 mx-auto mb-3 rounded-full ring-1 ring-gray-200 ring-offset-2 group-hover:ring-[#2D8FCE] transition-all">
+                      <Avatar src={member.image} name={member.name} size={96} />
+                    </div>
+                    <h4 className="font-semibold text-gray-900 text-sm">{member.name}</h4>
+                    <p className="text-xs text-gray-400 mt-0.5">{member.role}</p>
+                    {hasBio && (
+                      <span className="text-[11px] font-semibold text-[#2D8FCE] opacity-0 group-hover:opacity-100 transition-opacity">
+                        {t("about.readBio")}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </QueryBoundary>
+        </div>
+      </section>
+
       {/* Impact numbers */}
       <section className="py-16 bg-[#0d1f1e]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
             {[
-              { raw: stats?.youthEmpowered ?? 0, suffix: "+", label: "Youth Empowered" },
-              { raw: stats?.activePrograms ?? 0, suffix: "", label: "Active Programs" },
-              { raw: stats?.communitiesReached ?? 0, suffix: "", label: "Communities Reached" },
-              { raw: stats?.volunteers ?? 0, suffix: "+", label: "Volunteers" },
+              {
+                raw: stats?.youthEmpowered || 3000,
+                format: (n: number) => `${n.toLocaleString()}+`,
+                label: "Youth Empowered",
+              },
+              {
+                raw: 10000,
+                format: formatCountCompactPlus,
+                label: "Communities Reached",
+              },
+              {
+                raw: stats?.volunteers ?? 0,
+                format: (n: number) => `${n.toLocaleString()}+`,
+                label: "Volunteers",
+              },
             ].map((s) => (
               <div key={s.label}>
                 {stats ? (
                   <CountUp
                     value={s.raw}
-                    format={(n) => `${n.toLocaleString()}${s.suffix}`}
+                    format={s.format}
                     className="text-3xl lg:text-4xl font-bold text-white mb-1"
                   />
                 ) : (
@@ -301,7 +357,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Timeline */}
+      {/* Timeline — hidden for now — re-add when asked to unhide.
       <section className="py-20 bg-[#f8fafc]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -341,49 +397,7 @@ export default function AboutPage() {
           </QueryBoundary>
         </div>
       </section>
-
-      {/* Team */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <span className="text-[#2D8FCE] text-sm font-semibold tracking-wide">
-              {t("about.teamKicker")}
-            </span>
-            <h2 className="text-3xl font-bold text-gray-900 mt-2">{t("about.teamTitle")}</h2>
-          </div>
-          <QueryBoundary
-            loading={team.loading}
-            error={team.error}
-            empty={team.data.length === 0}
-            onRetry={team.refetch}
-          >
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
-              {team.data.map((member) => {
-                const hasBio = Boolean(member.bio);
-                return (
-                  <button
-                    key={member._id}
-                    type="button"
-                    onClick={() => hasBio && setBio(member)}
-                    className={`group text-center ${hasBio ? "cursor-pointer" : "cursor-default"}`}
-                  >
-                    <div className="w-24 h-24 mx-auto mb-3 rounded-full ring-1 ring-gray-200 ring-offset-2 group-hover:ring-[#2D8FCE] transition-all">
-                      <Avatar src={member.image} name={member.name} size={96} />
-                    </div>
-                    <h4 className="font-semibold text-gray-900 text-sm">{member.name}</h4>
-                    <p className="text-xs text-gray-400 mt-0.5">{member.role}</p>
-                    {hasBio && (
-                      <span className="text-[11px] font-semibold text-[#2D8FCE] opacity-0 group-hover:opacity-100 transition-opacity">
-                        {t("about.readBio")}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </QueryBoundary>
-        </div>
-      </section>
+      */}
 
       {/* Governance */}
       <section className="py-20 bg-[#f8fafc]">

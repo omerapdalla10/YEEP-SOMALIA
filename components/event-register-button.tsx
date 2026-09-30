@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Info, CheckCircle2, Mail, Check, Loader2, ArrowLeft } from "lucide-react";
+import { Check, Loader2, ArrowLeft } from "lucide-react";
 import { api, ApiError } from "@/lib/client/api";
 import type { EventItem } from "@/lib/types";
 
@@ -152,10 +152,7 @@ export default function EventRegisterButton({
 
       {step === 1 ? (
         <div className="space-y-4">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-500">
-            <Info size={13} className="text-[#2D8FCE]" />
-            Personal &amp; Professional Info
-          </div>
+          <div className="text-xs font-semibold text-gray-500">Personal &amp; Professional Info</div>
 
           <div>
             <label className={labelCls}>Full Name *</label>
@@ -171,20 +168,14 @@ export default function EventRegisterButton({
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className={labelCls}>Email Address *</label>
-              <div className="relative">
-                <input
-                  type="email"
-                  suppressHydrationWarning
-                  value={form.email}
-                  onChange={(e) => set("email", e.target.value)}
-                  placeholder="your@email.com"
-                  className={`${inputCls} pr-9`}
-                />
-                <Mail
-                  size={14}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300"
-                />
-              </div>
+              <input
+                type="email"
+                suppressHydrationWarning
+                value={form.email}
+                onChange={(e) => set("email", e.target.value)}
+                placeholder="your@email.com"
+                className={inputCls}
+              />
             </div>
             <div>
               <label className={labelCls}>WhatsApp Number *</label>
@@ -311,10 +302,7 @@ export default function EventRegisterButton({
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-500">
-            <CheckCircle2 size={13} className="text-[#2D8FCE]" />
-            Review &amp; Agreement
-          </div>
+          <div className="text-xs font-semibold text-gray-500">Review &amp; Agreement</div>
 
           <div className="rounded-lg bg-[#f8fafc] border border-gray-200 p-4 space-y-2 text-sm">
             <div className="flex justify-between gap-3">

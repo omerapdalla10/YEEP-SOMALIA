@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Gallery",
   description,
   alternates: { canonical: `${appUrl}/gallery` },
-  openGraph: { title: "Gallery — YEEP Somalia", description, url: `${appUrl}/gallery` },
+  openGraph: { title: "Gallery | YEEP Somalia", description, url: `${appUrl}/gallery` },
 };
 
 export default function Page() {

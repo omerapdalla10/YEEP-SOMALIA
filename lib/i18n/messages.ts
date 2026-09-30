@@ -21,10 +21,11 @@ const en: Dict = {
   "nav.about": "About",
   "nav.ourWork": "Our Work",
   "nav.programs": "Programs",
+  "nav.allPrograms": "View all programs",
   "nav.projects": "Projects",
   "nav.events": "Events",
   "nav.gallery": "Gallery",
-  "nav.news": "News",
+  "nav.news": "Latest",
   "nav.volunteer": "Volunteer",
   "nav.contact": "Contact",
   "nav.search": "Search",
@@ -125,17 +126,19 @@ const en: Dict = {
   "about.approachKicker": "How We Work",
   "about.approachTitle": "Our Approach to Change",
   "about.approachDesc":
-    "Lasting peace is built step by step — with young people leading at every stage.",
+    "We believe lasting peace and resilient communities are built step by step, with young people meaningfully involved at every stage.",
   "about.approach1Title": "Train",
-  "about.approach1Desc": "Equip young Somalis with leadership, peacebuilding and civic skills.",
+  "about.approach1Desc":
+    "We equip young people with the knowledge, skills, and confidence they need to lead, participate, and contribute to positive change in their communities.",
   "about.approach2Title": "Engage",
   "about.approach2Desc":
-    "Open safe spaces where youth, elders and authorities solve problems together.",
+    "We create safe and inclusive spaces where young people, communities, elders, and decision-makers can come together, share perspectives, and work towards practical solutions.",
   "about.approach3Title": "Advocate",
-  "about.approach3Desc": "Carry youth priorities into peace and security policy at every level.",
+  "about.approach3Desc":
+    "We amplify young people's voices and priorities, helping bring their perspectives into peace, security, development, and policy discussions at local, national, and regional levels.",
   "about.approach4Title": "Sustain",
   "about.approach4Desc":
-    "Back youth-led initiatives and partnerships so change outlasts any single project.",
+    "We support youth-led initiatives, partnerships, and community action that can continue creating positive change beyond individual projects.",
   "about.whereKicker": "Our Reach",
   "about.whereTitle": "Where We Work",
   "about.whereDesc":
@@ -161,7 +164,7 @@ const en: Dict = {
   "about.reportsKicker": "Transparency",
   "about.reportsTitle": "Reports & Resources",
   "about.reportsDesc":
-    "Our annual reports, strategy and key policies — free to download.",
+    "Our annual reports, strategy and key policies, free to download.",
   "about.download": "Download",
   "about.partnersKicker": "Collaboration",
   "about.partnersTitle": "Our Partners",
@@ -172,11 +175,11 @@ const en: Dict = {
   "about.letterP1":
     "While some UN and international organisations implement PCVE work, there was a gap in youth direct engagement. YEEP was created to bridge that gap.",
   "about.letterP2":
-    "We give young people a platform to share experience, learn, and educate each other — because young people are the heartbeat of Somalia's future, and should have the tools, opportunities and voice to shape it.",
-  "about.letterSign": "— YEEP Somalia Leadership",
+    "We give young people a platform to share experience, learn, and educate each other, because young people are the heartbeat of Somalia's future, and should have the tools, opportunities and voice to shape it.",
+  "about.letterSign": "YEEP Somalia Leadership",
   "about.ctaTitle": "Join Our Mission",
   "about.ctaDesc":
-    "Whether you volunteer or partner with us — every action creates ripples of change.",
+    "Whether you volunteer or partner with us, every action creates ripples of change.",
   "about.ctaPartner": "Partner With Us",
 
   // footer
@@ -188,7 +191,7 @@ const en: Dict = {
   "footer.emailPlaceholder": "Your email",
   "footer.thanks": "Thanks for subscribing!",
   "footer.rights":
-    "© 2026 YEEP Somalia — Youth Engagement and Empowerment Platform. All rights reserved.",
+    "© 2026 YEEP Somalia, Youth Engagement and Empowerment Platform. All rights reserved.",
   "footer.madeWith": "Made with",
   "footer.byYoungSomalis": "by young Somalis",
   "footer.privacy": "Privacy",
@@ -204,6 +207,7 @@ const so: Dict = {
   "nav.about": "Ku Saabsan",
   "nav.ourWork": "Shaqadeena",
   "nav.programs": "Barnaamijyada",
+  "nav.allPrograms": "Dhammaan barnaamijyada",
   "nav.projects": "Mashaariicda",
   "nav.events": "Munaasabadaha",
   "nav.gallery": "Sawirada",
@@ -308,7 +312,7 @@ const so: Dict = {
   "about.approachKicker": "Sida Aan U Shaqeyno",
   "about.approachTitle": "Habkeena Isbeddelka",
   "about.approachDesc":
-    "Nabad waarta waxaa la dhisaa tallaabo tallaabo — iyadoo dhalinyaradu hoggaaminayaan marxalad kasta.",
+    "Nabad waarta waxaa la dhisaa tallaabo tallaabo, iyadoo dhalinyaradu hoggaaminayaan marxalad kasta.",
   "about.approach1Title": "Tababar",
   "about.approach1Desc":
     "U qalabee dhalinyarada Soomaaliyeed xirfadaha hoggaaminta, nabad-dhiska iyo bulsho-galka.",
@@ -346,7 +350,7 @@ const so: Dict = {
   "about.reportsKicker": "Hufnaan",
   "about.reportsTitle": "Warbixinno & Kheyraad",
   "about.reportsDesc":
-    "Warbixinnadayada sannadlaha ah, istiraatijiyada iyo siyaasadaha muhiimka ah — bilaash u soo dejiso.",
+    "Warbixinnadayada sannadlaha ah, istiraatijiyada iyo siyaasadaha muhiimka ah, bilaash u soo dejiso.",
   "about.download": "Soo deji",
   "about.partnersKicker": "Iskaashi",
   "about.partnersTitle": "Shuraakadeena",
@@ -357,11 +361,11 @@ const so: Dict = {
   "about.letterP1":
     "In kasta oo qaar ka mid ah ururrada QM iyo kuwa caalamiga ah ay fuliyaan shaqada PCVE, waxaa jiray farqi ku aaddan ka-qeyb-galka tooska ah ee dhalinyarada. YEEP waxaa la abuuray si loo buuxiyo farqigaas.",
   "about.letterP2":
-    "Waxaan dhalinyarada siinnaa goob ay ku wadaagaan waaya-aragnimo, wax ku bartaan, isna baraan — maxaa yeelay dhalinyaradu waa wadnaha mustaqbalka Soomaaliya, waana inay helaan qalabka, fursadaha iyo codka ay ku qaabeeyaan.",
-  "about.letterSign": "— Hoggaanka YEEP Somalia",
+    "Waxaan dhalinyarada siinnaa goob ay ku wadaagaan waaya-aragnimo, wax ku bartaan, isna baraan, maxaa yeelay dhalinyaradu waa wadnaha mustaqbalka Soomaaliya, waana inay helaan qalabka, fursadaha iyo codka ay ku qaabeeyaan.",
+  "about.letterSign": "Hoggaanka YEEP Somalia",
   "about.ctaTitle": "Ku Biir Hadafkeena",
   "about.ctaDesc":
-    "Hadaad iskaa wax u qabato ama aad nala shaqeyso — falkastaa wuxuu abuuraa mowjado isbeddel ah.",
+    "Hadaad iskaa wax u qabato ama aad nala shaqeyso, falkastaa wuxuu abuuraa mowjado isbeddel ah.",
   "about.ctaPartner": "Nala Shaqee",
 
   // footer
@@ -373,7 +377,7 @@ const so: Dict = {
   "footer.emailPlaceholder": "Emailkaaga",
   "footer.thanks": "Waad ku mahadsan tahay isdiiwaangelinta!",
   "footer.rights":
-    "© 2026 YEEP Somalia — Madasha Ka-qeyb-galka iyo Awood-siinta Dhalinyarada. Dhammaan xuquuqda way dhowran tahay.",
+    "© 2026 YEEP Somalia, Madasha Ka-qeyb-galka iyo Awood-siinta Dhalinyarada. Dhammaan xuquuqda way dhowran tahay.",
   "footer.madeWith": "Waxaa sameeyay",
   "footer.byYoungSomalis": "dhalinyaro Soomaali ah",
   "footer.privacy": "Asturnaanta",

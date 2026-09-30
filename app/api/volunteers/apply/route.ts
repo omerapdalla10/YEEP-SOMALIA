@@ -5,10 +5,12 @@ import { created } from "@/lib/api/response";
 import { optionalUser } from "@/lib/api/auth";
 import { volunteerApplicationSchema } from "@/lib/validators";
 import { notify } from "@/lib/api/notify";
+import { rateLimit } from "@/lib/api/rate-limit";
 import { Volunteer } from "@/models/Volunteer";
 
 /** POST /api/volunteers/apply — public (or signed-in) application submission. */
 export const POST = route(async (req: NextRequest) => {
+  rateLimit(req, "volunteer-apply", { limit: 5, windowMs: 10 * 60 * 1000 });
   const user = await optionalUser(req);
   const body = await parseBody(req, volunteerApplicationSchema);
   const application = await Volunteer.create({ ...body, user: user?.id });

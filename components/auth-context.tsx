@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { api, setToken } from "@/lib/client/api";
 import type { Role } from "@/lib/roles";
 
+/** Staff/admin account — the only kind of account this site has. */
 export interface AuthUser {
   _id: string;
   name: string;
@@ -12,23 +13,13 @@ export interface AuthUser {
   role: Role;
   avatar?: string;
   isActive: boolean;
-  emailVerified: boolean;
   createdAt: string;
-}
-
-interface RegisterPayload {
-  name: string;
-  email: string;
-  password: string;
-  phone?: string;
 }
 
 interface AuthContextValue {
   user: AuthUser | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<AuthUser>;
-  loginWithToken: (token: string) => Promise<AuthUser>;
-  register: (payload: RegisterPayload) => Promise<AuthUser>;
   logout: () => void;
   refresh: () => Promise<void>;
   updateUser: (patch: Partial<AuthUser>) => void;
@@ -53,13 +44,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const value = useMemo<AuthContextValue>(() => {
-    async function handleAuth(res: { data: { user: AuthUser; token: string } }) {
-      setToken(res.data.token);
-      setUser(res.data.user);
-      return res.data.user;
-    }
-    return {
+  const value = useMemo<AuthContextValue>(
+    () => ({
       user,
       loading,
       async login(email, password) {
@@ -67,23 +53,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           email,
           password,
         });
-        return handleAuth(res);
-      },
-      async loginWithToken(token) {
-        setToken(token);
-        try {
-          const res = await api.get<AuthUser>("/auth/me");
-          setUser(res.data);
-          return res.data;
-        } catch (err) {
-          setToken(null);
-          setUser(null);
-          throw err;
-        }
-      },
-      async register(payload) {
-        const res = await api.post<{ user: AuthUser; token: string }>("/auth/register", payload);
-        return handleAuth(res);
+        setToken(res.data.token);
+        setUser(res.data.user);
+        return res.data.user;
       },
       logout() {
         void api.post("/auth/logout").catch(() => {});
@@ -97,8 +69,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       updateUser(patch) {
         setUser((u) => (u ? { ...u, ...patch } : u));
       },
-    };
-  }, [user, loading]);
+    }),
+    [user, loading],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

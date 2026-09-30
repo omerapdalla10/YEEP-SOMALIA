@@ -7,9 +7,9 @@ import { useAuth } from "@/components/auth-context";
 import { roleAtLeast, type Role } from "@/lib/roles";
 
 /**
- * Guards a client route. Redirects to /login when signed out, and to /dashboard
- * when a minimum role is required and the current user does not meet it. Roles
- * are ranked: volunteer < staff < admin. `proxy.ts` already blocks signed-out
+ * Guards a client route (the admin console). Redirects to /login when signed
+ * out, or when a minimum role is required and the current user does not meet
+ * it. Roles are ranked: staff < admin. `proxy.ts` already blocks signed-out
  * visitors server-side; this adds the loading state and the role check.
  */
 export default function ProtectedRoute({
@@ -30,7 +30,7 @@ export default function ProtectedRoute({
     if (!user) {
       router.replace(`/login?from=${encodeURIComponent(pathname)}`);
     } else if (role && !roleAtLeast(user.role, role)) {
-      router.replace("/dashboard");
+      router.replace("/login");
     }
   }, [loading, user, role, router, pathname]);
 

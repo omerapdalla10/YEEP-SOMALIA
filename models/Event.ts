@@ -24,6 +24,7 @@ const eventSchema = new Schema(
     /** Grouping label, e.g. "August 2026". */
     month: { type: String, trim: true },
     location: { type: String, trim: true },
+    country: { type: String, trim: true },
     region: { type: String, trim: true },
     type: { type: String, enum: EVENT_TYPES, default: "Community" },
     /** Unsplash photo id or full image URL. */

@@ -23,24 +23,6 @@ export const jwt = {
   expiresIn: process.env.JWT_EXPIRES_IN ?? "7d",
 };
 
-export const google = {
-  get clientId() {
-    return required("GOOGLE_CLIENT_ID");
-  },
-  get clientSecret() {
-    return required("GOOGLE_CLIENT_SECRET");
-  },
-  callbackUrl: process.env.GOOGLE_CALLBACK_URL ?? `${appUrl}/api/auth/google/callback`,
-};
-
-/** Where the browser lands after a successful Google sign-in. */
-export const oauthSuccessRedirect = process.env.OAUTH_SUCCESS_REDIRECT ?? `${appUrl}/auth/callback`;
-
-/** True only when both Google OAuth credentials are configured. */
-export const googleOAuthEnabled = Boolean(
-  process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET,
-);
-
 /** Name of the httpOnly cookie holding the session JWT. */
 export const AUTH_COOKIE = "yeep_token";
 

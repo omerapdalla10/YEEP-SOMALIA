@@ -1,4 +1,3 @@
-import { appUrl } from "@/lib/env";
 import {
   SUPPORT_EMAIL,
   INK,
@@ -8,7 +7,6 @@ import {
   emailShell,
   heading,
   paragraph,
-  button,
   signoff,
   escapeHtml,
 } from "./layout";
@@ -37,19 +35,17 @@ export function eventRegisteredEmail(
     when ? `When:  ${when}` : "",
     ev.location ? `Where: ${ev.location}` : "",
     "",
-    "We've attached a calendar invite (.ics) — open it to add the event to your",
-    "calendar. You can manage or cancel your registration from your dashboard.",
-    "",
-    `Dashboard: ${appUrl}/dashboard`,
+    "We've attached a calendar invite (.ics). Open it to add the event to your",
+    `calendar. Need to change or cancel your registration? Reply to this email or contact ${SUPPORT_EMAIL}.`,
     "",
     "See you there!",
-    `— The YEEP Somalia Team · ${SUPPORT_EMAIL}`,
+    "The YEEP Somalia Team",
   ]
     .filter(Boolean)
     .join("\n");
 
   const body = [
-    heading("You're registered! \u{1F389}"),
+    heading("You're registered!"),
     paragraph(`Hi <strong style="color:${INK};">${escapeHtml(firstName)}</strong>,`),
     paragraph(
       `Your spot at <strong style="color:${INK};">${escapeHtml(ev.title)}</strong> is confirmed.`,
@@ -64,9 +60,8 @@ export function eventRegisteredEmail(
       `<span style="color:${SUB};">A calendar invite (<code>.ics</code>) is attached &mdash; ` +
         "open it to add this to your calendar.</span>",
     ),
-    button("Manage in my dashboard", `${appUrl}/dashboard`),
     paragraph(
-      "Need to cancel? You can do that from your dashboard or the events page. Questions? " +
+      "Need to change or cancel your registration? Just reply to this email, or reach us at " +
         `<a href="mailto:${SUPPORT_EMAIL}" style="color:${BLUE_DARK};text-decoration:none;">${SUPPORT_EMAIL}</a>.`,
     ),
     signoff(),

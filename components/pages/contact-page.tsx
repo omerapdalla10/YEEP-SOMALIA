@@ -119,7 +119,7 @@ export default function ContactPage() {
                   {departments.map((d) => (
                     <li key={d.label} className="text-xs">
                       <span className="font-semibold text-gray-700">{d.label}</span>
-                      <span className="text-gray-400"> — {d.note}</span>
+                      <span className="text-gray-400"> · {d.note}</span>
                     </li>
                   ))}
                 </ul>

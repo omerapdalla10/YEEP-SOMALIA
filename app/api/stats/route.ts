@@ -1,9 +1,9 @@
 import { route } from "@/lib/api/route";
 import { ok } from "@/lib/api/response";
-import { User } from "@/models/User";
 import { Program } from "@/models/Program";
 import { Project } from "@/models/Project";
 import { Partner } from "@/models/Partner";
+import { Volunteer } from "@/models/Volunteer";
 
 /** GET /api/stats — public, site-wide impact numbers for the marketing pages. */
 export const GET = route(async () => {
@@ -13,7 +13,7 @@ export const GET = route(async () => {
       Project.aggregate([
         { $group: { _id: null, raised: { $sum: "$raised" }, budget: { $sum: "$budget" } } },
       ]),
-      User.countDocuments({ role: "volunteer" }),
+      Volunteer.countDocuments({ status: "Approved" }),
       Partner.countDocuments(),
       Project.distinct("region").then((r) => r.filter(Boolean).length),
       Program.countDocuments({ status: { $in: ["Active", "Enrolling"] } }),

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description,
   alternates: { canonical: `${appUrl}/privacy` },
-  openGraph: { title: "Privacy Policy — YEEP Somalia", description, url: `${appUrl}/privacy` },
+  openGraph: { title: "Privacy Policy | YEEP Somalia", description, url: `${appUrl}/privacy` },
 };
 
 export default function PrivacyPage() {

@@ -76,7 +76,7 @@ export function contactAckEmail(
   subject: string,
 ): { subject: string; html: string; text: string } {
   const firstName = name.trim().split(/\s+/)[0] || "there";
-  const mailSubject = "We've received your message — YEEP Somalia";
+  const mailSubject = "We've received your message | YEEP Somalia";
 
   const text = [
     `Hi ${firstName},`,
@@ -96,7 +96,7 @@ export function contactAckEmail(
   ].join("\n");
 
   const body = [
-    heading("Thanks — we've got your message"),
+    heading("Thanks, we've got your message"),
     paragraph(`Hi <strong style="color:${INK};">${escapeHtml(firstName)}</strong>,`),
     paragraph(
       "Thank you for reaching out to YEEP Somalia. We've received your message and a member " +

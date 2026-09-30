@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     canonical: `${appUrl}/news`,
     types: { "application/rss+xml": `${appUrl}/news/rss.xml` },
   },
-  openGraph: { title: "News & Stories — YEEP Somalia", description, url: `${appUrl}/news` },
+  openGraph: { title: "News & Stories | YEEP Somalia", description, url: `${appUrl}/news` },
 };
 
 export default function Page() {

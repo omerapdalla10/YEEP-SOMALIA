@@ -6,7 +6,6 @@ import {
   ArrowRight,
   Heart,
   Users,
-  BookOpen,
   Globe,
   Star,
   ChevronRight,
@@ -27,14 +26,18 @@ import { useCollection, useResource } from "@/lib/client/hooks";
 import { CountUp } from "@/components/count-up";
 import { Reveal } from "@/components/reveal";
 import { img } from "@/lib/client/img";
-import { formatCountPlus, formatMoneyCompact, formatDate } from "@/lib/client/format";
+import {
+  formatCountPlus,
+  formatCountCompactPlus,
+  formatMoneyCompact,
+  formatDate,
+} from "@/lib/client/format";
 import { api, ApiError } from "@/lib/client/api";
 import { useT } from "@/lib/i18n/context";
 import type {
   Program,
   EventItem,
   Testimonial,
-  Partner,
   SiteStats,
   Article,
   GalleryItem,
@@ -112,26 +115,19 @@ export default function HomePage() {
   });
   const { data: events, loading: eventsLoading } = useCollection<EventItem>("/events", { limit: 3 });
   const { data: stories } = useCollection<Testimonial>("/testimonials", { placement: "home" });
-  const { data: partners } = useCollection<Partner>("/partners");
   const { data: news, loading: newsLoading } = useCollection<Article>("/news", { limit: 3 });
   const { data: gallery } = useCollection<GalleryItem>("/gallery", { limit: 6 });
 
   const statCards = [
     {
-      raw: stats?.youthEmpowered ?? 0,
+      raw: stats?.youthEmpowered || 3000,
       format: formatCountPlus,
       label: "Youth Empowered",
       icon: Users,
     },
     {
-      raw: stats?.activePrograms ?? 0,
-      format: (n: number) => String(n),
-      label: "Active Programs",
-      icon: BookOpen,
-    },
-    {
-      raw: stats?.communitiesReached ?? 0,
-      format: (n: number) => String(n),
+      raw: 10000,
+      format: formatCountCompactPlus,
       label: "Communities Reached",
       icon: Globe,
     },
@@ -254,7 +250,7 @@ export default function HomePage() {
       {/* Stats */}
       <section className="py-14 bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {statCards.map((stat, i) => (
               <Reveal
                 key={stat.label}
@@ -282,7 +278,7 @@ export default function HomePage() {
           <p className="text-xl lg:text-2xl text-white/90 font-medium leading-relaxed max-w-3xl mx-auto">
             &ldquo;{t("home.missionQuote")}&rdquo;
           </p>
-          <div className="mt-4 text-[#D4E6F4] text-sm font-semibold">— YEEP Somalia</div>
+          <div className="mt-4 text-[#D4E6F4] text-sm font-semibold">YEEP Somalia</div>
         </Reveal>
       </section>
 
@@ -355,7 +351,7 @@ export default function HomePage() {
               </h2>
               <p className="text-gray-500 leading-relaxed mb-7">
                 Our programs equip young Somalis with practical skills and opportunities to transform
-                their communities — through leadership, civic education, economic empowerment and
+                their communities through leadership, civic education, economic empowerment and
                 social impact initiatives.
               </p>
               <ul className="space-y-3">
@@ -396,9 +392,9 @@ export default function HomePage() {
                 </div>
                 <div>
                   <div className="text-xl font-bold text-gray-900">
-                    {stats ? stats.activePrograms : "—"}
+                    {(stats?.youthEmpowered || 3000).toLocaleString()}+
                   </div>
-                  <div className="text-xs text-gray-400">Active Programs</div>
+                  <div className="text-xs text-gray-400">Youth Empowered</div>
                 </div>
               </div>
             </Reveal>
@@ -613,27 +609,6 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-        </section>
-      )}
-
-      {/* Partners */}
-      {partners.length > 0 && (
-        <section className="py-14 bg-white border-y border-gray-100">
-          <Reveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p className="text-center text-sm text-gray-400 font-medium mb-8 tracking-wide">
-              {t("home.trustedBy")}
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-8">
-              {partners.map((p) => (
-                <div
-                  key={p._id}
-                  className="px-6 py-3 bg-[#f8fafc] rounded-lg border border-gray-200 text-gray-400 font-bold text-sm hover:text-[#2D8FCE] transition-colors"
-                >
-                  {p.name}
-                </div>
-              ))}
-            </div>
-          </Reveal>
         </section>
       )}
 

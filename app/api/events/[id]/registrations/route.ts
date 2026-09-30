@@ -7,7 +7,7 @@ import { EventRegistration } from "@/models/EventRegistration";
 
 /**
  * GET /api/events/:id/registrations — staff view of everyone registered for
- * an event, newest first, each with the member's name/email/phone/avatar.
+ * an event, newest first.
  */
 export const GET = route<IdContext>(async (req, ctx) => {
   await requireRole(req, "staff");
@@ -16,9 +16,7 @@ export const GET = route<IdContext>(async (req, ctx) => {
   const event = await Event.findById(id).select("title dateLabel capacity registered");
   if (!event) throw ApiError.notFound("That event could not be found.");
 
-  const registrations = await EventRegistration.find({ event: id, status: "Registered" })
-    .sort("-updatedAt")
-    .populate("user", "name email phone avatar");
+  const registrations = await EventRegistration.find({ event: id }).sort("-createdAt");
 
   return ok({
     event: {
@@ -28,12 +26,19 @@ export const GET = route<IdContext>(async (req, ctx) => {
       capacity: event.capacity,
       registered: event.registered,
     },
-    registrations: registrations
-      .filter((r) => r.user)
-      .map((r) => ({
-        _id: String(r._id),
-        registeredAt: r.get("updatedAt"),
-        user: r.user,
-      })),
+    registrations: registrations.map((r) => ({
+      _id: String(r._id),
+      registeredAt: r.get("createdAt"),
+      name: r.name,
+      email: r.email,
+      whatsapp: r.whatsapp,
+      gender: r.gender,
+      educationLevel: r.educationLevel,
+      organization: r.organization,
+      position: r.position,
+      district: r.district,
+      confirmAvailability: r.confirmAvailability,
+      wantsUpdates: r.wantsUpdates ?? false,
+    })),
   });
 });

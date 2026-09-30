@@ -97,6 +97,10 @@ export const reports = defineResource(Report, {
   filterable: ["kind", "published"],
   searchable: ["title", "summary", "year"],
   defaultSort: "order",
+  // Anonymous/non-staff readers only ever see published reports, regardless
+  // of what filter (or lack of one) they pass — drafts can't be fetched by
+  // omitting `?published=true` or guessing an id.
+  publicFilter: { published: true },
 });
 
 export const volunteerRoles = defineResource(VolunteerRole, {

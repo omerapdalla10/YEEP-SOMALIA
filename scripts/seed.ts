@@ -22,10 +22,21 @@ import { Subscriber } from "../models/Subscriber";
 // Sample content below — real figures (beneficiaries, progress) are entered
 // through the admin dashboard.
 
+// No fallback password: a hardcoded default here would be a publicly-known
+// admin credential the moment this file is on GitHub. Set SEED_ADMIN_PASSWORD
+// in .env.local (never commit it) before running this script.
+if (!process.env.SEED_ADMIN_PASSWORD) {
+  console.error(
+    "[seed] SEED_ADMIN_PASSWORD is not set. Add it to .env.local — this script " +
+      "refuses to create an admin account with a predictable default password.",
+  );
+  process.exit(1);
+}
+
 const seedAdmin = {
   name: process.env.SEED_ADMIN_NAME ?? "YEEP Somalia Admin",
   email: process.env.SEED_ADMIN_EMAIL ?? "admin@yeep.org.so",
-  password: process.env.SEED_ADMIN_PASSWORD ?? "Admin@12345",
+  password: process.env.SEED_ADMIN_PASSWORD,
 };
 
 const programs = [
@@ -182,7 +193,6 @@ async function seed() {
     password: seedAdmin.password,
     role: "admin",
     avatar: "photo-1531123897727-8f129e1688ce",
-    emailVerified: true,
   });
 
   // Public site content only — no fake users, applications, messages or subscribers.

@@ -62,9 +62,12 @@ export default async function ProjectPage({ params }: { params: Params }) {
         </h1>
 
         <div className="flex flex-wrap items-center gap-4 text-xs text-gray-400 mb-8">
-          {(p.location || p.region) && (
+          {(p.location || p.region || p.country) && (
             <span className="flex items-center gap-1.5">
-              <MapPin size={12} /> {[p.location, p.region].filter(Boolean).join(", ")}
+              <MapPin size={12} />{" "}
+              {[p.location, p.region, p.country !== "Somalia" ? p.country : null]
+                .filter(Boolean)
+                .join(", ")}
             </span>
           )}
           {dates && (

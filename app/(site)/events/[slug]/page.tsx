@@ -77,7 +77,7 @@ export default async function EventPage({ params }: { params: Params }) {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10">
           <div>
             <Prose text={ev.description} />
           </div>

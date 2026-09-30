@@ -2,24 +2,12 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import {
-  Calendar,
-  MapPin,
-  Clock,
-  Users,
-  ArrowRight,
-  Check,
-  CalendarPlus,
-  Loader2,
-  X,
-} from "lucide-react";
+import { Calendar, MapPin, Clock, Users, ArrowRight, CalendarPlus } from "lucide-react";
 import { useCollection } from "@/lib/client/hooks";
-import { useAuth } from "@/components/auth-context";
-import { api, ApiError } from "@/lib/client/api";
 import { img } from "@/lib/client/img";
 import { downloadIcs } from "@/lib/client/calendar";
 import { QueryBoundary } from "@/components/data-states";
-import type { EventItem, EventRegistration } from "@/lib/types";
+import type { EventItem } from "@/lib/types";
 
 const typeColor: Record<string, string> = {
   Community: "bg-[#D4E6F4] text-[#1F6BA0]",
@@ -41,7 +29,6 @@ function monthOf(iso: string) {
 export default function EventsPage() {
   const [tab, setTab] = useState<"upcoming" | "past">("upcoming");
   const [activeMonth, setActiveMonth] = useState("All");
-  const { user } = useAuth();
   const {
     data: events,
     loading,
@@ -49,17 +36,6 @@ export default function EventsPage() {
     refetch,
   } = useCollection<EventItem>("/events", { limit: 100 });
 
-  const { data: registrations, refetch: refetchRegistrations } = useCollection<EventRegistration>(
-    user ? "/events/me" : null,
-  );
-
-  const registeredIds = useMemo(
-    () => new Set(registrations.map((r) => r.event?._id).filter(Boolean)),
-    [registrations],
-  );
-
-  const [busyId, setBusyId] = useState<string | null>(null);
-  const [cardError, setCardError] = useState<{ id: string; message: string } | null>(null);
   const [now] = useState(() => Date.now());
 
   const { upcoming, past } = useMemo(() => {
@@ -81,24 +57,6 @@ export default function EventsPage() {
   const filtered =
     activeMonth === "All" ? list : list.filter((e) => monthOf(e.startDate) === activeMonth);
 
-  async function toggleRegistration(event: EventItem, registered: boolean) {
-    setBusyId(event._id);
-    setCardError(null);
-    try {
-      if (registered) await api.del(`/events/${event._id}/register`);
-      else await api.post(`/events/${event._id}/register`);
-      refetch();
-      refetchRegistrations();
-    } catch (err) {
-      setCardError({
-        id: event._id,
-        message: err instanceof ApiError ? err.message : "Something went wrong. Please try again.",
-      });
-    } finally {
-      setBusyId(null);
-    }
-  }
-
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero */}
@@ -109,7 +67,7 @@ export default function EventsPage() {
           </span>
           <h1 className="text-4xl lg:text-5xl font-bold text-white mb-5">Events</h1>
           <p className="text-xl text-white/80 max-w-2xl mx-auto">
-            Join us at forums, workshops, dialogues, and roundtables — every event is a chance to
+            Join us at forums, workshops, dialogues, and roundtables. Every event is a chance to
             connect and build peace.
           </p>
         </div>
@@ -164,7 +122,7 @@ export default function EventsPage() {
             onRetry={refetch}
             emptyLabel={
               tab === "upcoming"
-                ? "No upcoming events right now — check back soon."
+                ? "No upcoming events right now. Check back soon."
                 : "No past events to show yet."
             }
             loadingLabel="Loading events…"
@@ -173,14 +131,12 @@ export default function EventsPage() {
               {filtered.map((event) => {
                 const spots = event.capacity || 0;
                 const registeredCount = event.registered || 0;
-                const isRegistered = registeredIds.has(event._id);
-                const isFull = spots > 0 && registeredCount >= spots && !isRegistered;
+                const isFull = spots > 0 && registeredCount >= spots;
                 const isPast = tab === "past";
                 const isClosed =
                   new Date(event.startDate).getTime() <= now ||
                   (!!event.registrationDeadline &&
                     new Date(event.registrationDeadline).getTime() < now);
-                const busy = busyId === event._id;
 
                 return (
                   <div
@@ -204,11 +160,6 @@ export default function EventsPage() {
                         >
                           {event.type}
                         </span>
-                        {isRegistered && (
-                          <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-green-100 text-green-700 inline-flex items-center gap-1">
-                            <Check size={11} /> Registered
-                          </span>
-                        )}
                       </div>
                       <Link
                         href={`/events/${event.slug}`}
@@ -259,22 +210,6 @@ export default function EventsPage() {
                           >
                             View details <ArrowRight size={12} />
                           </Link>
-                        ) : !user ? (
-                          <Link
-                            href="/login"
-                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-semibold rounded-lg transition-colors"
-                          >
-                            Sign in to register <ArrowRight size={12} />
-                          </Link>
-                        ) : isRegistered ? (
-                          <button
-                            onClick={() => toggleRegistration(event, true)}
-                            disabled={busy}
-                            className="flex-1 flex items-center justify-center gap-1.5 py-2 border border-gray-200 text-gray-600 hover:border-red-300 hover:text-red-600 text-xs font-semibold rounded-lg transition-colors disabled:opacity-60"
-                          >
-                            {busy ? <Loader2 size={12} className="animate-spin" /> : <X size={12} />}
-                            Cancel registration
-                          </button>
                         ) : isClosed ? (
                           <button
                             disabled
@@ -290,19 +225,12 @@ export default function EventsPage() {
                             Event full
                           </button>
                         ) : (
-                          <button
-                            onClick={() => toggleRegistration(event, false)}
-                            disabled={busy}
-                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-60"
+                          <Link
+                            href={`/events/${event.slug}`}
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white text-xs font-semibold rounded-lg transition-colors"
                           >
-                            {busy ? (
-                              <Loader2 size={12} className="animate-spin" />
-                            ) : (
-                              <>
-                                Register Now <ArrowRight size={12} />
-                              </>
-                            )}
-                          </button>
+                            Register Now <ArrowRight size={12} />
+                          </Link>
                         )}
 
                         {!isPast && (
@@ -325,9 +253,6 @@ export default function EventsPage() {
                           </button>
                         )}
                       </div>
-                      {cardError?.id === event._id && (
-                        <p className="text-xs text-red-500 mt-2 text-center">{cardError.message}</p>
-                      )}
                     </div>
                   </div>
                 );

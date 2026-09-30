@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "test:email": "tsx --env-file=.env.local scripts/test-email.ts",
-    "migrate:images": "tsx --env-file=.env.local scripts/migrate-images.ts"
+    "migrate:images": "tsx --env-file=.env.local scripts/migrate-images.ts",
+    "cleanup:legacy-accounts": "tsx --env-file=.env.local scripts/cleanup-legacy-accounts.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -21,11 +22,9 @@
     "lucide-react": "^1.41.0",
     "mongoose": "^8.24.4",
     "next": "16.3.4",
-    "nodemailer": "^10.0.0",
-    "pdf-lib": "^1.17.1",
+    "nodemailer": "^10.0.13",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "recharts": "^3.10.1",
     "zod": "^3.25.76"
   },
   "devDependencies": {

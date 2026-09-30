@@ -4,11 +4,13 @@ import { parseBody } from "@/lib/api/validate";
 import { listQuery } from "@/lib/api/list-query";
 import { ok, done } from "@/lib/api/response";
 import { requireRole } from "@/lib/api/auth";
+import { rateLimit } from "@/lib/api/rate-limit";
 import { newsletterSchema } from "@/lib/validators";
 import { Subscriber } from "@/models/Subscriber";
 
 /** POST /api/newsletter — public subscription (idempotent). */
 export const POST = route(async (req: NextRequest) => {
+  rateLimit(req, "newsletter", { limit: 5, windowMs: 10 * 60 * 1000 });
   const { email, source } = await parseBody(req, newsletterSchema);
 
   const existing = await Subscriber.findOne({ email });

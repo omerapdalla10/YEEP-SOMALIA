@@ -15,13 +15,13 @@ export default function NotFound() {
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-xl transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#2D8FCE] hover:bg-[#1F6BA0] text-white font-semibold rounded-lg transition-colors"
           >
             <Home size={16} /> Back to home
           </Link>
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-200 text-gray-600 hover:border-[#2D8FCE] hover:text-[#2D8FCE] font-semibold rounded-xl transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-200 text-gray-600 hover:border-[#2D8FCE] hover:text-[#2D8FCE] font-semibold rounded-lg transition-colors"
           >
             <ArrowLeft size={16} /> Contact us
           </Link>

@@ -32,7 +32,7 @@ export function passwordResetEmail(
     "",
     url,
     "",
-    "If you didn't ask for this, you can safely ignore this email — your password",
+    "If you didn't ask for this, you can safely ignore this email. Your password",
     "will not change.",
     "",
     "Warm regards,",
@@ -67,7 +67,7 @@ export function passwordResetEmail(
     text,
     html: emailShell({
       title: subject,
-      preheader: "Choose a new password — this link expires in 1 hour.",
+      preheader: "Choose a new password. This link expires in 1 hour.",
       body,
     }),
   };

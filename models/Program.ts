@@ -27,6 +27,7 @@ const programSchema = new Schema(
     /** Completion percentage 0-100. */
     progress: { type: Number, min: 0, max: 100, default: 0 },
     duration: { type: String, trim: true },
+    country: { type: String, trim: true },
     region: { type: String, trim: true },
     district: { type: String, trim: true },
     featured: { type: Boolean, default: false },

@@ -39,7 +39,7 @@ export function volunteerRejectedEmail(
     "commitment or ability.",
     ...(note ? ["", `A note from our team: ${note}`] : []),
     "",
-    "We'd genuinely welcome a future application from you — new roles open",
+    "We'd genuinely welcome a future application from you. New roles open",
     "regularly, and you can also join our events and community in the meantime.",
     "",
     "Thank you again for stepping forward.",
@@ -90,7 +90,7 @@ export function volunteerRejectedEmail(
     text,
     html: emailShell({
       title: subject,
-      preheader: "An update on your volunteer application — and an invitation to apply again.",
+      preheader: "An update on your volunteer application, and an invitation to apply again.",
       body,
     }),
   };

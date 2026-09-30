@@ -5,12 +5,14 @@ import { done } from "@/lib/api/response";
 import { ApiError } from "@/lib/api/errors";
 import { resetPasswordSchema } from "@/lib/validators";
 import { hashResetToken } from "@/lib/api/reset-token";
+import { rateLimit } from "@/lib/api/rate-limit";
 import { User } from "@/models/User";
 
 const INVALID = "This reset link is invalid or has expired. Please request a new one.";
 
 /** POST /api/auth/reset-password — finish the reset flow. */
 export const POST = route(async (req: NextRequest) => {
+  rateLimit(req, "reset-password", { limit: 10, windowMs: 15 * 60 * 1000 });
   const { token, password } = await parseBody(req, resetPasswordSchema);
   const tokenHash = hashResetToken(token);
 

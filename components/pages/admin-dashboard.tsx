@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import {
   Activity,
   AlertCircle,
-  Award,
   Bell,
   BookOpen,
   Calendar,
@@ -47,6 +46,7 @@ import { api, ApiError } from "@/lib/client/api";
 import { img } from "@/lib/client/img";
 import { formatDateShort } from "@/lib/client/format";
 import { roleLabel } from "@/lib/roles";
+import { COUNTRIES } from "@/lib/countries";
 import { uploadImage } from "@/lib/client/upload";
 import { useAdminTheme } from "@/components/admin/use-admin-theme";
 import { GrowthChart, Donut } from "@/components/admin/charts";
@@ -68,7 +68,6 @@ import type {
   NotificationItem,
   Report,
   SiteContent,
-  VolunteerHoursEntry,
 } from "@/lib/types";
 
 /* ------------------------------- constants ------------------------------- */
@@ -78,7 +77,6 @@ const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", id: "dashboard" },
   { icon: Users, label: "Users", id: "users", adminOnly: true },
   { icon: UserCheck, label: "Volunteers", id: "volunteers" },
-  { icon: Clock, label: "Hours", id: "hours" },
   { icon: Inbox, label: "Messages", id: "messages" },
   { icon: FolderOpen, label: "Projects", id: "projects" },
   { icon: BookOpen, label: "Programs", id: "programs" },
@@ -116,14 +114,21 @@ const regions = [
   "Woqooyi Galbeed",
 ];
 const programCategories = [
-  "Education",
-  "Skills",
-  "Leadership",
-  "Health",
-  "Arts",
-  "Vocational",
-  "Digital Literacy",
-  "Entrepreneurship",
+  "Youth, Peace & Security (YPS)",
+  "Peacebuilding & Conflict Prevention",
+  "Preventing & Countering Violent Extremism (PCVE)",
+  "Youth Leadership & Empowerment",
+  "Civic Engagement & Participation",
+  "Humanitarian Action",
+  "Child Protection",
+  "Gender & Inclusion",
+  "Climate, Peace & Security",
+  "Community Resilience",
+  "Mental Health & Psychosocial Support",
+  "Education & Awareness",
+  "Policy, Advocacy & Research",
+  "Partnerships & Networking",
+  "International & Global Commemorations",
 ];
 const newsCategories = [
   "Events",
@@ -251,6 +256,52 @@ function Field({
       </span>
       {children}
     </div>
+  );
+}
+
+/**
+ * Country + Region pair used on Programs/Projects/Events. Region is a fixed
+ * dropdown of Somalia's 18 federal member states when the country is Somalia
+ * (the common case), and a free-text field for anywhere else in the world.
+ */
+function CountryRegionFields({
+  country,
+  region,
+  onCountry,
+  onRegion,
+}: {
+  country: string;
+  region: string;
+  onCountry: (v: string) => void;
+  onRegion: (v: string) => void;
+}) {
+  return (
+    <>
+      <Field label="Country">
+        <select className="adm-select" value={country} onChange={(e) => onCountry(e.target.value)}>
+          {COUNTRIES.map((c) => (
+            <option key={c}>{c}</option>
+          ))}
+        </select>
+      </Field>
+      <Field label="Region">
+        {country === "Somalia" ? (
+          <select className="adm-select" value={region} onChange={(e) => onRegion(e.target.value)}>
+            <option value="">Select region</option>
+            {regions.map((r) => (
+              <option key={r}>{r}</option>
+            ))}
+          </select>
+        ) : (
+          <input
+            className="adm-input"
+            placeholder="Region / State / Province"
+            value={region}
+            onChange={(e) => onRegion(e.target.value)}
+          />
+        )}
+      </Field>
+    </>
   );
 }
 
@@ -611,22 +662,22 @@ function SiteImagesCard() {
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <ImageField
-            label="Home — hero background"
+            label="Home · hero background"
             value={form.heroImage ?? ""}
             onChange={set("heroImage")}
           />
           <ImageField
-            label="Home — “Our Impact” photo"
+            label="Home · “Our Impact” photo"
             value={form.homeImpactImage ?? ""}
             onChange={set("homeImpactImage")}
           />
           <ImageField
-            label="About — “Who We Are” photo"
+            label="About · “Who We Are” photo"
             value={form.aboutImage ?? ""}
             onChange={set("aboutImage")}
           />
           <ImageField
-            label="Volunteer — hero background"
+            label="Volunteer · hero background"
             value={form.volunteerImage ?? ""}
             onChange={set("volunteerImage")}
           />
@@ -739,10 +790,10 @@ function StatModal({
     { title: string; sub: string; bars: { label: string; value: number }[]; note: string }
   > = {
     users: {
-      title: "Total Users",
-      sub: `${k.totalUsers.toLocaleString()} accounts · ${k.activeVolunteers} active volunteers`,
+      title: "Staff Accounts",
+      sub: `${k.totalUsers.toLocaleString()} staff & admin accounts`,
       bars: data.userGrowth.map((g) => ({ label: g.month, value: g.users })),
-      note: "Cumulative registrations by month.",
+      note: "Cumulative account creation by month.",
     },
     programs: {
       title: "Active Programs",
@@ -750,14 +801,14 @@ function StatModal({
       bars: data.programDist.map((p) => ({ label: p.name, value: p.value })),
       note: "Share of programs by focus area.",
     },
-    hours: {
-      title: "Volunteer Hours",
-      sub: `${k.volunteerHours.toLocaleString()} hours logged (estimated)`,
+    volunteers: {
+      title: "Approved Volunteers",
+      sub: `${k.approvedVolunteers.toLocaleString()} approved applications`,
       bars: [
-        { label: "Active vols", value: k.activeVolunteers },
+        { label: "Approved", value: k.approvedVolunteers },
         { label: "Pending", value: k.pendingApplications },
       ],
-      note: "Estimated from active volunteers and their average commitment.",
+      note: "Volunteer applications by review status.",
     },
     events: {
       title: "Events",
@@ -805,11 +856,30 @@ function StatModal({
 
 function registrantsCsv(data: EventRegistrationList): string {
   const rows = [
-    ["Name", "Email", "Phone", "Registered"],
+    [
+      "Name",
+      "Email",
+      "WhatsApp",
+      "Gender",
+      "Education Level",
+      "Organization",
+      "Position",
+      "District",
+      "Confirmed Availability",
+      "Wants Updates",
+      "Registered",
+    ],
     ...data.registrations.map((r) => [
-      r.user.name,
-      r.user.email,
-      r.user.phone ?? "",
+      r.name,
+      r.email,
+      r.whatsapp,
+      r.gender,
+      r.educationLevel,
+      r.organization,
+      r.position,
+      r.district,
+      r.confirmAvailability ? "Yes" : "No",
+      r.wantsUpdates ? "Yes" : "No",
       new Date(r.registeredAt).toISOString(),
     ]),
   ];
@@ -836,7 +906,7 @@ function RegistrantsModal({ eventId, onClose }: { eventId: string; onClose: () =
     <div className="adm-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="adm-modal" role="dialog" aria-label="Event registrations">
         <div className="adm-modal-head">
-          <h3>{data ? `${data.event.title} — Registrations` : "Registrations"}</h3>
+          <h3>{data ? `${data.event.title} · Registrations` : "Registrations"}</h3>
           <button className="adm-iact" onClick={onClose} aria-label="Close">
             <X size={16} />
           </button>
@@ -859,20 +929,21 @@ function RegistrantsModal({ eventId, onClose }: { eventId: string; onClose: () =
                   <div style={{ display: "flex", flexDirection: "column" }}>
                     {data.registrations.map((r) => (
                       <div key={r._id} className="adm-activity">
-                        {r.user.avatar ? (
-                          <img
-                            className="adm-thumb round"
-                            src={img(r.user.avatar, "w=68&h=68&fit=crop&auto=format")}
-                            alt=""
-                          />
-                        ) : (
-                          <span className="adm-thumb-ph">{initials(r.user.name)}</span>
-                        )}
+                        <span className="adm-thumb-ph">{initials(r.name)}</span>
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div className="txt">{r.user.name}</div>
+                          <div className="txt">
+                            {r.name}
+                            {!r.confirmAvailability && (
+                              <span className="adm-badge adm-badge-amber" style={{ marginLeft: 6 }}>
+                                Tentative
+                              </span>
+                            )}
+                          </div>
                           <div className="time">
-                            {r.user.email}
-                            {r.user.phone ? ` · ${r.user.phone}` : ""}
+                            {r.email} · {r.whatsapp}
+                          </div>
+                          <div className="time">
+                            {r.organization} · {r.position} · {r.district}
                           </div>
                         </div>
                         <span className="time" style={{ flexShrink: 0 }}>
@@ -1060,10 +1131,6 @@ export default function AdminDashboard() {
   const messages = useCollection<ContactMessage>(active === "messages" ? "/contact" : null, {
     limit: 100,
   });
-  const hours = useCollection<VolunteerHoursEntry>(
-    active === "hours" ? "/volunteer-hours" : null,
-    { limit: 200 },
-  );
   // Sidebar badge counts — kept loaded regardless of the active tab.
   const unreadMessages = useCollection<ContactMessage>("/contact", {
     status: "New",
@@ -1120,6 +1187,7 @@ export default function AdminDashboard() {
   const emptyProjForm = {
     title: "",
     description: "",
+    country: "Somalia",
     region: "",
     district: "",
     budget: "",
@@ -1135,6 +1203,7 @@ export default function AdminDashboard() {
     title: "",
     description: "",
     category: "",
+    country: "Somalia",
     region: "",
     status: "Active",
     targetBeneficiaries: "",
@@ -1151,6 +1220,7 @@ export default function AdminDashboard() {
     date: "",
     endDate: "",
     location: "",
+    country: "Somalia",
     region: "",
     capacity: "",
     registrationDeadline: "",
@@ -1212,7 +1282,7 @@ export default function AdminDashboard() {
     email: "",
     password: "",
     phone: "",
-    role: "volunteer",
+    role: "staff",
     isActive: true,
   });
 
@@ -1278,6 +1348,7 @@ export default function AdminDashboard() {
         ? {
             title: p.title,
             description: p.description ?? "",
+            country: p.country ?? "Somalia",
             region: p.region ?? "",
             district: p.district ?? "",
             budget: p.budget ? String(p.budget) : "",
@@ -1303,6 +1374,7 @@ export default function AdminDashboard() {
             title: p.title,
             description: p.description ?? "",
             category: p.category ?? "",
+            country: p.country ?? "Somalia",
             region: p.region ?? "",
             status: p.status ?? "Active",
             targetBeneficiaries: p.beneficiaries ? String(p.beneficiaries) : "",
@@ -1329,6 +1401,7 @@ export default function AdminDashboard() {
             date: ev.startDate ? ev.startDate.slice(0, 10) : "",
             endDate: ev.endDate ? ev.endDate.slice(0, 10) : "",
             location: ev.location ?? "",
+            country: ev.country ?? "Somalia",
             region: ev.region ?? "",
             capacity: ev.capacity ? String(ev.capacity) : "",
             registrationDeadline: ev.registrationDeadline
@@ -1491,6 +1564,7 @@ export default function AdminDashboard() {
       const payload = {
         title: projForm.title,
         description: projForm.description || undefined,
+        country: projForm.country || undefined,
         region: projForm.region || undefined,
         district: projForm.district || undefined,
         budget: projForm.budget ? Number(projForm.budget) : undefined,
@@ -1517,6 +1591,7 @@ export default function AdminDashboard() {
         title: progForm.title,
         description: progForm.description || undefined,
         category: progForm.category,
+        country: progForm.country || undefined,
         region: progForm.region || undefined,
         status: progForm.status,
         beneficiaries: progForm.targetBeneficiaries
@@ -1552,6 +1627,7 @@ export default function AdminDashboard() {
           ? new Date(evtForm.date).toLocaleDateString("en-US", { month: "long", year: "numeric" })
           : undefined,
         location: evtForm.location || undefined,
+        country: evtForm.country || undefined,
         region: evtForm.region || undefined,
         capacity: evtForm.capacity ? Number(evtForm.capacity) : undefined,
         registrationDeadline: evtForm.registrationDeadline || undefined,
@@ -1673,7 +1749,7 @@ export default function AdminDashboard() {
         email: "",
         password: "",
         phone: "",
-        role: "volunteer",
+        role: "staff",
         isActive: true,
       });
     }, users.refetch);
@@ -1703,6 +1779,9 @@ export default function AdminDashboard() {
 
   /* --------------------------- derived: dashboard ------------------------ */
 
+  const adminCount = users.data.filter((u) => u.role === "admin").length;
+  const staffCount = users.data.filter((u) => u.role === "staff").length;
+
   const k = dashboard.data?.kpis;
   const statCards = k
     ? [
@@ -1712,8 +1791,8 @@ export default function AdminDashboard() {
           tint: "var(--teal-tint)",
           fg: "var(--teal-deep)",
           value: k.totalUsers.toLocaleString(),
-          label: "Total Users",
-          tag: `${k.activeVolunteers} volunteers`,
+          label: "Staff Accounts",
+          tag: "staff & admin",
         },
         {
           key: "programs",
@@ -1725,13 +1804,13 @@ export default function AdminDashboard() {
           tag: "live",
         },
         {
-          key: "hours",
-          icon: Clock,
+          key: "volunteers",
+          icon: UserCheck,
           tint: "var(--amber-tint)",
           fg: "var(--amber)",
-          value: k.volunteerHours.toLocaleString(),
-          label: "Volunteer Hours",
-          tag: "est.",
+          value: k.approvedVolunteers.toLocaleString(),
+          label: "Approved Volunteers",
+          tag: `${k.pendingApplications} pending`,
         },
         {
           key: "events",
@@ -1758,9 +1837,6 @@ export default function AdminDashboard() {
     if (notifUnreadCount === 0) return;
     void api.patch("/notifications").then(() => notifFeed.refetch());
   };
-
-  const adminCount = users.data.filter((u) => u.role === "admin").length;
-  const staffCount = users.data.filter((u) => u.role === "staff").length;
 
   /* -------------------------------- sections ---------------------------- */
 
@@ -2005,7 +2081,6 @@ export default function AdminDashboard() {
                           value={u.role}
                           onChange={(e) => patchUser(u._id, { role: e.target.value })}
                         >
-                          <option value="volunteer">Volunteer</option>
                           <option value="staff">Staff</option>
                           <option value="admin">Administrator</option>
                         </select>
@@ -2103,15 +2178,6 @@ export default function AdminDashboard() {
                       >
                         Reject
                       </button>
-                      {v.status === "Approved" && (
-                        <a
-                          className="adm-iact"
-                          href={`/api/volunteers/${v._id}/certificate`}
-                          title="Download certificate"
-                        >
-                          <Award size={14} />
-                        </a>
-                      )}
                       <button
                         className="adm-iact danger"
                         onClick={() =>
@@ -2135,96 +2201,6 @@ export default function AdminDashboard() {
       )}
     </div>
   );
-
-  const renderHours = () => {
-    const total = hours.data
-      .filter((h) => h.status === "Approved")
-      .reduce((s, h) => s + h.hours, 0);
-    const setStatus = (id: string, status: "Approved" | "Rejected") =>
-      api
-        .patch(`/volunteer-hours/${id}/status`, { status })
-        .then(hours.refetch)
-        .catch(() => {});
-    return (
-      <div className="adm-panel">
-        <div className="adm-panel-p" style={{ borderBottom: "1px solid var(--line)" }}>
-          <h3 style={{ fontSize: 15.5 }}>Volunteer Hours</h3>
-          <div className="sub" style={{ fontSize: 12, color: "var(--sub)", marginTop: 3 }}>
-            {total} approved hour{total === 1 ? "" : "s"} logged across all members
-          </div>
-        </div>
-        {hours.loading ? (
-          <Loading label="Loading time log…" />
-        ) : hours.error ? (
-          <ErrorBox message={hours.error} onRetry={hours.refetch} />
-        ) : (
-          <div className="adm-table-wrap">
-            <table className="adm-table">
-              <thead>
-                <tr>
-                  <th>Member</th>
-                  <th>Activity</th>
-                  <th>Date</th>
-                  <th>Hours</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {hours.data.map((h) => (
-                  <tr key={h._id}>
-                    <td>
-                      <div className="adm-t-name">
-                        {h.user?.name ?? "—"}
-                        <div className="em">{h.user?.email}</div>
-                      </div>
-                    </td>
-                    <td style={{ maxWidth: 260 }}>
-                      {h.activity}
-                      {h.event && <div className="em">{h.event.title}</div>}
-                    </td>
-                    <td style={{ color: "var(--sub)" }}>{formatDateShort(h.date)}</td>
-                    <td>{h.hours}</td>
-                    <td>
-                      <StatusBadge status={h.status} />
-                    </td>
-                    <td>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <button
-                          className="adm-chipbtn ok"
-                          disabled={h.status === "Approved"}
-                          onClick={() => setStatus(h._id, "Approved")}
-                        >
-                          Approve
-                        </button>
-                        <button
-                          className="adm-chipbtn no"
-                          disabled={h.status === "Rejected"}
-                          onClick={() => setStatus(h._id, "Rejected")}
-                        >
-                          Reject
-                        </button>
-                        <button
-                          className="adm-iact danger"
-                          onClick={() => remove(`/volunteer-hours/${h._id}`, hours.refetch)}
-                          title="Delete"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {hours.data.length === 0 && (
-              <div className="adm-empty">No volunteer hours logged yet.</div>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  };
 
   const renderMessages = () => (
     <div className="adm-panel">
@@ -3350,7 +3326,6 @@ export default function AdminDashboard() {
           {active === "dashboard" && renderDashboard()}
           {active === "users" && isAdmin && renderUsers()}
           {active === "volunteers" && renderVolunteers()}
-          {active === "hours" && renderHours()}
           {active === "messages" && renderMessages()}
           {active === "projects" && renderProjects()}
           {active === "programs" && renderPrograms()}
@@ -3418,7 +3393,7 @@ export default function AdminDashboard() {
                 <Field label="Project Title" required>
                   <input
                     className="adm-input"
-                    placeholder="Youth Leadership Academy — Banadir"
+                    placeholder="Youth Leadership Academy, Banadir"
                     value={projForm.title}
                     onChange={(e) => setProjForm({ ...projForm, title: e.target.value })}
                   />
@@ -3444,18 +3419,14 @@ export default function AdminDashboard() {
                 />
               </Field>
               <div className="adm-modal-grid">
-                <Field label="Region">
-                  <select
-                    className="adm-select"
-                    value={projForm.region}
-                    onChange={(e) => setProjForm({ ...projForm, region: e.target.value })}
-                  >
-                    <option value="">Select region</option>
-                    {regions.map((r) => (
-                      <option key={r}>{r}</option>
-                    ))}
-                  </select>
-                </Field>
+                <CountryRegionFields
+                  country={projForm.country}
+                  region={projForm.region}
+                  onCountry={(v) => setProjForm({ ...projForm, country: v })}
+                  onRegion={(v) => setProjForm({ ...projForm, region: v })}
+                />
+              </div>
+              <div className="adm-modal-grid">
                 <Field label="District">
                   <input
                     className="adm-input"
@@ -3486,7 +3457,7 @@ export default function AdminDashboard() {
                   />
                 </Field>
               </div>
-              <Field label={`Progress — ${projForm.progress || 0}%`}>
+              <Field label={`Progress: ${projForm.progress || 0}%`}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <input
                     type="range"
@@ -3585,18 +3556,14 @@ export default function AdminDashboard() {
                 />
               </Field>
               <div className="adm-modal-grid">
-                <Field label="Region">
-                  <select
-                    className="adm-select"
-                    value={progForm.region}
-                    onChange={(e) => setProgForm({ ...progForm, region: e.target.value })}
-                  >
-                    <option value="">Select region</option>
-                    {regions.map((r) => (
-                      <option key={r}>{r}</option>
-                    ))}
-                  </select>
-                </Field>
+                <CountryRegionFields
+                  country={progForm.country}
+                  region={progForm.region}
+                  onCountry={(v) => setProgForm({ ...progForm, country: v })}
+                  onRegion={(v) => setProgForm({ ...progForm, region: v })}
+                />
+              </div>
+              <div className="adm-modal-grid">
                 <Field label="Status">
                   <select
                     className="adm-select"
@@ -3661,7 +3628,7 @@ export default function AdminDashboard() {
                   />
                 </Field>
               </div>
-              <Field label={`Progress — ${progForm.progress || 0}%`}>
+              <Field label={`Progress: ${progForm.progress || 0}%`}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <input
                     type="range"
@@ -3715,18 +3682,12 @@ export default function AdminDashboard() {
                     onChange={(e) => setEvtForm({ ...evtForm, title: e.target.value })}
                   />
                 </Field>
-                <Field label="Region">
-                  <select
-                    className="adm-select"
-                    value={evtForm.region}
-                    onChange={(e) => setEvtForm({ ...evtForm, region: e.target.value })}
-                  >
-                    <option value="">Select region</option>
-                    {regions.map((r) => (
-                      <option key={r}>{r}</option>
-                    ))}
-                  </select>
-                </Field>
+                <CountryRegionFields
+                  country={evtForm.country}
+                  region={evtForm.region}
+                  onCountry={(v) => setEvtForm({ ...evtForm, country: v })}
+                  onRegion={(v) => setEvtForm({ ...evtForm, region: v })}
+                />
               </div>
               <Field label="Description">
                 <textarea
@@ -3949,9 +3910,8 @@ export default function AdminDashboard() {
                     value={userForm.role}
                     onChange={(e) => setUserForm({ ...userForm, role: e.target.value })}
                   >
-                    <option value="volunteer">Volunteer</option>
-                    <option value="staff">Staff — content &amp; applications</option>
-                    <option value="admin">Administrator — full control</option>
+                    <option value="staff">Staff: content &amp; applications</option>
+                    <option value="admin">Administrator: full control</option>
                   </select>
                 </Field>
                 <Field label="Active">
@@ -4211,8 +4171,8 @@ export default function AdminDashboard() {
                       })
                     }
                   >
-                    <option value="home">Home — success stories</option>
-                    <option value="volunteer">Volunteer — voices</option>
+                    <option value="home">Home: success stories</option>
+                    <option value="volunteer">Volunteer: voices</option>
                   </select>
                 </Field>
                 <Field label="Order">

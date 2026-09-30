@@ -2,12 +2,12 @@ import mongoose, { type Model } from "mongoose";
 import type { NextRequest } from "next/server";
 import type { ZodObject, ZodRawShape } from "zod";
 import { route, type IdContext } from "./route";
-import { requireRole } from "./auth";
+import { requireRole, optionalUser } from "./auth";
 import { parseBody } from "./validate";
 import { listQuery } from "./list-query";
 import { ok, created } from "./response";
 import { ApiError } from "./errors";
-import type { Role } from "@/lib/roles";
+import { roleAtLeast, type Role } from "@/lib/roles";
 
 export interface ResourceConfig<T> {
   filterable?: (keyof T & string)[];
@@ -19,8 +19,20 @@ export interface ResourceConfig<T> {
   writeRole?: Role;
   /** `"public"` (default) lets anyone read; `"staff"` locks reads down too. */
   readAccess?: "public" | "staff";
+  /**
+   * Extra equality filter forced onto reads from callers below `writeRole`
+   * (e.g. `{ published: true }` so drafts can't be fetched by guessing an id
+   * or omitting the client's own filter). Staff+ always see everything.
+   */
+  publicFilter?: Partial<T>;
   /** When set, `GET .../[id]` also resolves a `slug` when the param isn't an id. */
   slug?: boolean;
+}
+
+/** Whether the requester may see documents `publicFilter` would otherwise hide. */
+async function bypassesPublicFilter(req: NextRequest, minRole: Role): Promise<boolean> {
+  const user = await optionalUser(req);
+  return Boolean(user && roleAtLeast(user.role, minRole));
 }
 
 /** Binds the model's `T` to its config so route files stay one-liners. */
@@ -44,10 +56,15 @@ export function resourceCollection<T>(model: Model<T>, cfg: ResourceConfig<T>) {
 
   const GET = route(async (req: NextRequest) => {
     if (cfg.readAccess === "staff") await requireRole(req, writeRole);
+    let baseFilter: Partial<T> | undefined;
+    if (cfg.readAccess !== "staff" && cfg.publicFilter) {
+      if (!(await bypassesPublicFilter(req, writeRole))) baseFilter = cfg.publicFilter;
+    }
     const { data, pagination } = await listQuery(model, req.nextUrl.searchParams, {
       filterable: cfg.filterable,
       searchable: cfg.searchable,
       defaultSort: cfg.defaultSort,
+      baseFilter,
     });
     return ok(data, { pagination });
   });
@@ -76,6 +93,15 @@ export function resourceItem<T>(model: Model<T>, cfg: ResourceConfig<T>) {
       doc = await model.findOne({ slug: id } as Record<string, unknown>);
     }
     if (!doc) throw ApiError.notFound(notFound);
+    if (cfg.readAccess !== "staff" && cfg.publicFilter) {
+      if (!(await bypassesPublicFilter(req, writeRole))) {
+        const obj = doc.toObject() as Record<string, unknown>;
+        const hidden = Object.entries(cfg.publicFilter).some(
+          ([key, value]) => obj[key] !== value,
+        );
+        if (hidden) throw ApiError.notFound(notFound);
+      }
+    }
     return ok(doc);
   });
 

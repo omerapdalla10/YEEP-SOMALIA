@@ -32,7 +32,7 @@ function authorized(req: NextRequest): boolean {
  * GET /api/cron/event-reminders — emails everyone registered for an event that
  * starts within the next LEAD_HOURS and hasn't been reminded yet. Idempotent:
  * each registration is reminded at most once (`reminderSentAt`). Call it on a
- * schedule (Vercel Cron / an external scheduler) with the CRON_SECRET.
+ * schedule (a Hostinger hPanel cron job / an external scheduler) with the CRON_SECRET.
  */
 export const GET = route(async (req: NextRequest) => {
   if (!authorized(req)) throw ApiError.unauthorized("Bad or missing cron key.");

@@ -38,9 +38,6 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
-  // Produce a self-contained build for the production Docker image.
-  output: "standalone",
-
   // These ship CJS/dynamic requires — keep them out of the bundler.
   serverExternalPackages: ["mongoose", "nodemailer", "imagekit"],
 

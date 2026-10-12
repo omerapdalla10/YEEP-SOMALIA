@@ -8,7 +8,7 @@ import { ApiError } from "./errors";
  * inside `windowMs`.
  *
  * Caveat: state lives in memory, per Node process. That's enough to blunt a
- * single abusive client on a long-running server (Docker/VPS), but on
+ * single abusive client on a long-running server (Node host/VPS), but on
  * serverless (Vercel) each cold instance starts its own empty counter, so
  * this is best-effort defence-in-depth — not a substitute for a shared store
  * (e.g. Upstash Redis) or the platform's own edge rate limiting if the

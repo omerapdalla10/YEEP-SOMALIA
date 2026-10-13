@@ -8,11 +8,11 @@ import { api, ApiError } from "@/lib/client/api";
 import type { SiteContent } from "@/lib/types";
 
 const FALLBACK = {
-  email: "info@yeep.org.so",
+  email: "info@yeepsomalia.so",
   phone: "+252 611 676 253",
   address: "Mogadishu, Somalia",
   hours: "Sat – Thu: 8:00 AM – 4:00 PM\nFriday: Closed",
-  website: "yeep.org.so",
+  website: "yeepsomalia.so",
   map: "https://www.openstreetmap.org/export/embed.html?bbox=45.28%2C2.01%2C45.39%2C2.09&layer=mapnik&marker=2.0469%2C45.3182",
 };
 
@@ -133,7 +133,7 @@ export default function ContactPage() {
                     { icon: FacebookIcon, href: "https://www.facebook.com/profile.php?id=61565617627973", label: "Facebook" },
                     { icon: InstagramIcon, href: "https://instagram.com/yeepsomalia", label: "Instagram" },
                     { icon: XIcon, href: "https://x.com/yeepsomalia", label: "X (Twitter)" },
-                    { icon: LinkedinIcon, href: "https://www.linkedin.com/search/results/all/?keywords=YEEP%20Somalia", label: "LinkedIn" },
+                    { icon: LinkedinIcon, href: "https://www.linkedin.com/company/yeep-somalia/posts/?viewAsMember=true", label: "LinkedIn" },
                     { icon: Globe, href: `https://${FALLBACK.website}`, label: "Website" },
                   ].map(({ icon: Icon, href, label }) => (
                     <a

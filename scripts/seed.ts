@@ -35,7 +35,7 @@ if (!process.env.SEED_ADMIN_PASSWORD) {
 
 const seedAdmin = {
   name: process.env.SEED_ADMIN_NAME ?? "YEEP Somalia Admin",
-  email: process.env.SEED_ADMIN_EMAIL ?? "admin@yeep.org.so",
+  email: process.env.SEED_ADMIN_EMAIL ?? "admin@yeepsomalia.so",
   password: process.env.SEED_ADMIN_PASSWORD,
 };
 

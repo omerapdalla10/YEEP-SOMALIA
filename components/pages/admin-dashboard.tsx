@@ -688,7 +688,7 @@ function SiteImagesCard() {
               <Field label="Public email">
                 <input
                   className="adm-input"
-                  placeholder="info@yeep.org.so"
+                  placeholder="info@yeepsomalia.so"
                   value={form.contactEmail ?? ""}
                   onChange={setInput("contactEmail")}
                 />

@@ -13,7 +13,7 @@ import type { SiteContent } from "@/lib/types";
 export default function Footer() {
   const t = useT();
   const { data: site } = useResource<SiteContent>("/site-content");
-  const contactEmail = site?.contactEmail || "info@yeep.org.so";
+  const contactEmail = site?.contactEmail || "info@yeepsomalia.so";
   const contactPhone = site?.contactPhone || "+252 611 676 253";
   const officeAddress = site?.officeAddress || "Mogadishu, Somalia";
   const [email, setEmail] = useState("");
@@ -80,10 +80,10 @@ export default function Footer() {
                 },
                 {
                   icon: LinkedinIcon,
-                  href: "https://www.linkedin.com/search/results/all/?keywords=YEEP%20Somalia",
+                  href: "https://www.linkedin.com/company/yeep-somalia/posts/?viewAsMember=true",
                   label: "LinkedIn",
                 },
-                { icon: Globe, href: "https://yeep.org.so", label: "Website" },
+                { icon: Globe, href: "https://yeepsomalia.so", label: "Website" },
               ].map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
@@ -176,12 +176,12 @@ export default function Footer() {
               <li className="flex items-center gap-3">
                 <Globe size={15} className="text-[#2D8FCE] shrink-0" />
                 <a
-                  href="https://yeep.org.so"
+                  href="https://yeepsomalia.so"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-gray-400 hover:text-[#D4E6F4] transition-colors"
                 >
-                  yeep.org.so
+                  yeepsomalia.so
                 </a>
               </li>
             </ul>

@@ -26,7 +26,7 @@ export function eventToIcs(ev: CalEvent): string {
     "PRODID:-//YEEP Somalia//Events//EN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
-    `UID:event-${ev.id}@yeep.org.so`,
+    `UID:event-${ev.id}@yeepsomalia.so`,
     `DTSTAMP:${fmt(new Date())}`,
     `DTSTART:${fmt(start)}`,
     `DTEND:${fmt(end)}`,

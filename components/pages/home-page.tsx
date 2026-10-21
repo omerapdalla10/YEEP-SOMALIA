@@ -377,11 +377,8 @@ export default function HomePage() {
             <Reveal direction="left" delay={120} className="relative">
               <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-100">
                 <img
-                  src={
-                    img(site?.homeImpactImage, "w=700&h=500&fit=crop&auto=format") ||
-                    "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=700&h=500&fit=crop&auto=format"
-                  }
-                  alt="Young people at a YEEP Somalia session"
+                  src="/impact.jpg"
+                  alt="YEEP Somalia workshop: Empowering Youth through PCVE Knowledge"
                   className="w-full h-80 object-cover"
                 />
               </div>

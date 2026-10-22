@@ -132,7 +132,7 @@ export default function HomePage() {
       icon: Globe,
     },
     {
-      raw: stats?.fundsRaised ?? 0,
+      raw: 2000,
       format: formatMoneyCompact,
       label: "Funds Raised",
       icon: TrendingUp,

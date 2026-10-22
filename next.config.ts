@@ -37,6 +37,12 @@ const SECURITY_HEADERS = [
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
 ];
 
+// The panic in the build log comes from Next's native (Rust/tokio) runtime,
+// which starts one thread per CPU in every build worker. On a host that reports
+// 63 CPUs but limits threads per container, that exhausts the thread quota.
+// Build workers are forked after this file loads, so they inherit the cap.
+process.env.TOKIO_WORKER_THREADS ??= "4";
+
 const nextConfig: NextConfig = {
   // These ship CJS/dynamic requires — keep them out of the bundler.
   serverExternalPackages: ["mongoose", "nodemailer", "imagekit"],

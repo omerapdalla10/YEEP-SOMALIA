@@ -41,6 +41,13 @@ const nextConfig: NextConfig = {
   // These ship CJS/dynamic requires — keep them out of the bundler.
   serverExternalPackages: ["mongoose", "nodemailer", "imagekit"],
 
+  // The build host reports 63 CPUs but caps threads per process, so the
+  // default one-worker-per-CPU "Collecting page data" step aborts with
+  // "OS can't spawn worker thread". Keep the worker pool small.
+  experimental: {
+    cpus: 2,
+  },
+
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
